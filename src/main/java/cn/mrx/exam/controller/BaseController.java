@@ -11,11 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Mr.X
  * @since 2017-03-17
  */
-@Controller
 public class BaseController {
 
-    @RequestMapping("/admin")
-    public String admin(){
-        return "admin/index";
-    }
 }

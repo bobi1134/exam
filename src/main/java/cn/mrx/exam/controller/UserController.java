@@ -9,10 +9,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-17
+ * @since 2017-03-18
  */
 @Controller
-@RequestMapping("/user")
-public class UserController {
-	
+@RequestMapping("/admin")
+public class UserController extends BaseController{
+
+    /**
+     *
+     * @return
+     */
+    @RequestMapping("")
+    public String admin(){
+        return "admin/index";
+    }
+
+    @RequestMapping("/welcome")
+    public String welcome(){
+        return "admin/welcome";
+    }
+
+    @RequestMapping("/ee")
+    public String aa(){
+        return "admin/welcome";
+    }
 }

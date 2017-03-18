@@ -19,7 +19,6 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>
 
-
 	<!-- 静态资源 -->
 	<mvc:resources location="/resources/" mapping="/resources/**"/>
 </beans>
