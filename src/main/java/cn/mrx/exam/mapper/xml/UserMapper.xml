@@ -8,7 +8,10 @@
 		<result column="username" property="username" />
 		<result column="pwd" property="pwd" />
 		<result column="email" property="email" />
-		<result column="name" property="name" />
+		<result column="really_name" property="reallyName" />
+		<result column="time" property="time" />
+		<result column="last_login_ip" property="lastLoginIp" />
+		<result column="last_login_time" property="lastLoginTime" />
 	</resultMap>
 
 </mapper>

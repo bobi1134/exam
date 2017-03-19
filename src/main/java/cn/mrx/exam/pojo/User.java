@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-18
+ * @since 2017-03-19
  */
 @TableName("t_user")
 public class User extends Model<User> {
@@ -21,25 +22,40 @@ public class User extends Model<User> {
     private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 * 主键id
 	 */
 	private Integer id;
 	/**
-	 * 
+	 * 用户名
 	 */
 	private String username;
 	/**
-	 * 
+	 * 密码
 	 */
 	private String pwd;
 	/**
-	 * 
+	 * 邮箱
 	 */
 	private String email;
 	/**
-	 * 
+	 * 真实姓名
 	 */
-	private String name;
+	@TableField(value="really_name")
+	private String reallyName;
+	/**
+	 * 登录次数
+	 */
+	private Integer time;
+	/**
+	 * 上次登录ip
+	 */
+	@TableField(value="last_login_ip")
+	private String lastLoginIp;
+	/**
+	 * 上次登录时间
+	 */
+	@TableField(value="last_login_time")
+	private Date lastLoginTime;
 
 
 	public Integer getId() {
@@ -74,12 +90,36 @@ public class User extends Model<User> {
 		this.email = email;
 	}
 
-	public String getName() {
-		return name;
+	public String getReallyName() {
+		return reallyName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setReallyName(String reallyName) {
+		this.reallyName = reallyName;
+	}
+
+	public Integer getTime() {
+		return time;
+	}
+
+	public void setTime(Integer time) {
+		this.time = time;
+	}
+
+	public String getLastLoginIp() {
+		return lastLoginIp;
+	}
+
+	public void setLastLoginIp(String lastLoginIp) {
+		this.lastLoginIp = lastLoginIp;
+	}
+
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
 	}
 
 	@Override
