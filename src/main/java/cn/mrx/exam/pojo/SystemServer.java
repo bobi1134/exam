@@ -3,9 +3,9 @@ package cn.mrx.exam.pojo;
 /**
  * Author: Mr.X
  * Date: 2017/3/19
- * Description:
+ * Description: 服务器信息
  */
-public class SystemMess {
+public class SystemServer {
 
     private String hostName;//计算机名称
     private String local_ip;//计算机局域网ip地址

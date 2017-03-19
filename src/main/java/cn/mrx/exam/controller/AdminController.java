@@ -1,7 +1,9 @@
 package cn.mrx.exam.controller;
 
-import cn.mrx.exam.pojo.SystemMess;
+import cn.mrx.exam.pojo.SystemServer;
+import cn.mrx.exam.pojo.SystemWeb;
 import cn.mrx.exam.utils.SystemMessUtils;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +13,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
 
 /**
  * Author: Mr.X
@@ -24,10 +25,12 @@ public class AdminController extends BaseController{
 
     /**
      * 打开index.jsp
+     * @param model
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String admin(){
+    public String admin(Model model){
+        model.addAttribute("systemWeb", iSystemWebService.selectOne(new EntityWrapper<SystemWeb>().eq("category" ,2)));
         return "admin/index";
     }
 
@@ -38,7 +41,7 @@ public class AdminController extends BaseController{
      */
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcome(Model model){
-        model.addAttribute("systemMess", setMess());//准备数据
+        model.addAttribute("systemMess", setMess());
         return "admin/welcome";
     }
 
@@ -46,9 +49,9 @@ public class AdminController extends BaseController{
      * 为SystemMess赋初值
      * @return
      */
-    public SystemMess setMess(){
+    public SystemServer setMess(){
         try {
-            SystemMess systemMess = new SystemMess();
+            SystemServer systemMess = new SystemServer();
             systemMess.setHostName(InetAddress.getLocalHost().getHostName().toString());//服务器计算机名
             systemMess.setLocal_ip(InetAddress.getLocalHost().getHostAddress().toString());//服务器局域网IP地址
             systemMess.setV4_ip(SystemMessUtils.getV4IP());////服务器广域网IP地址

@@ -1,7 +1,7 @@
 package cn.mrx.exam.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import cn.mrx.exam.service.ISystemWebService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <p>
@@ -12,5 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2017-03-17
  */
 public class BaseController {
+
+    @Autowired
+    protected ISystemWebService iSystemWebService;
 
 }
