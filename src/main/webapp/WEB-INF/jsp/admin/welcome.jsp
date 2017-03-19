@@ -4,7 +4,6 @@
 <html>
 <head>
 	<%@ include file="jspf/head.jspf" %>
-	<title>我的桌面</title>
 </head>
 <body>
 <div class="page-container">
