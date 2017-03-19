@@ -41,6 +41,7 @@ public class AdminController extends BaseController{
      */
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcome(Model model){
+        model.addAttribute("systemWeb", iSystemWebService.selectOne(new EntityWrapper<SystemWeb>().eq("category" ,2)));
         model.addAttribute("systemMess", setMess());
         return "admin/welcome";
     }

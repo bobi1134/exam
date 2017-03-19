@@ -8,6 +8,7 @@
 		<result column="keywords" property="keywords" />
 		<result column="description" property="description" />
 		<result column="title" property="title" />
+		<result column="version" property="version" />
 		<result column="category" property="category" />
 	</resultMap>
 

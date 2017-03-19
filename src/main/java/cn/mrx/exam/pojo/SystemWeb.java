@@ -37,6 +37,10 @@ public class SystemWeb extends Model<SystemWeb> {
 	 */
 	private String title;
 	/**
+	 * 版本
+	 */
+	private String version;
+	/**
 	 * 1:web, 2:admin
 	 */
 	private Integer category;
@@ -74,6 +78,14 @@ public class SystemWeb extends Model<SystemWeb> {
 		this.title = title;
 	}
 
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 	public Integer getCategory() {
 		return category;
 	}
@@ -87,14 +99,4 @@ public class SystemWeb extends Model<SystemWeb> {
 		return this.id;
 	}
 
-	@Override
-	public String toString() {
-		return "SystemWeb{" +
-				"id=" + id +
-				", keywords='" + keywords + '\'' +
-				", description='" + description + '\'' +
-				", title='" + title + '\'' +
-				", category=" + category +
-				'}';
-	}
 }
