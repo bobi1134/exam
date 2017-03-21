@@ -3,6 +3,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <link href="${ctx}/resources/admin/static/h-ui.admin/css/H-ui.login.css" rel="stylesheet" type="text/css" />
     <%@ include file="jspf/head.jspf" %>
 </head>
 <body>
