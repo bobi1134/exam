@@ -1,6 +1,7 @@
 package cn.mrx.exam.controller.support;
 
 import cn.mrx.exam.service.ISystemWebService;
+import cn.mrx.exam.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -15,5 +16,8 @@ public class BaseController {
 
     @Autowired
     protected ISystemWebService iSystemWebService;
+
+    @Autowired
+    protected IUserService iUserService;
 
 }

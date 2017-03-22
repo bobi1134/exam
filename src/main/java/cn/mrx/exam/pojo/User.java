@@ -1,10 +1,13 @@
 package cn.mrx.exam.pojo;
 
+import cn.mrx.exam.controller.validation.UserLogin;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,10 +31,12 @@ public class User extends Model<User> {
 	/**
 	 * 用户名
 	 */
+	@NotEmpty(message="用户名不能为空！", groups = UserLogin.class)
 	private String username;
 	/**
 	 * 密码
 	 */
+	@NotEmpty(message="密码不能为空！", groups = UserLogin.class)
 	private String pwd;
 	/**
 	 * 邮箱
@@ -56,6 +61,9 @@ public class User extends Model<User> {
 	 */
 	@TableField(value="last_login_time")
 	private Date lastLoginTime;
+
+	@NotEmpty(message="验证码不能为空！", groups = UserLogin.class)
+	private String captcha;
 
 
 	public Integer getId() {
@@ -127,4 +135,11 @@ public class User extends Model<User> {
 		return this.id;
 	}
 
+	public String getCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
+	}
 }
