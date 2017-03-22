@@ -29,7 +29,7 @@
                     <input class="input-text size-L" type="text" placeholder="验证码"
                            onblur="if(this.value==''){this.value='验证码:'}"
                            onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
-                    <img src="${ctx}/admin/user/captcha" id="vimg"/> <a id="kanbuq" href="javascript:;">看不清，换一张</a></div>
+                    <img src="${ctx}/admin/captcha" id="vimg"/> <a id="kanbuq" href="javascript:;">看不清，换一张</a></div>
             </div>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
@@ -55,7 +55,7 @@
     $(function () {
 //        验证码，看不清，换一张
         $("#kanbuq").click(function () {
-            $("#vimg").attr("src", "${ctx}/admin/user/captcha?random=" + Math.random());
+            $("#vimg").attr("src", "${ctx}/admin/captcha?random=" + Math.random());
         });
     });
 </script>

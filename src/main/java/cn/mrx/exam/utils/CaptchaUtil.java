@@ -20,9 +20,9 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  * Date: 2017/3/18
  * Description:关于验证码的工具类
  */
-public final class CaptchaUtils
+public final class CaptchaUtil
 {
-    private CaptchaUtils(){}
+    private CaptchaUtil(){}
 
     /*
      * 随机字符字典
