@@ -1,4 +1,4 @@
-package cn.mrx.exam.controller;
+package cn.mrx.exam.controller.support;
 
 import cn.mrx.exam.service.ISystemWebService;
 import org.springframework.beans.factory.annotation.Autowired;

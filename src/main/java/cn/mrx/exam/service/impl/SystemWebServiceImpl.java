@@ -3,7 +3,7 @@ package cn.mrx.exam.service.impl;
 import cn.mrx.exam.pojo.SystemWeb;
 import cn.mrx.exam.mapper.SystemWebMapper;
 import cn.mrx.exam.service.ISystemWebService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import cn.mrx.exam.service.support.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-19
+ * @since 2017-03-22
  */
 @Service
-public class SystemWebServiceImpl extends ServiceImpl<SystemWebMapper, SystemWeb> implements ISystemWebService {
+public class SystemWebServiceImpl extends BaseServiceImpl<SystemWebMapper, SystemWeb> implements ISystemWebService {
 	
 }

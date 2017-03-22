@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 /**
  * Author: Mr.x
@@ -50,7 +51,7 @@ public class MpGenerator {
         mpg.setDataSource(dsc);
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-//        strategy.setTablePrefix("t_");// 此处可以修改为您的表前缀
+        strategy.setTablePrefix("t_");// 此处可以修改为您的表前缀
         /**
          * nochange(默认),
          * underline_to_camel,(下划线转驼峰)
@@ -71,9 +72,9 @@ public class MpGenerator {
         // 自定义 service 父类
         // strategy.setSuperServiceClass("com.baomidou.demo.TestService");
         // 自定义 service 实现类父类
-        // strategy.setSuperServiceImplClass("com.baomidou.demo.TestServiceImpl");
+        strategy.setSuperServiceImplClass("cn.mrx.exam.service.support.BaseServiceImpl");
         // 自定义 controller 父类
-        // strategy.setSuperControllerClass("com.baomidou.demo.TestController");
+         strategy.setSuperControllerClass("cn.mrx.exam.controller.support.BaseController");
         // 【实体】是否生成字段常量（默认 false）
         // public static final String ID = "test_id";
         // strategy.setEntityColumnConstant(true);

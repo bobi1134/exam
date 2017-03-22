@@ -1,6 +1,6 @@
 package cn.mrx.exam.controller;
 
-import cn.mrx.exam.pojo.SystemServer;
+import cn.mrx.exam.controller.support.BaseController;
 import cn.mrx.exam.pojo.SystemWeb;
 import cn.mrx.exam.utils.CaptchaUtil;
 import cn.mrx.exam.utils.SystemMessUtil;
@@ -14,10 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Author: Mr.X
@@ -26,7 +22,7 @@ import java.util.Date;
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminController extends BaseController{
+public class AdminController extends BaseController {
 
     /**
      * 打开index.jsp

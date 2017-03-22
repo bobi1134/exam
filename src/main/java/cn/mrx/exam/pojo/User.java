@@ -14,7 +14,7 @@ import java.util.Date;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-19
+ * @since 2017-03-22
  */
 @TableName("t_user")
 public class User extends Model<User> {
