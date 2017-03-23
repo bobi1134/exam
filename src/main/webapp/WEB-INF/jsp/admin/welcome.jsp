@@ -8,8 +8,8 @@
 <body>
 <div class="page-container">
 	<p class="f-20 text-success">欢迎使用${systemWeb.title} <span class="f-14">${systemWeb.version}</span>！</p>
-	<p>登录次数：18 </p>
-	<p>上次登录IP：222.35.131.79.1  上次登录时间：2014-6-14 11:19:55</p>
+	<p>登录次数：${session_user.time} </p>
+	<p>上次登录IP：${session_user.lastLoginIp}  上次登录时间：<fmt:formatDate value="${session_user.lastLoginTime}" type="time" pattern="yyyy-MM-dd HH:mm:ss"/></p>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
 			<tr>

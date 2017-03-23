@@ -1,5 +1,6 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.utils.IPUtil;
 import cn.mrx.exam.utils.WebConstant;
 import cn.mrx.exam.controller.validation.UserLogin;
 import cn.mrx.exam.pojo.SystemWeb;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +43,7 @@ public class AdminController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = {"", "/index"}, method = RequestMethod.GET)
     public String admin(Model model){
         model.addAttribute("systemWeb", iSystemWebService.selectOne(new EntityWrapper<SystemWeb>().eq("category" ,2)));
         return "admin/index";
@@ -76,7 +78,7 @@ public class AdminController extends BaseController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public  Map<String, Object> login(@Validated(UserLogin.class) User user, BindingResult bindingResult, HttpSession httpSession) {
+    public  Map<String, Object> login(@Validated(UserLogin.class) User user, BindingResult bindingResult, HttpSession httpSession, HttpServletRequest httpServletRequest) {
         Map<String, Object> map = new HashMap<>();
         if (bindingResult.hasErrors()) {
             map.put("error", bindingResult.getAllErrors().get(0).getDefaultMessage());
@@ -90,7 +92,15 @@ public class AdminController extends BaseController {
             if (t_user == null){
                 map.put("error", "用户名或密码错误！");
             }else {
+                //加入session，这样就保证了在welcome.jsp取出的是上次登录ip和时间
                 httpSession.setAttribute(WebConstant.SESSION_USER, t_user);
+                //更新数据库
+                User u_user = new User();
+                u_user.setId(t_user.getId());
+                u_user.setTime(t_user.getTime()+1);
+                u_user.setLastLoginTime(new Date());
+                u_user.setLastLoginIp(IPUtil.getV4IP());
+                iUserService.updateById(u_user);
                 map.put("success", true);
             }
         }

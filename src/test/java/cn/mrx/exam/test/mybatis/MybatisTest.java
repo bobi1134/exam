@@ -1,6 +1,7 @@
 package cn.mrx.exam.test.mybatis;
 
 import cn.mrx.exam.pojo.SystemWeb;
+import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.service.ISystemWebService;
 import cn.mrx.exam.service.IUserService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -20,16 +21,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class MybatisTest {
 
     @Autowired
-    private IUserService userService;
+    private IUserService iUserService;
     @Autowired
     private ISystemWebService iSystemWebService;
 
     @Test
     public void load(){
-        EntityWrapper entityWrapper = new EntityWrapper<>();
-        entityWrapper.eq("category", 2);
-//        System.out.println(iSystemWebService.selectOne(entityWrapper));
-        System.out.println("======================>"+iSystemWebService.selectOne(new EntityWrapper<SystemWeb>().eq("category" ,2)));
+        User user = new User();
+        user.setId(1);
+        user.setUsername("admin");
+        iUserService.updateById(user);
     }
 
 }

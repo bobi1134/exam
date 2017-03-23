@@ -2,6 +2,7 @@ package cn.mrx.exam.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import cn.mrx.exam.controller.BaseController;
 
 /**
  * <p>
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-22
+ * @since 2017-03-23
  */
 @Controller
 @RequestMapping("/systemWeb")

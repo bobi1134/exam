@@ -12,6 +12,7 @@
 		<result column="time" property="time" />
 		<result column="last_login_ip" property="lastLoginIp" />
 		<result column="last_login_time" property="lastLoginTime" />
+		<result column="captcha" property="captcha" />
 	</resultMap>
 
 </mapper>

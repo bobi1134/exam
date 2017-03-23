@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-22
+ * @since 2017-03-23
  */
 @TableName("t_user")
 public class User extends Model<User> {
@@ -61,7 +60,9 @@ public class User extends Model<User> {
 	 */
 	@TableField(value="last_login_time")
 	private Date lastLoginTime;
-
+	/**
+	 * 用户登录验证码
+	 */
 	@NotEmpty(message="验证码不能为空！", groups = UserLogin.class)
 	private String captcha;
 
@@ -130,11 +131,6 @@ public class User extends Model<User> {
 		this.lastLoginTime = lastLoginTime;
 	}
 
-	@Override
-	protected Serializable pkVal() {
-		return this.id;
-	}
-
 	public String getCaptcha() {
 		return captcha;
 	}
@@ -142,4 +138,10 @@ public class User extends Model<User> {
 	public void setCaptcha(String captcha) {
 		this.captcha = captcha;
 	}
+
+	@Override
+	protected Serializable pkVal() {
+		return this.id;
+	}
+
 }
