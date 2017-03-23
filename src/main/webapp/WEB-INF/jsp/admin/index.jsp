@@ -7,7 +7,9 @@
 <body>
 <header class="navbar-wrapper">
     <div class="navbar navbar-fixed-top">
-        <div class="container-fluid cl"><a class="logo navbar-logo f-l mr-10 hidden-xs" href="${ctx}/admin">${systemWeb.title}</a>
+        <div class="container-fluid cl">
+            <a class="logo navbar-logo f-l mr-10 hidden-xs" href="${ctx}/admin">${systemWeb.title}</a>
+            <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="${ctx}/admin">Exam</a>
             <span class="logo navbar-slogan f-l mr-10 hidden-xs">${systemWeb.version}</span>
             <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
             <nav class="nav navbar-nav">
@@ -66,6 +68,14 @@
             <dd>
                 <ul>
                     <li><a data-href="member-list.html" data-title="会员列表" href="javascript:;">会员列表</a></li>
+                </ul>
+            </dd>
+        </dl>
+        <dl id="menu-article">
+            <dt><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li><a data-href="article-list.html" data-title="资讯管理" href="javascript:void(0)">资讯管理</a></li>
                 </ul>
             </dd>
         </dl>

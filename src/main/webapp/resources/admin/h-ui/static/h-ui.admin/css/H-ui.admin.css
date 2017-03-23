@@ -90,6 +90,7 @@ h4{line-height:30px}
 
 /*横向手机 竖向平板*/
 @media (max-width: 767px) {
+	.navbar-nav .dropDown{display: none}
 	.Hui-aside{ display:none;float:none; width:100%; height:auto; margin-top:0;padding-top:0;bottom:auto}
 	.big-page .Hui-aside{ left:0!important}
 		.menu_dropdown dt{line-height:44px}
