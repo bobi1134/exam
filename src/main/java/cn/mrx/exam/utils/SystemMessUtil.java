@@ -3,18 +3,13 @@ package cn.mrx.exam.utils;
 import cn.mrx.exam.pojo.SystemServer;
 import com.sun.management.OperatingSystemMXBean;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Author: Mr.X

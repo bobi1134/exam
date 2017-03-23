@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.mrx.exam</groupId>
-    <artifactId>pro-exam</artifactId>
+    <artifactId>exam</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>pro-exam Maven Webapp</name>
+    <name>exam Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <!--依赖-->
     <dependencies>
@@ -151,7 +151,7 @@
         <!-- other end -->
     </dependencies>
     <build>
-        <finalName>pro-exam</finalName>
+        <finalName>exam</finalName>
 
         <resources>
             <resource>
