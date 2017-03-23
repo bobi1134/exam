@@ -74,7 +74,7 @@ public class MpGenerator {
         // 自定义 service 实现类父类
         strategy.setSuperServiceImplClass("cn.mrx.exam.service.support.BaseServiceImpl");
         // 自定义 controller 父类
-         strategy.setSuperControllerClass("cn.mrx.exam.controller.support.BaseController");
+         strategy.setSuperControllerClass("cn.mrx.exam.controller.BaseController");
         // 【实体】是否生成字段常量（默认 false）
         // public static final String ID = "test_id";
         // strategy.setEntityColumnConstant(true);

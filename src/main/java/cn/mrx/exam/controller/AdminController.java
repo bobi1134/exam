@@ -1,13 +1,14 @@
 package cn.mrx.exam.controller;
 
-import cn.mrx.exam.common.WebConstant;
-import cn.mrx.exam.controller.support.BaseController;
+import cn.mrx.exam.utils.WebConstant;
 import cn.mrx.exam.controller.validation.UserLogin;
 import cn.mrx.exam.pojo.SystemWeb;
 import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.CaptchaUtil;
 import cn.mrx.exam.utils.SystemMessUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +21,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +33,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class AdminController extends BaseController {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 打开index.jsp
@@ -76,7 +78,6 @@ public class AdminController extends BaseController {
     @ResponseBody
     public  Map<String, Object> login(@Validated(UserLogin.class) User user, BindingResult bindingResult, HttpSession httpSession) {
         Map<String, Object> map = new HashMap<>();
-        System.out.println("------------>"+httpSession.getAttribute(WebConstant.SESSION_CAPTCHA));
         if (bindingResult.hasErrors()) {
             map.put("error", bindingResult.getAllErrors().get(0).getDefaultMessage());
         }else if (!user.getCaptcha().equalsIgnoreCase((String) httpSession.getAttribute(WebConstant.SESSION_CAPTCHA))){

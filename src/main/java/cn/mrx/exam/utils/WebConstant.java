@@ -1,4 +1,4 @@
-package cn.mrx.exam.common;
+package cn.mrx.exam.utils;
 
 /**
  * @version 1.0
