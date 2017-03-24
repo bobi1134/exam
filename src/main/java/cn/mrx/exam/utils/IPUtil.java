@@ -14,21 +14,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @ClassName: AAA
+ * @ClassName: IPUtil
  * @Author: Mr.X
  * @Date: 2017/3/23 20:33
  * @Description: 获取远程客户端IP地址工具类
  * @Version 1.0
  */
-public class AAA {
+public class IPUtil {
 
     /**
      * 获取远程客户端IP地址
-     * @param request
+     * @param httpServletRequest
      * @return
      */
-	public static String getIp(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
+	public static String getIp(HttpServletRequest httpServletRequest) {
+        String ip = httpServletRequest.getHeader("X-Forwarded-For");
         if(StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
             //多次反向代理后会有多个ip值，第一个ip才是真实ip
             int index = ip.indexOf(",");
@@ -38,11 +38,11 @@ public class AAA {
                 return ip;
             }
         }
-        ip = request.getHeader("X-Real-IP");
+        ip = httpServletRequest.getHeader("X-Real-IP");
         if(StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
             return ip;
         }
-        return request.getRemoteAddr();
+        return httpServletRequest.getRemoteAddr();
     }
 
     /**

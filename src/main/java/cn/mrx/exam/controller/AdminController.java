@@ -96,7 +96,7 @@ public class AdminController extends BaseController {
                 u_user.setId(t_user.getId());
                 u_user.setTime(t_user.getTime()+1);
                 u_user.setLastLoginTime(new Date());
-                u_user.setLastLoginIp(AAA.getV4IP());
+                u_user.setLastLoginIp(IPUtil.getV4IP());
                 iUserService.updateById(u_user);
                 //记住我
                 if (online!=null && online.equals("true")){

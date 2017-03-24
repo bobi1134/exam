@@ -6,6 +6,8 @@ import cn.mrx.exam.utils.CookieUtil;
 import cn.mrx.exam.utils.EncryptAndDecryptUtil;
 import cn.mrx.exam.utils.WebConstant;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,6 +27,8 @@ import javax.servlet.http.HttpSession;
  */
 public class UserLoginInterceptor extends HandlerInterceptorAdapter {
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private IUserService iUserService;
 
@@ -38,9 +42,11 @@ public class UserLoginInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object arg2) throws Exception {
+        logger.info("登录拦截中。。。");
         HttpSession httpSession = httpServletRequest.getSession();
         User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
         if (user != null) {
+            logger.info("session已存在，用户已经登录，正在跳转到后台管理界面。。。");
             return true;
         }else{
             Cookie cookie = CookieUtil.getCookie(httpServletRequest, WebConstant.User_LOGIN_COOKIE);
@@ -61,6 +67,7 @@ public class UserLoginInterceptor extends HandlerInterceptorAdapter {
                     }
                 }
             }
+            logger.info("user_login_cookie不存在。。。");
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/admin/login");
             return false;
         }

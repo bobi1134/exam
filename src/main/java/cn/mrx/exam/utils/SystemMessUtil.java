@@ -61,7 +61,7 @@ public class SystemMessUtil {
             SystemServer systemMess = new SystemServer();
             systemMess.setHostName(InetAddress.getLocalHost().getHostName().toString());//服务器计算机名
             systemMess.setLocal_ip(InetAddress.getLocalHost().getHostAddress().toString());//服务器局域网IP地址
-            systemMess.setV4_ip(AAA.getV4IP());////服务器广域网IP地址
+            systemMess.setV4_ip(IPUtil.getV4IP());////服务器广域网IP地址
             systemMess.setUser_dir(System.getProperty("user.dir"));//用户当前目录
             systemMess.setOs_name(System.getProperty("os.name"));//服务器系统的名称，Windows 10
             systemMess.setOs_version(System.getProperty("os.version"));//服务器的版本
