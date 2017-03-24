@@ -120,4 +120,18 @@ public class AdminController extends BaseController {
     public void captcha(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         CaptchaUtil.outputCaptcha(request, response);
     }
+
+    /**
+     * 用户退出
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param httpSession
+     * @return
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, HttpSession httpSession){
+        httpSession.invalidate();
+        CookieUtil.removeCookie(httpServletRequest, httpServletResponse, WebConstant.User_LOGIN_COOKIE);
+        return "redirect:/admin/login";
+    }
 }
