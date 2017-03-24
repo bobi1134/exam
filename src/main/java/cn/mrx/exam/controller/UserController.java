@@ -1,6 +1,7 @@
 package cn.mrx.exam.controller;
 
 import cn.mrx.exam.pojo.User;
+import cn.mrx.exam.utils.BSGridPage;
 import cn.mrx.exam.utils.QueryFilter;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -37,21 +38,17 @@ public class UserController extends BaseController {
         return "admin/user/member-list";
     }
 
+    /**
+     * 针对BSGrid表格的封装操作
+     * @param bsGridPage
+     * @param httpServletRequest
+     * @return
+     */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Map<String, Object> list(Integer curPage, Integer pageSize,
-//                                    String sortName, String sortOrder,
-                                    HttpServletRequest httpServletRequest){
-        Map<String, Object> map = new HashMap<>();
-
-        Page<User> userPage = iUserService.selectPage(new Page<User>(curPage, pageSize), QueryFilter.getInstance(httpServletRequest).buildEntityWrapper());
-        List<User> users = userPage.getRecords();
-        map.put("curPage", curPage);
-        map.put("pageSize", pageSize);
-        map.put("totalRows", userPage.getTotal());
-        map.put("data", users);
-        map.put("success", true);
-        return map;
+    public Object list(BSGridPage<User> bsGridPage, HttpServletRequest httpServletRequest){
+        Page<User> userPage = iUserService.selectPage(bsGridPage.getPage(), QueryFilter.getInstance(httpServletRequest).buildEntityWrapper());
+        return bsGridPage.parsePage(userPage);
     }
 
 }
