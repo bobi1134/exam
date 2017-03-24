@@ -14,13 +14,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @ClassName: IPUtil
+ * @ClassName: AAA
  * @Author: Mr.X
  * @Date: 2017/3/23 20:33
  * @Description: 获取远程客户端IP地址工具类
  * @Version 1.0
  */
-public class IPUtil {
+public class AAA {
 
     /**
      * 获取远程客户端IP地址

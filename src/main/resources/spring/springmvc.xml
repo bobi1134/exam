@@ -22,4 +22,14 @@
     <!-- 静态资源 -->
     <mvc:resources location="/resources/" mapping="/resources/**"/>
 
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <!-- 用户登陆拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**"/>
+            <mvc:exclude-mapping path="/admin/login"/>
+            <mvc:exclude-mapping path="/admin/captcha"/>
+            <bean class="cn.mrx.exam.interceptor.UserLoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

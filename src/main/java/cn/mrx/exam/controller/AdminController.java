@@ -1,12 +1,9 @@
 package cn.mrx.exam.controller;
 
-import cn.mrx.exam.utils.IPUtil;
-import cn.mrx.exam.utils.WebConstant;
+import cn.mrx.exam.utils.*;
 import cn.mrx.exam.controller.validation.UserLogin;
 import cn.mrx.exam.pojo.SystemWeb;
 import cn.mrx.exam.pojo.User;
-import cn.mrx.exam.utils.CaptchaUtil;
-import cn.mrx.exam.utils.SystemMessUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +75,7 @@ public class AdminController extends BaseController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public  Map<String, Object> login(@Validated(UserLogin.class) User user, BindingResult bindingResult, HttpSession httpSession, HttpServletRequest httpServletRequest) {
+    public  Map<String, Object> login(@Validated(UserLogin.class) User user, BindingResult bindingResult, HttpSession httpSession, HttpServletRequest httpServletRequest, String online, HttpServletResponse httpServletResponse) {
         Map<String, Object> map = new HashMap<>();
         if (bindingResult.hasErrors()) {
             map.put("error", bindingResult.getAllErrors().get(0).getDefaultMessage());
@@ -99,8 +96,13 @@ public class AdminController extends BaseController {
                 u_user.setId(t_user.getId());
                 u_user.setTime(t_user.getTime()+1);
                 u_user.setLastLoginTime(new Date());
-                u_user.setLastLoginIp(IPUtil.getV4IP());
+                u_user.setLastLoginIp(AAA.getV4IP());
                 iUserService.updateById(u_user);
+                //记住我
+                if (online!=null && online.equals("true")){
+                    String cookieValue = EncryptAndDecryptUtil.base64Encrypt(t_user.getUsername()+":"+t_user.getPwd());
+                    CookieUtil.addCookie(httpServletRequest, httpServletResponse, WebConstant.User_LOGIN_COOKIE, cookieValue, WebConstant.COOKIE_MAX_AGE);
+                }
                 map.put("success", true);
             }
         }
