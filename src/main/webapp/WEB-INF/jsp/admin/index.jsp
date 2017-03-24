@@ -67,7 +67,7 @@
             <dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="member-list.html" data-title="会员列表" href="javascript:;">会员列表</a></li>
+                    <li><a data-href="${ctx}/admin/user" data-title="会员列表" href="javascript:;">会员列表</a></li>
                 </ul>
             </dd>
         </dl>
@@ -111,9 +111,13 @@
         <li id="closeall">关闭全部</li>
     </ul>
 </div>
+
+<!--_footer 作为公共模版分离出去-->
 <%@ include file="jspf/footer.jspf" %>
+<!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="${ctx}/resources/admin/plug-in/sweetalert/sweetalert.min.js"></script>
 <script type="text/javascript">
     /*个人信息*/
     function myselfinfo() {
