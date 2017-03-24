@@ -42,11 +42,11 @@ public class UserLoginInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object arg2) throws Exception {
-        logger.info("登录拦截中。。。");
+        logger.info("登录过滤中...");
         HttpSession httpSession = httpServletRequest.getSession();
         User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
         if (user != null) {
-            logger.info("session已存在，用户已经登录，正在跳转到后台管理界面。。。");
+            logger.info("用户Session已存在，用户已经登录，正在跳转到后台管理界面！");
             return true;
         }else{
             Cookie cookie = CookieUtil.getCookie(httpServletRequest, WebConstant.User_LOGIN_COOKIE);
@@ -67,7 +67,7 @@ public class UserLoginInterceptor extends HandlerInterceptorAdapter {
                     }
                 }
             }
-            logger.info("user_login_cookie不存在。。。");
+            logger.info("用户Session和Cookie不存在，正在跳往登录界面！");
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/admin/login");
             return false;
         }
