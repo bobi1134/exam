@@ -1,6 +1,6 @@
 package cn.mrx.exam.mapper;
 
-import cn.mrx.exam.pojo.User;
+import cn.mrx.exam.pojo.Role;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author Mr.X
  * @since 2017-03-25
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface RoleMapper extends BaseMapper<Role> {
 
 }

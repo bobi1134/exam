@@ -1,6 +1,6 @@
 package cn.mrx.exam.service;
 
-import cn.mrx.exam.pojo.User;
+import cn.mrx.exam.pojo.Role;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author Mr.X
  * @since 2017-03-25
  */
-public interface IUserService extends IService<User> {
+public interface IRoleService extends IService<Role> {
 	
 }

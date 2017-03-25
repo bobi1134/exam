@@ -13,7 +13,7 @@ import cn.mrx.exam.controller.BaseController;
  * @since 2017-03-25
  */
 @Controller
-@RequestMapping("/systemWeb")
-public class SystemWebController extends BaseController {
+@RequestMapping("/permission")
+public class PermissionController extends BaseController {
 	
 }

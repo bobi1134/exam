@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-23
+ * @since 2017-03-25
  */
 public interface SystemWebMapper extends BaseMapper<SystemWeb> {
 

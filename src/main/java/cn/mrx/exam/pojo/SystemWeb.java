@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-23
+ * @since 2017-03-25
  */
 @TableName("t_system_web")
 public class SystemWeb extends Model<SystemWeb> {

@@ -54,7 +54,7 @@ public class QueryFilter {
         //步骤1，解析传过来的request：parseRequest()
         List<ParamEntity> paramEntities = parseRequest();
         for (ParamEntity paramEntity : paramEntities) {
-            logger.info("paramEntity:["+paramEntity.getName()+","+paramEntity.getValue()+"]");
+            logger.info("[url="+request.getRequestURI()+",paramEntityName="+paramEntity.getName()+",paramEntityValue="+paramEntity.getValue()+"]\n");
             entityWrapper.addFilter(paramEntity.getName(), paramEntity.getValue());
         }
         return entityWrapper;
@@ -81,7 +81,7 @@ public class QueryFilter {
      * @param paramValue
      */
     private void addFilter(String paramName, String paramValue) {
-        logger.info("查询参数："+paramName);
+        logger.info("[url="+request.getRequestURI()+",paramName="+paramName+"]\n");
         if (!paramName.startsWith("QUERY-") || !(paramValue.length() > 0)) {
             return;
         }

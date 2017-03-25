@@ -1,8 +1,8 @@
 package cn.mrx.exam.service.impl;
 
-import cn.mrx.exam.pojo.User;
-import cn.mrx.exam.mapper.UserMapper;
-import cn.mrx.exam.service.IUserService;
+import cn.mrx.exam.pojo.Role;
+import cn.mrx.exam.mapper.RoleMapper;
+import cn.mrx.exam.service.IRoleService;
 import cn.mrx.exam.service.support.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2017-03-25
  */
 @Service
-public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements IUserService {
+public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implements IRoleService {
 	
 }
