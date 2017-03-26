@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-25
+ * @since 2017-03-26
  */
 @TableName("t_permission")
 public class Permission extends Model<Permission> {
@@ -33,6 +33,16 @@ public class Permission extends Model<Permission> {
 	 */
 	@TableField(value="permission_name")
 	private String permissionName;
+	/**
+	 * 现在id，1:父级菜单,2:二级菜单,3:普通菜单
+	 */
+	@TableField(value="now_id")
+	private Integer nowId;
+	/**
+	 * 父菜单id，1:父级菜单,2:二级菜单,3:普通菜单
+	 */
+	@TableField(value="parent_id")
+	private Integer parentId;
 
 
 	public Integer getId() {
@@ -57,6 +67,22 @@ public class Permission extends Model<Permission> {
 
 	public void setPermissionName(String permissionName) {
 		this.permissionName = permissionName;
+	}
+
+	public Integer getNowId() {
+		return nowId;
+	}
+
+	public void setNowId(Integer nowId) {
+		this.nowId = nowId;
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 
 	@Override

@@ -1,9 +1,11 @@
 package cn.mrx.exam.pojo;
 
+import cn.mrx.exam.controller.validation.UserLogin;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-25
+ * @since 2017-03-26
  */
 @TableName("t_user")
 public class User extends Model<User> {
@@ -28,10 +30,12 @@ public class User extends Model<User> {
 	/**
 	 * 用户名
 	 */
+	@NotEmpty(message="用户名不能为空！", groups = UserLogin.class)
 	private String username;
 	/**
 	 * 密码
 	 */
+	@NotEmpty(message="密码不能为空！", groups = UserLogin.class)
 	private String pwd;
 	/**
 	 * 邮箱
@@ -59,6 +63,7 @@ public class User extends Model<User> {
 	/**
 	 * 用户登录验证码
 	 */
+	@NotEmpty(message="验证码不能为空！", groups = UserLogin.class)
 	private String captcha;
 	/**
 	 * 所属角色id

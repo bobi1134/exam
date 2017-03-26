@@ -51,9 +51,6 @@ public class AnnotationInterceptor extends HandlerInterceptorAdapter {
             Role role = iRoleService.selectOne(new EntityWrapper<Role>().eq("id", user.getRoleId()));
             String[] permissionIds = role.getPermissionIds().split(",");
             for (String permissionId : permissionIds){
-                System.out.println("----------------");
-                System.out.println(permissionId);
-                System.out.println("----------------");
                 Permission permission = iPermissionService.selectById(permissionId);
                 if (permission != null){
                     if (uri.equals(permission.getUri())){
@@ -66,6 +63,7 @@ public class AnnotationInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
         logger.info("[uri="+uri+",method="+methodHandler.getMethod().getName()+"]无权限访问！\n");
+        httpServletResponse.sendRedirect("/admin");
         return false;
     }
 }

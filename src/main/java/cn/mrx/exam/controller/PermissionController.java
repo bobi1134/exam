@@ -10,7 +10,7 @@ import cn.mrx.exam.controller.BaseController;
  * </p>
  *
  * @author Mr.X
- * @since 2017-03-25
+ * @since 2017-03-26
  */
 @Controller
 @RequestMapping("/permission")

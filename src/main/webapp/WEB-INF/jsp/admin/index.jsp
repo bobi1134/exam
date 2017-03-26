@@ -1,4 +1,5 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="jspf/taglib.jspf" %>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -63,22 +64,33 @@
 <aside class="Hui-aside">
     <input runat="server" id="divScrollValue" type="hidden" value=""/>
     <div class="menu_dropdown bk_2">
-        <dl id="menu-member">
-            <dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a data-href="${ctx}/admin/user" data-title="会员列表" href="javascript:;">会员列表</a></li>
-                </ul>
-            </dd>
-        </dl>
-        <dl id="menu-article">
-            <dt><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a data-href="article-list.html" data-title="资讯管理" href="javascript:void(0)">资讯管理</a></li>
-                </ul>
-            </dd>
-        </dl>
+
+        <c:set var="parentIds" value="${parentIds}"/>
+        <c:if test="${fn:contains(parentIds, '1')}">
+            <dl id="menu-member">
+                <dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dd>
+                    <ul>
+                        <c:forEach items="${permissions}" var="c" >
+                            <c:choose>
+                                <c:when test="${c.parentId==1 and c.nowId==2}">
+                                    <li><a data-href="${c.uri}/admin/user" data-title="${c.permissionName}" href="javascript:;">${c.permissionName}</a></li>
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
+                    </ul>
+                </dd>
+            </dl>
+        </c:if>
+
+        <%--<dl id="menu-article">--%>
+            <%--<dt><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>--%>
+            <%--<dd>--%>
+                <%--<ul>--%>
+                    <%--<li><a data-href="article-list.html" data-title="资讯管理" href="javascript:void(0)">资讯管理</a></li>--%>
+                <%--</ul>--%>
+            <%--</dd>--%>
+        <%--</dl>--%>
     </div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a>
@@ -119,6 +131,7 @@
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="${ctx}/resources/admin/plug-in/sweetalert/sweetalert.min.js"></script>
 <script type="text/javascript">
+
     /*个人信息*/
     function myselfinfo() {
         layer.open({

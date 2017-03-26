@@ -1,5 +1,7 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.pojo.Permission;
+import cn.mrx.exam.pojo.Role;
 import cn.mrx.exam.utils.*;
 import cn.mrx.exam.controller.validation.UserLogin;
 import cn.mrx.exam.pojo.SystemWeb;
@@ -20,9 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Author: Mr.X
@@ -41,7 +41,23 @@ public class AdminController extends BaseController {
      * @return
      */
     @RequestMapping(value = {"", "/index"}, method = RequestMethod.GET)
-    public String admin(Model model){
+    public String admin(Model model, HttpServletRequest httpServletRequest){
+        //权限查询
+        HttpSession httpSession = httpServletRequest.getSession();
+        User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
+        Role role = iRoleService.selectById(user.getRoleId());
+        String[] permissionIds = role.getPermissionIds().split(",");
+        List<Permission> permissions = new ArrayList<>();
+        List<Integer> parentIds = new ArrayList<>();
+        for (String permissionId : permissionIds){
+            Permission permission = iPermissionService.selectById(permissionId);
+            if (permission != null){
+                parentIds.add(permission.getParentId());
+                permissions.add(permission);
+            }
+        }
+        model.addAttribute("permissions", permissions);
+        model.addAttribute("parentIds", parentIds);
         model.addAttribute("systemWeb", iSystemWebService.selectOne(new EntityWrapper<SystemWeb>().eq("category" ,2)));
         return "admin/index";
     }
@@ -77,9 +93,10 @@ public class AdminController extends BaseController {
     @ResponseBody
     public  Map<String, Object> login(@Validated(UserLogin.class) User user, BindingResult bindingResult, HttpSession httpSession, HttpServletRequest httpServletRequest, String online, HttpServletResponse httpServletResponse) {
         Map<String, Object> map = new HashMap<>();
+        String sessionCaptcha = (String) httpSession.getAttribute(WebConstant.SESSION_CAPTCHA);
         if (bindingResult.hasErrors()) {
             map.put("error", bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }else if (!user.getCaptcha().equalsIgnoreCase((String) httpSession.getAttribute(WebConstant.SESSION_CAPTCHA))){
+        }else if (!user.getCaptcha().equalsIgnoreCase(sessionCaptcha)){
             map.put("error", "验证码不正确！");
         }else {
             EntityWrapper entityWrapper = new EntityWrapper();
@@ -97,6 +114,7 @@ public class AdminController extends BaseController {
                 u_user.setTime(t_user.getTime()+1);
                 u_user.setLastLoginTime(new Date());
                 u_user.setLastLoginIp(IPUtil.getV4IP());
+                u_user.setCaptcha(sessionCaptcha);
                 iUserService.updateById(u_user);
                 //记住我
                 if (online!=null && online.equals("true")){

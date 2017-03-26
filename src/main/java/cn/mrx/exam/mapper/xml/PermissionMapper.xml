@@ -7,6 +7,8 @@
 		<id column="id" property="id" />
 		<result column="uri" property="uri" />
 		<result column="permission_name" property="permissionName" />
+		<result column="now_id" property="nowId" />
+		<result column="parent_id" property="parentId" />
 	</resultMap>
 
 </mapper>

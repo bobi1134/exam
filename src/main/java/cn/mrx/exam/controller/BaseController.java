@@ -1,5 +1,7 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.service.IPermissionService;
+import cn.mrx.exam.service.IRoleService;
 import cn.mrx.exam.service.ISystemWebService;
 import cn.mrx.exam.service.IUserService;
 import org.slf4j.Logger;
@@ -24,4 +26,9 @@ public class BaseController{
     @Autowired
     protected IUserService iUserService;
 
+    @Autowired
+    protected IRoleService iRoleService;
+
+    @Autowired
+    protected IPermissionService iPermissionService;
 }
