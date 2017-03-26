@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Mr.X
  * @since 2017-03-26
  */
+@Controller
 @RequestMapping("/admin/user")
 public class UserController extends BaseController {
 

@@ -74,7 +74,7 @@
                         <c:forEach items="${permissions}" var="c" >
                             <c:choose>
                                 <c:when test="${c.parentId==1 and c.nowId==2}">
-                                    <li><a data-href="${c.uri}/admin/user" data-title="${c.permissionName}" href="javascript:;">${c.permissionName}</a></li>
+                                    <li><a data-href="${ctx}${c.uri}" data-title="${c.permissionName}" href="javascript:;">${c.permissionName}</a></li>
                                 </c:when>
                             </c:choose>
                         </c:forEach>
@@ -83,14 +83,23 @@
             </dl>
         </c:if>
 
-        <%--<dl id="menu-article">--%>
-            <%--<dt><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>--%>
-            <%--<dd>--%>
-                <%--<ul>--%>
-                    <%--<li><a data-href="article-list.html" data-title="资讯管理" href="javascript:void(0)">资讯管理</a></li>--%>
-                <%--</ul>--%>
-            <%--</dd>--%>
-        <%--</dl>--%>
+        <c:if test="${fn:contains(parentIds, '2')}">
+            <dl id="menu-role">
+                <dt><i class="Hui-iconfont">&#xe705;</i> 角色管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dd>
+                    <ul>
+                        <c:forEach items="${permissions}" var="c" >
+                            <c:choose>
+                                <c:when test="${c.parentId==2 and c.nowId==2}">
+                                    <li><a data-href="${ctx}${c.uri}" data-title="${c.permissionName}" href="javascript:;">${c.permissionName}</a></li>
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
+                    </ul>
+                </dd>
+            </dl>
+        </c:if>
+
     </div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a>
