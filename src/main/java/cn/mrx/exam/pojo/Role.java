@@ -35,6 +35,12 @@ public class Role extends Model<Role> {
 	@TableField(value="permission_ids")
 	private String permissionIds;
 
+	/**
+	 * 角色描述
+	 */
+	@TableField(value="description")
+	private String description;
+
 
 	public Integer getId() {
 		return id;
@@ -58,6 +64,14 @@ public class Role extends Model<Role> {
 
 	public void setPermissionIds(String permissionIds) {
 		this.permissionIds = permissionIds;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

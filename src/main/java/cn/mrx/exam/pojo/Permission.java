@@ -44,6 +44,11 @@ public class Permission extends Model<Permission> {
 	@TableField(value="parent_id")
 	private Integer parentId;
 
+	/**
+	 * 选中已有的权限
+	 */
+	private boolean flag;
+
 
 	public Integer getId() {
 		return id;
@@ -85,9 +90,29 @@ public class Permission extends Model<Permission> {
 		this.parentId = parentId;
 	}
 
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+
 	@Override
+
 	protected Serializable pkVal() {
 		return this.id;
 	}
 
+	@Override
+	public String toString() {
+		return "Permission{" +
+				"id=" + id +
+				", uri='" + uri + '\'' +
+				", permissionName='" + permissionName + '\'' +
+				", nowId=" + nowId +
+				", parentId=" + parentId +
+				", flag=" + flag +
+				'}';
+	}
 }

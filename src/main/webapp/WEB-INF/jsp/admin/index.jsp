@@ -85,7 +85,7 @@
 
         <c:if test="${fn:contains(parentIds, '2')}">
             <dl id="menu-role">
-                <dt><i class="Hui-iconfont">&#xe705;</i> 角色管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dt><i class="Hui-iconfont">&#xe705;</i> 角色权限管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
                 <dd>
                     <ul>
                         <c:forEach items="${permissions}" var="c" >
