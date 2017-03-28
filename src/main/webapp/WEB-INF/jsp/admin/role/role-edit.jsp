@@ -54,12 +54,11 @@
 
 
 
-				<%--角色管理--%>
+				<%--角色权限管理--%>
 				<c:if test="${fn:contains(parentIds, '2')}">
-					<%--会员管理--%>
 					<dl class="permission-list">
 						<dt>
-							<label>角色管理</label>
+							<label>角色权限管理</label>
 						</dt>
 						<dd>
 							<dl class="cl permission-list2">

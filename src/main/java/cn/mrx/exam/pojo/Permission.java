@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
+import java.beans.Transient;
 import java.io.Serializable;
 
 /**
@@ -45,8 +46,9 @@ public class Permission extends Model<Permission> {
 	private Integer parentId;
 
 	/**
-	 * 选中已有的权限
+	 * 新增：选中已有的权限，不映射数据库
 	 */
+	@TableField(exist = false)
 	private boolean flag;
 
 
