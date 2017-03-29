@@ -81,13 +81,7 @@ public class PermissionController extends BaseController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public Object edit(Permission permission){
-        Map<String,Object> map = new HashMap<>();
-        boolean result = iPermissionService.updateById(permission);
-        if (result == true)
-            map.put("status", true);
-        else
-            map.put("status", false);
-        return map;
+        return iPermissionService.updateById(permission);
     }
 
     /**
@@ -121,14 +115,14 @@ public class PermissionController extends BaseController {
         return "admin/permission/permission-add";
     }
 
+    /**
+     * 添加权限
+     * @param permission
+     * @return
+     */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Object add(Permission permission){
-        Map<String,Object> map = new HashMap<>();
-        Boolean result = iPermissionService.insert(permission);
-        if (result){
-            map.put("status", true);
-        }
-        return map;
+        return iPermissionService.insert(permission);
     }
 }

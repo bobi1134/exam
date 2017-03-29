@@ -104,7 +104,7 @@ $(function(){
 				dataType:"json",
 				data : $("#form-permission-edit").serialize(),
 				success:function (json) {
-					if(json.status == true){
+					if(json == true){
 						layer.msg('修改成功!',{icon:1,time:1000}, function () {
 							window.parent.location.reload(); //刷新父页面
 							var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
