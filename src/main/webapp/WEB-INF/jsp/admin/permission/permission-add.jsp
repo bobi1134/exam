@@ -7,18 +7,18 @@
 </head>
 <body>
 <article class="page-container">
-	<form method="post" class="form form-horizontal" id="form-permission-edit">
+	<form method="post" class="form form-horizontal" id="form-permission-add">
 		<input type="hidden" value="${permission.id}" name="id"/>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>URI：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="${permission.uri}" placeholder="uri" id="uri" name="uri">
+				<input type="text" class="input-text"  placeholder="uri" id="uri" name="uri">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="${permission.permissionName}" placeholder="权限名称" id="permissionName" name="permissionName">
+				<input type="text" class="input-text" placeholder="权限名称" id="permissionName" name="permissionName">
 			</div>
 		</div>
 		<div class="row cl">
@@ -26,16 +26,8 @@
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
 					<select class="select" size="1" name="nowId">
-						<c:choose>
-							<c:when test="${permission.nowId==2}">
-								<option value="2" selected>二级菜单</option>
-								<option value="3">三级菜单</option>
-							</c:when>
-							<c:when test="${permission.nowId==3}">
-								<option value="2">二级菜单</option>
-								<option value="3" selected>三级菜单</option>
-							</c:when>
-						</c:choose>
+						<option value="2">二级菜单</option>
+						<option value="3">三级菜单</option>
 					</select>
 				</span>
 			</div>
@@ -45,16 +37,8 @@
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
 					<select class="select" size="1" name="parentId">
-						<c:choose>
-							<c:when test="${permission.parentId==1}">
-								<option value="1" selected>会员管理</option>
-								<option value="2">角色权限管理</option>
-							</c:when>
-							<c:when test="${permission.parentId==2}">
-								<option value="1">会员管理</option>
-								<option value="2" selected>角色权限管理</option>
-							</c:when>
-						</c:choose>
+						<option value="1">会员管理</option>
+						<option value="2">角色权限管理</option>
 					</select>
 				</span>
 			</div>
@@ -83,7 +67,7 @@ $(function(){
 		increaseArea: '20%'
 	});
 
-	$("#form-permission-edit").validate({
+	$("#form-permission-add").validate({
 		rules:{
 			uri:{
 				required:true,
@@ -99,19 +83,20 @@ $(function(){
 		success:"valid",
 		submitHandler:function(form){
 			$(form).ajaxSubmit({
-				url:"${ctx}/admin/permission/edit",
+				url:"${ctx}/admin/permission/add",
 				type:"post",
 				dataType:"json",
-				data : $("#form-permission-edit").serialize(),
+				data : $("#form-permission-add").serialize(),
 				success:function (json) {
 					if(json.status == true){
-						layer.msg('修改成功!',{icon:1,time:1000}, function () {
+						layer.msg('添加成功!',{icon:1,time:1000}, function () {
 							window.parent.location.reload(); //刷新父页面
 							var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 							parent.layer.close(index);  // 关闭layer
+
 						});
 					}else{
-						layer.msg('修改失败！',{icon:5,time:1000});
+						layer.msg('添加失败！',{icon:5,time:1000});
 					}
 
 				},

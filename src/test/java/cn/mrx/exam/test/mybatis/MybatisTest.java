@@ -1,6 +1,7 @@
 package cn.mrx.exam.test.mybatis;
 
 import cn.mrx.exam.interceptor.PermissionCheck;
+import cn.mrx.exam.pojo.Permission;
 import cn.mrx.exam.service.IPermissionService;
 import cn.mrx.exam.service.ISystemWebService;
 import cn.mrx.exam.service.IUserService;
@@ -27,9 +28,13 @@ public class MybatisTest {
     private IPermissionService iPermissionService;
 
     @Test
-    public void load(){
-        PermissionCheck permission = (PermissionCheck)iPermissionService.selectById("3");
-        System.out.println(permission);
+    public void xxxxxxxxxxx(){
+        Permission p = new Permission();
+//        p.setId(10);
+        p.setUri("xxxx");
+        System.out.println("----------------------------");
+        System.out.println(iPermissionService.insert(p));
+        System.out.println("----------------------------");
 
     }
 

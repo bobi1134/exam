@@ -4,6 +4,7 @@ import cn.mrx.exam.pojo.Permission;
 import cn.mrx.exam.mapper.PermissionMapper;
 import cn.mrx.exam.service.IPermissionService;
 import cn.mrx.exam.service.support.BaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +17,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PermissionServiceImpl extends BaseServiceImpl<PermissionMapper, Permission> implements IPermissionService {
-	
+
 }

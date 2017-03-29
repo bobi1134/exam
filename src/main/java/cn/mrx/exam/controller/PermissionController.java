@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,6 +73,11 @@ public class PermissionController extends BaseController {
         return "admin/permission/permission-edit";
     }
 
+    /**
+     * 编辑权限
+     * @param permission
+     * @return
+     */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public Object edit(Permission permission){
@@ -83,4 +90,45 @@ public class PermissionController extends BaseController {
         return map;
     }
 
+    /**
+     * 批量删除权限
+     * @param ids
+     * @return
+     */
+    @RequestMapping(value = "/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Object del(String ids){
+        String[]  strs = ids.split(",");
+        List<String> lists = new ArrayList<>();
+        for (String str : strs) {
+            if(!str.equals("")){
+                lists.add(str);
+            }
+        }
+        if (lists.size() < 1){
+            return "null";
+        }else{
+            return iPermissionService.deleteBatchIds(lists);
+        }
+    }
+
+    /**
+     * 打开permission-add.jsp
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add(){
+        return "admin/permission/permission-add";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseBody
+    public Object add(Permission permission){
+        Map<String,Object> map = new HashMap<>();
+        Boolean result = iPermissionService.insert(permission);
+        if (result){
+            map.put("status", true);
+        }
+        return map;
+    }
 }

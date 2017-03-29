@@ -1,7 +1,9 @@
 package cn.mrx.exam.service.support;
 
+import cn.mrx.exam.mapper.PermissionMapper;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @version 1.0

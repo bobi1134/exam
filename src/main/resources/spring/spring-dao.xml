@@ -21,13 +21,13 @@
 		<property name="minIdle" value="0"/>
 		<property name="maxWait" value="60000"/>
 	</bean>
-	
+
 	<!-- sqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
 		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
-	
+
 	<!-- dao扫描-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="cn.mrx.exam.mapper"/>

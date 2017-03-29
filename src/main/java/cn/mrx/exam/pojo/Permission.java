@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 
 import java.beans.Transient;
 import java.io.Serializable;
@@ -24,6 +25,7 @@ public class Permission extends Model<Permission> {
 	/**
 	 * 主键id
 	 */
+	@TableId(type = IdType.AUTO)
 	private Integer id;
 	/**
 	 * 权限uri

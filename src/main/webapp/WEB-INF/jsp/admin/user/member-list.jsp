@@ -36,6 +36,7 @@
 				<th w_index="time">登录次数</th>
 				<th w_index="lastLoginIp">上次登录ip</th>
 				<th w_index="lastLoginTime" w_render="fmtLastLoginTime">上次登录时间</th>
+				<th w_index="roleId" w_render="roleIdFn">角色</th>
 			</tr>
 		</table>
 	</div>
@@ -75,44 +76,65 @@ $(function(){
 
 });
 
-//格式化上次登录时间
-function fmtLastLoginTime(row) {
-	var lastLoginTime = row.lastLoginTime;
-	return (new Date(lastLoginTime)).Format("yyyy-MM-dd hh:mm:ss");
-}
-
-/**
- * 格式化日期函数
- * @param fmt
- * @returns {*}
- * @constructor
- */
-Date.prototype.Format = function(fmt) { //author: meizz
-	var o = {
-		"M+": this.getMonth() + 1,
-		//月份
-		"d+": this.getDate(),
-		//日
-		"h+": this.getHours(),
-		//小时
-		"m+": this.getMinutes(),
-		//分
-		"s+": this.getSeconds(),
-		//秒
-		"q+": Math.floor((this.getMonth() + 3) / 3),
-		//季度
-		"S": this.getMilliseconds() //毫秒
-	};
-	if (/(y+)/.test(fmt)) {
-		fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+	//格式化上次登录时间
+	function fmtLastLoginTime(row) {
+		var lastLoginTime = row.lastLoginTime;
+		return (new Date(lastLoginTime)).Format("yyyy-MM-dd hh:mm:ss");
 	}
-	for (var k in o) {
-		if (new RegExp("(" + k + ")").test(fmt)) {
-			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+
+	/**
+	 * 格式化日期函数
+	 * @param fmt
+	 * @returns {*}
+	 * @constructor
+	 */
+	Date.prototype.Format = function(fmt) { //author: meizz
+		var o = {
+			"M+": this.getMonth() + 1,
+			//月份
+			"d+": this.getDate(),
+			//日
+			"h+": this.getHours(),
+			//小时
+			"m+": this.getMinutes(),
+			//分
+			"s+": this.getSeconds(),
+			//秒
+			"q+": Math.floor((this.getMonth() + 3) / 3),
+			//季度
+			"S": this.getMilliseconds() //毫秒
+		};
+		if (/(y+)/.test(fmt)) {
+			fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		}
+		for (var k in o) {
+			if (new RegExp("(" + k + ")").test(fmt)) {
+				fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+			}
+		}
+		return fmt;
+	}
+
+	/**
+	 * 所属角色
+	 */
+	function roleIdFn(row) {
+		switch(row.roleId)
+		{
+			case 1:
+				return "admin";
+				break;
+			case 2:
+				return "admin";
+				break;
+			case 3:
+				return "web_user";
+				break;
+			default:
+				return "######";
 		}
 	}
-	return fmt;
-}
+
 
 
 
