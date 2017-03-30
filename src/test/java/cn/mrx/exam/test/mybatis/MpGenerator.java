@@ -27,7 +27,7 @@ public class MpGenerator {
         AutoGenerator mpg = new AutoGenerator();
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("D:\\sde\\workspaces\\idea\\exam\\src\\main\\java");
+        gc.setOutputDir("C:\\Users\\Mr.X\\Desktop");
         gc.setFileOverride(true);
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存

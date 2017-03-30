@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import cn.mrx.exam.controller.BaseController;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -62,10 +63,9 @@ public class RoleController extends BaseController {
         //父亲菜单id：1:会员管理,2:角色权限管理,3:文章管理
         List<Integer> parentIds = new ArrayList<>();
         for (Permission permission : permissions) {
-            logger.info("permission:"+permission);
             //将该角色(id)拥有的权限加上flag
             Role role = iRoleService.selectById(id);
-            if(role.getPermissionIds()!=null && !role.getPermissionIds().equals("")){
+            if(role.getPermissionIds() != null && !role.getPermissionIds().trim().equals("")){
                 String[] permissionIds = role.getPermissionIds().split(",");
                 for (String permissionId : permissionIds) {
                     if (Integer.valueOf(permissionId)==permission.getId()){
@@ -82,5 +82,21 @@ public class RoleController extends BaseController {
         model.addAttribute("parentIds", parentIds);
         model.addAttribute("role", iRoleService.selectById(id));
         return "admin/role/role-edit";
+    }
+
+    /**
+     * 修改角色拥有的权限
+     * @param roleId
+     * @param permissionIds
+     * @return
+     */
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public Object edit(String roleId, String permissionIds){
+        String ids = (permissionIds.equals("")) ? " " : permissionIds;
+        Role role = new Role();
+        role.setId(Integer.valueOf(roleId));
+        role.setPermissionIds(ids);
+        return iRoleService.updateById(role);
     }
 }

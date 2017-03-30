@@ -8,6 +8,7 @@
 <body>
 <article class="page-container">
 	<form action="" method="post" class="form form-horizontal" id="form-admin-role-add">
+		<input type="hidden" value="${role.id}" id="roleId"/>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -25,38 +26,40 @@
 			<div class="formControls col-xs-8 col-sm-9">
 
 				<c:set var="parentIds" value="${parentIds}"/>
-				<c:if test="${fn:contains(parentIds, '1')}">
-					<%--会员管理--%>
-					<dl class="permission-list">
+
+				<%--会员管理--%>
+				<dl class="permission-list" id="hygl">
 						<dt>
 							<label>会员管理</label>
 						</dt>
-						<dd>
-							<dl class="cl permission-list2">
-								<dd>
-									<c:forEach items="${allPermissions}" var="c">
-										<c:if test="${c.parentId==1}">
-											<c:choose>
-												<c:when test="${c.flag==true}">
-													<label class=""><input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-0" checked="checked">${c.permissionName}</label>
-												</c:when>
-												<c:otherwise>
-													<label class=""><input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-0">${c.permissionName}</label>
-												</c:otherwise>
-											</c:choose>
-										</c:if>
-									</c:forEach>
-								</dd>
-							</dl>
-						</dd>
+						<%--<c:if test="${fn:contains(parentIds, '1')}">--%>
+							<dd>
+								<dl class="cl permission-list2">
+									<dd>
+										<c:forEach items="${allPermissions}" var="c">
+											<c:if test="${c.parentId==1}">
+												<c:choose>
+													<c:when test="${c.flag==true}">
+														<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
+													</c:when>
+													<c:otherwise>
+														<label class=""><input type="checkbox" value="${c.id}">${c.permissionName}</label>
+													</c:otherwise>
+												</c:choose>
+											</c:if>
+										</c:forEach>
+									</dd>
+								</dl>
+							</dd>
+						<%--</c:if>--%>
 					</dl>
-				</c:if>
+
 
 
 
 				<%--角色权限管理--%>
-				<c:if test="${fn:contains(parentIds, '2')}">
-					<dl class="permission-list">
+				<%--<c:if test="${fn:contains(parentIds, '2')}">--%>
+					<dl class="permission-list" id="jsqxgl">
 						<dt>
 							<label>角色权限管理</label>
 						</dt>
@@ -67,10 +70,10 @@
 										<c:if test="${c.parentId==2}">
 											<c:choose>
 												<c:when test="${c.flag==true}">
-													<label class=""><input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-0" checked="checked">${c.permissionName}</label>
+													<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
 												</c:when>
 												<c:otherwise>
-													<label class=""><input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-0">${c.permissionName}</label>
+													<label class=""><input type="checkbox" value="${c.id}">${c.permissionName}</label>
 												</c:otherwise>
 											</c:choose>
 										</c:if>
@@ -79,7 +82,7 @@
 							</dl>
 						</dd>
 					</dl>
-				</c:if>
+				<%--</c:if>--%>
 			</div>
 		</div>
 		<div class="row cl">
@@ -99,43 +102,58 @@
 <script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
-$(function(){
-	$(".permission-list dt input:checkbox").click(function(){
-		$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
-	});
-	$(".permission-list2 dd input:checkbox").click(function(){
-		var l =$(this).parent().parent().find("input:checked").length;
-		var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
-		if($(this).prop("checked")){
-			$(this).closest("dl").find("dt input:checkbox").prop("checked",true);
-			$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
-		}
-		else{
-			if(l==0){
-				$(this).closest("dl").find("dt input:checkbox").prop("checked",false);
-			}
-			if(l2==0){
-				$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
-			}
-		}
-	});
-	
-	$("#form-admin-role-add").validate({
-		rules:{
-			roleName:{
-				required:true,
+	$(function(){
+		$("#form-admin-role-add").validate({
+			rules:{
+				roleName:{
+					required:true,
+				},
 			},
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			parent.layer.close(index);
-		}
+			onkeyup:false,
+			focusCleanup:true,
+			success:"valid",
+			submitHandler:function(form){
+				var permissionIds = "";
+				//会员管理
+				$("#hygl dd .cl dd label").each(function () {
+					var input = $(this).find("input");
+					if (input.is(":checked")) {
+						permissionIds = permissionIds + input.val() + ",";
+					}
+				});
+				//角色权限管理
+				$("#jsqxgl dd .cl dd label").each(function () {
+					var input = $(this).find("input");
+					if (input.is(":checked")) {
+						permissionIds = permissionIds + input.val() + ",";
+					}
+				});
+				console.log("permissionIds:"+permissionIds);
+				//执行修改操作
+				$(form).ajaxSubmit({
+					url:"${ctx}/admin/role/edit",
+					type:"post",
+					dataType:"json",
+					data : {"permissionIds":permissionIds, "roleId":$("#roleId").val()},
+					success:function (json) {
+						if(json == true){
+							layer.msg('修改成功!',{icon:1,time:1000}, function () {
+								window.parent.location.reload(); //刷新父页面
+								var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+								parent.layer.close(index);  // 关闭layer
+							});
+						}else{
+							layer.msg('修改失败！',{icon:5,time:1000});
+						}
+
+					},
+					error:function () {
+						layer.msg('服务器错误，请联系管理员！',{icon:5,time:1000});
+					}
+				});
+			}
+		});
 	});
-});
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
