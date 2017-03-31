@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @Version 1.0
  */
 @Controller
-@RequestMapping("/admin/yt")
+@RequestMapping("/admin/youtu")
 public class YouTuController extends BaseController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -36,9 +36,14 @@ public class YouTuController extends BaseController {
      */
     @RequestMapping(value = "/detectface", method = RequestMethod.GET)
     public String detectFace(){
-        return "admin/yt/detectface";
+        return "admin/youtu/detectface";
     }
 
+    /**
+     * 人脸检测
+     * @param url
+     * @return
+     */
     @RequestMapping(value = "/detectface", method = RequestMethod.POST)
     @ResponseBody
     public Object detectFaceUrl(String url){

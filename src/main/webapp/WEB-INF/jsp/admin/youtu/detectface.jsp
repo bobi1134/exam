@@ -153,11 +153,6 @@
 			}
 			.main .left .image .yy span{
 				color: #fff;
-				/*position: absolute;*/
-				/*top: 50%;*/
-				/*left: 50%;*/
-				/*margin-left: -30px;*/
-				/*margin-top: -15px;*/
 			}
 		</style>
 	</head>
@@ -211,7 +206,7 @@
 						//打开阴影层
 						$(".main .left .image .yy").show();
 					},
-					url : "${ctx}/admin/yt/detectface",
+					url : "${ctx}/admin/youtu/detectface",
 					type : "post",
 					dataType :"json",
 					data : {"url":$("#url").val()},
@@ -222,13 +217,32 @@
 							$(".main .left .image .face-label-box").show();
 							//关闭阴影层
 							$(".main .left .image .yy").hide();
+
+							/*******************************控制face框框的位置 start******************************/
 							//获取face的高宽、坐标
-							var x = json.face[0].x * 0.796;
-							var y = json.face[0].y * 0.8;
-							var height = json.face[0].height * 0.766;
-							var width = json.face[0].width * 0.766;
+							var x = json.face[0].x;
+							var y = json.face[0].y;
+							var height = json.face[0].height;
+							var width = json.face[0].width;
+							var image_width = json.image_width;
+							var image_height = json.image_height;
+							var max_len = Math.max(image_width, image_height);
+							var canvasWidth = 480.0;
+							var ratio = canvasWidth / max_len;
+							var canvasXOffset = (canvasWidth - image_width * ratio) / 2.0;
+							var canvasYOffset = (canvasWidth - image_height * ratio) / 2.0;
+
+							var imgX = x * ratio;
+							var imgY = y * ratio;
+							var imgCanvasHeight = height * ratio;
+							var imgCanvasWidth = width * ratio;
+							var canvasX = canvasXOffset + imgX;
+							var canvasY = canvasYOffset + imgY;
+
 							//修改face的高宽、坐标
-							$(".main .left .image .face").css({"left":x,"top":y,"height":height,"width":width});
+							$(".main .left .image .face").css({"left":canvasX,"top":canvasY,"height":imgCanvasHeight,"width":imgCanvasWidth});
+							/*******************************控制face框框的位置 end******************************/
+
 							//获取face的属性
 							var expressionArray = ["黯然伤神", "半嗔半喜", "似笑非笑","笑逐颜开", "莞尔一笑", "喜上眉梢","眉开眼笑", "笑尽妖娆", "心花怒放", "一笑倾城"];
 							var section = parseInt(json.face[0].expression / 10);
@@ -239,7 +253,7 @@
 							$("#expression span").text("表情:"+expression);
 							$("#beauty span").text("魅力:"+json.face[0].beauty);
 							//修改face属性位置
-							$(".main .left .image .face-label-box").css({"left":x+width+20,"top":y});
+							$(".main .left .image .face-label-box").css({"left":canvasX+imgCanvasWidth+20,"top":canvasY});
 
 						}else{
 							$(".main .left .image .yy span").text(json.errormsg);
