@@ -29,45 +29,14 @@
 
 				<%--会员管理--%>
 				<dl class="permission-list" id="hygl">
-						<dt>
-							<label>会员管理</label>
-						</dt>
-						<%--<c:if test="${fn:contains(parentIds, '1')}">--%>
-							<dd>
-								<dl class="cl permission-list2">
-									<dd>
-										<c:forEach items="${allPermissions}" var="c">
-											<c:if test="${c.parentId==1}">
-												<c:choose>
-													<c:when test="${c.flag==true}">
-														<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
-													</c:when>
-													<c:otherwise>
-														<label class=""><input type="checkbox" value="${c.id}">${c.permissionName}</label>
-													</c:otherwise>
-												</c:choose>
-											</c:if>
-										</c:forEach>
-									</dd>
-								</dl>
-							</dd>
-						<%--</c:if>--%>
-					</dl>
-
-
-
-
-				<%--角色权限管理--%>
-				<%--<c:if test="${fn:contains(parentIds, '2')}">--%>
-					<dl class="permission-list" id="jsqxgl">
-						<dt>
-							<label>角色权限管理</label>
-						</dt>
+					<dt>
+						<label>会员管理</label>
+					</dt>
 						<dd>
 							<dl class="cl permission-list2">
 								<dd>
 									<c:forEach items="${allPermissions}" var="c">
-										<c:if test="${c.parentId==2}">
+										<c:if test="${c.parentId==1}">
 											<c:choose>
 												<c:when test="${c.flag==true}">
 													<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
@@ -81,8 +50,32 @@
 								</dd>
 							</dl>
 						</dd>
-					</dl>
-				<%--</c:if>--%>
+				</dl>
+
+				<%--角色权限管理--%>
+				<dl class="permission-list" id="jsqxgl">
+					<dt>
+						<label>角色权限管理</label>
+					</dt>
+					<dd>
+						<dl class="cl permission-list2">
+							<dd>
+								<c:forEach items="${allPermissions}" var="c">
+									<c:if test="${c.parentId==2}">
+										<c:choose>
+											<c:when test="${c.flag==true}">
+												<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
+											</c:when>
+											<c:otherwise>
+												<label class=""><input type="checkbox" value="${c.id}">${c.permissionName}</label>
+											</c:otherwise>
+										</c:choose>
+									</c:if>
+								</c:forEach>
+							</dd>
+						</dl>
+					</dd>
+				</dl>
 			</div>
 		</div>
 		<div class="row cl">

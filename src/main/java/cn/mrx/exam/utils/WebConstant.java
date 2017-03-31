@@ -16,4 +16,5 @@ public class WebConstant {
     public final static String User_LOGIN_COOKIE = "user_login_cookie";
     /** Cookie的有效期默认为30天 */
     public final static int COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
+
 }
