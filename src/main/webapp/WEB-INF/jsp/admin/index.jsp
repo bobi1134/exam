@@ -104,7 +104,7 @@
             <dt><i class="Hui-iconfont">&#xe65a;</i> 人脸识别技术<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="${ctx}/admin/yt/detectface" data-title="人脸检测" href="javascript:;">人脸检测</a></li>
+                    <li><a data-href="${ctx}/admin/youtu/detectface" data-title="人脸检测" href="javascript:;">人脸检测</a></li>
                 </ul>
             </dd>
         </dl>
