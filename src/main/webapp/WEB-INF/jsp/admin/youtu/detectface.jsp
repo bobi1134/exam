@@ -107,7 +107,7 @@
 				margin-left: 10px;
 			}
 			/*main left btn*/
-			.main .left .upload .fileBtn{
+			.main .left .upload .fileUploadBtn{
 				width: 486px;
 				height: 40px;
 				background: #3688ff;
@@ -179,8 +179,10 @@
 					</div>
 				</div>
 				<div class="upload">
-					<input type="file" style="display:none"/>
-					<div class="fileBtn">上传本地图片</div>
+					<form role="form" id="fileUploadForm" enctype="multipart/form-data">
+						<input type="file" name="photo" id="fileUpload" style="display:none"/>
+						<div class="fileUploadBtn">上传本地图片</div>
+					</form>
 				</div>
 				<div class="url">
 					<input type="text" id="url" value="http://open.youtu.qq.com/content/img/product/face/face_14.jpg"/>
@@ -194,8 +196,10 @@
 	<!-- js -->
 	<%@ include file="../jspf/footer.jspf" %>
 	<script type="text/javascript" src="${ctx}/resources/admin/plug-in/jsonview/jquery.jsonview.js"></script>
+	<script type="text/javascript" src="${ctx}/resources/admin/plug-in/jquery.form.min.js"></script>
 	<script type="text/javascript">
 		$(function () {
+			//url解析
 			$("#urlBtn").click(function () {
 				$.ajax({
 					beforeSend:function(){
@@ -266,6 +270,78 @@
 					}
 				});
 			});
+
+			//上传图片解析
+			$(".main .left .upload .fileUploadBtn").click(function () {
+				$("#fileUpload").click();
+			});
+
+			$("#fileUpload").on("change", function () {
+				//开始上传
+				$("#fileUploadForm").ajaxSubmit({
+					type: 'post',
+					url: "${ctx}/admin/youtu/detectface_upload",
+					contentType: "application/x-www-form-urlencoded; charset=utf-8",
+					beforeSend:function(){
+						//隐藏face框框
+						$(".main .left .image .face").hide();
+						$(".main .left .image .face-label-box").hide();
+						//打开阴影层
+						$(".main .left .image .yy").show();
+						//更换背景
+						var fils = $("#fileUpload").get(0).files[0];
+						var srcc = window.URL.createObjectURL(fils);
+						$(".main .left .image").css("background-image","url("+srcc+")");
+					},
+				success: function(data) {
+						if(data.errorcode == 0){
+							//打开face框框
+							$(".main .left .image .face").show();
+							$(".main .left .image .face-label-box").show();
+							//关闭阴影层
+							$(".main .left .image .yy").hide();
+
+							//获取face的高宽、坐标
+							var x = data.face[0].x;
+							var y = data.face[0].y;
+							var height = data.face[0].height;
+							var width = data.face[0].width;
+							var image_width = data.image_width;
+							var image_height = data.image_height;
+							var max_len = Math.max(image_width, image_height);
+							var canvasWidth = 480.0;
+							var ratio = canvasWidth / max_len;
+							var canvasXOffset = (canvasWidth - image_width * ratio) / 2.0;
+							var canvasYOffset = (canvasWidth - image_height * ratio) / 2.0;
+							var imgX = x * ratio;
+							var imgY = y * ratio;
+							var imgCanvasHeight = height * ratio;
+							var imgCanvasWidth = width * ratio;
+							var canvasX = canvasXOffset + imgX;
+							var canvasY = canvasYOffset + imgY;
+							//修改face的高宽、坐标
+							$(".main .left .image .face").css({"left":canvasX,"top":canvasY,"height":imgCanvasHeight,"width":imgCanvasWidth});
+
+							//获取face的属性
+							var expressionArray = ["黯然伤神", "半嗔半喜", "似笑非笑","笑逐颜开", "莞尔一笑", "喜上眉梢","眉开眼笑", "笑尽妖娆", "心花怒放", "一笑倾城"];
+							var section = parseInt(data.face[0].expression / 10);
+							var expression = section < expressionArray.length ? expressionArray[section] : expressionArray[expressionArray.length - 1];
+							//修改face的属性
+							$("#sex span").text("性别:"+(data.face[0].gender < 50 ? "女" : "男"));
+							$("#age span").text("年龄:"+data.face[0].age);
+							$("#expression span").text("表情:"+expression);
+							$("#beauty span").text("魅力:"+data.face[0].beauty);
+							//修改face属性位置
+							$(".main .left .image .face-label-box").css({"left":canvasX+imgCanvasWidth+20,"top":canvasY});
+						}else{
+							$(".main .left .image .yy span").text(data.errormsg);
+						}
+					},
+					error:function () {
+						layer.msg('服务器错误，请联系管理员！',{icon:5,time:1000});
+					}
+				});
+			})
 		});
 	</script>
 </body>
