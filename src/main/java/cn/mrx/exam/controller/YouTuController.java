@@ -76,9 +76,13 @@ public class YouTuController extends BaseController {
     @ResponseBody
     public Object detectFace(MultipartFile photo, HttpServletRequest httpServletRequest) throws  Exception{
         if (photo != null) {
-            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/youtu/upload/detectface/");
+            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/youtu/detectface/upload/");
             String newName = UUID.randomUUID()+photo.getOriginalFilename().substring(photo.getOriginalFilename().indexOf("."));
-            File newFile = new File(realPath + newName);
+            File newFile = new File(realPath, newName);
+            if(!newFile.exists()){
+                //mkdir()只能建立一级文件夹。mkdirs()可以建立多级文件夹
+                newFile.mkdirs();
+            }
             photo.transferTo(newFile);
             // 人脸检测
             Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);

@@ -25,7 +25,7 @@
 				height: 485px;
 				width: 485px;
 				border: #d2d2de 1px solid;
-				background: url('${ctx}/resources/admin/youtu/imgs/test.jpg') center no-repeat;
+				background: url('${ctx}/resources/admin/youtu/detectface/css_imgs/test.jpg') center no-repeat;
 				background-size: auto 100%;
 				position: relative;
 				margin-left: 20px;
@@ -90,7 +90,7 @@
 				height: 24px;
 				margin-left: 4px;
 				margin-bottom: 5px;
-				background: url("${ctx}/resources/admin/youtu/imgs/info_bg2.png");
+				background: url("${ctx}/resources/admin/youtu/detectface/css_imgs/info_bg2.png");
 				position: relative;
 			}
 			.main .left .image .face-label-box div span{
@@ -100,7 +100,7 @@
 			}
 			.main .left .image .face-label-box div:first-child{
 				margin-left: 0px;
-				background: url("${ctx}/resources/admin/youtu/imgs/info_bg.png");
+				background: url("${ctx}/resources/admin/youtu/detectface/css_imgs/info_bg.png");
 			}
 			.main .left .image .face-label-box div:first-child span{
 				left: -1px;
@@ -293,7 +293,7 @@
 						var srcc = window.URL.createObjectURL(fils);
 						$(".main .left .image").css("background-image","url("+srcc+")");
 					},
-				success: function(data) {
+					success: function(data) {
 						if(data.errorcode == 0){
 							//打开face框框
 							$(".main .left .image .face").show();
@@ -336,6 +336,8 @@
 						}else{
 							$(".main .left .image .yy span").text(data.errormsg);
 						}
+						//在右边显示返回数据
+						$(".main .right").JSONView(JSON.stringify(data));
 					},
 					error:function () {
 						layer.msg('服务器错误，请联系管理员！',{icon:5,time:1000});
