@@ -93,4 +93,54 @@ public class YouTuController extends BaseController {
         return null;
     }
 
+    /**
+     * 跳转到faceshape.jsp页面
+     * @return
+     */
+    @RequestMapping(value = "/faceshape", method = RequestMethod.GET)
+    public String faceShape(){
+        return "admin/youtu/faceshape";
+    }
+
+    /**
+     * RL方式五官定位
+     * @param url
+     * @return
+     */
+    @RequestMapping(value = "/faceshape", method = RequestMethod.POST)
+    @ResponseBody
+    public Object faceShape(String url){
+        try {
+            Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY,Youtu.API_YOUTU_END_POINT,USER_ID);
+            JSONObject jsonObject = youtu.FaceShapeUrl(url, 1);
+            return jsonObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 上传图片五官定位
+     * @param photo
+     * @param httpServletRequest
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/faceshape_upload", method = RequestMethod.POST)
+    @ResponseBody
+    public Object faceShape(MultipartFile photo, HttpServletRequest httpServletRequest) throws  Exception{
+        if (photo != null) {
+            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/youtu/faceshape/upload/");
+            String newName = UUID.randomUUID()+photo.getOriginalFilename().substring(photo.getOriginalFilename().indexOf("."));
+            File newFile = new File(realPath, newName);
+            if(!newFile.exists()) newFile.mkdirs();
+            photo.transferTo(newFile);
+            // 五官定位
+            Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
+            JSONObject jsonObject = youtu.FaceShape(realPath+newName, 1);
+            return jsonObject;
+        }
+        return null;
+    }
 }

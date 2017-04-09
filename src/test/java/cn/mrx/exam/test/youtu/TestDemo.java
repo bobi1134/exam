@@ -27,11 +27,20 @@ public class TestDemo {
     @Test
     public void test01() throws Exception{
         Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY,Youtu.API_YOUTU_END_POINT,USER_ID);
-        JSONObject jsonObject = youtu.DetectFace("C:\\Users\\Mr.X\\Desktop\\20140086.jpg",1);
+        JSONObject jsonObject = youtu.DetectFace("C:\\Users\\Mr.X\\Desktop\\20140086.jpg", 1);
 //        JSONObject jsonObject = youtu.DetectFaceUrl("http://jiaowu.sicau.edu.cn/photo/20140086.jpg",1);
         System.out.println(jsonObject);
         DetectFace detectFace = JSON.parseObject(jsonObject.toString(), DetectFace.class);
         System.out.println(detectFace);
         System.out.println(detectFace.getFace().get(0).getExpression());
+    }
+
+    //五官分析：FaceShape
+    @Test
+    public void test02() throws Exception{
+        Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY,Youtu.API_YOUTU_END_POINT,USER_ID);
+        JSONObject jsonObject = youtu.FaceShape("C:\\Users\\Mr.X\\Desktop\\20140064.jpg", 1);
+//        JSONObject jsonObject = youtu.FaceShapeUrl("http://jiaowu.sicau.edu.cn/photo/20140086.jpg",1);
+        System.out.println(jsonObject);
     }
 }
