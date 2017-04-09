@@ -106,6 +106,7 @@
                 <ul>
                     <li><a data-href="${ctx}/admin/youtu/detectface" data-title="人脸检测" href="javascript:;">人脸检测</a></li>
                     <li><a data-href="${ctx}/admin/youtu/faceshape" data-title="五官定位" href="javascript:;">五官定位</a></li>
+                    <li><a data-href="${ctx}/admin/youtu/facecompare" data-title="人脸对比" href="javascript:;">人脸对比</a></li>
                 </ul>
             </dd>
         </dl>

@@ -143,4 +143,13 @@ public class YouTuController extends BaseController {
         }
         return null;
     }
+
+    /**
+     * 跳转到faceshape.jsp页面
+     * @return
+     */
+    @RequestMapping(value = "/facecompare", method = RequestMethod.GET)
+    public String facecompare(){
+        return "admin/youtu/facecompare";
+    }
 }
