@@ -84,18 +84,30 @@
 				text-align: center;
 				border: #d2d2d2 1px solid;
 				float: left;
+				position: relative;
 			}
 			.main .result p{
 				margin-top: 25px;
 				color: #17EDA9;
 				font-size: 16px;
 			}
-			.main .result div{
+			.main .result .similarity{
 				width: 100%;
 				text-align: center;
 				margin-top: 10px;
 				color: #17EDA9;
 				font-size: 36px;
+			}
+			.main .result .yy{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				line-height: 140px;
+				color: #fff;
+				opacity: 0.1;
+				background: #000;
+				display: none;
 			}
 			/** main request & response */
 			.main .request, .main .response{
@@ -158,26 +170,17 @@
 			<div class="operate">人脸对比</div>
 			<div class="result">
 				<p align="center">The similarity between the two faces is</p>
-				<div>12%</div>
+				<div class="similarity">12%</div>
+				<div class="yy">请稍后...</div>
 			</div>
 			<div class="request">
 				<div class="req-title">REQUEST:</div>
-				<div>
-					{<br/>
-					"urlA": "http://jiaowu.sicau.edu.cn/photo/20140151.jpg",<br/>
-					"urlB": "http://jiaowu.sicau.edu.cn/photo/20140152.jpg",<br/>
-					"app_id": "10009633"<br/>
-					}
+				<div class="req-result">
 				</div>
 			</div>
 			<div class="response">
 				<div class="res-title">RESPONSE:</div>
-				<div>
-					{<br/>
-					"urlA": "http://jiaowu.sicau.edu.cn/photo/20140151.jpg",<br/>
-					"urlB": "http://jiaowu.sicau.edu.cn/photo/20140152.jpg",<br/>
-					"app_id": "10009633"<br/>
-					}
+				<div class="res-result">
 				</div>
 			</div>
 		</div>
@@ -191,6 +194,166 @@
 	<script type="text/javascript">
 		$(function () {
 
+			//初始化获取
+			var url1 = $("#url1").val();
+			var url2 = $("#url2").val();
+
+			var path1 = "";
+			var path2 = "";
+
+			// 修改背景
+			$("#urlBtn1").click(function () {
+				url1 = $("#url1").val();
+				$(".main .left .image").css("background-image","url("+url1+")");
+				//清除fileUpload1
+				path1 = "";
+			});
+
+			// 修改背景
+			$("#urlBtn2").click(function () {
+				url2 = $("#url2").val();
+				$(".main .right .image").css("background-image","url("+url2+")");
+				//清除fileUpload2
+				$("#fileUpload2").val("");
+				path2 = "";
+			});
+
+			//打开file文件选择框
+			$(".main .left .upload .fileUploadBtn").click(function () {
+				$("#fileUpload1").click();
+			});
+
+			// 上传图片文件1
+			$("#fileUpload1").on("change", function () {
+				$("#fileUploadForm1").ajaxSubmit({
+					type:'post',
+					url:"${ctx}/admin/youtu/facecompare/upload",
+					contentType:"application/x-www-form-urlencoded; charset=utf-8",
+					beforeSend:function () {
+						var file = $("#fileUpload1").get(0).files[0];
+						var fileSrc = window.URL.createObjectURL(file);
+						$(".main .left .image").css("background-image","url("+fileSrc+")");
+						//清除url框
+						$("#url1").val("");
+					},
+					success:function (data) {
+						//返回文件路径
+						var jsonData = eval("("+data+")");
+						if(jsonData.result == 0){
+							path1 = jsonData.path;
+						}else{
+
+						}
+					},
+					error:function () {
+						layer.msg('服务器错误，请联系管理员！',{icon:5,time:1000});
+					}
+				});
+			});
+
+			//打开file文件选择框
+			$(".main .right .upload .fileUploadBtn").click(function () {
+				$("#fileUpload2").click();
+			});
+
+			// 上传图片文件2
+			$("#fileUpload2").on("change", function () {
+				$("#fileUploadForm2").ajaxSubmit({
+					type:'post',
+					url:"${ctx}/admin/youtu/facecompare/upload",
+					contentType:"application/x-www-form-urlencoded; charset=utf-8",
+					beforeSend:function () {
+						var file = $("#fileUpload2").get(0).files[0];
+						var fileSrc = window.URL.createObjectURL(file);
+						$(".main .right .image").css("background-image","url("+fileSrc+")");
+						//清除url框
+						$("#url2").val("");
+					},
+					success:function (data) {
+						//返回文件路径
+						var jsonData = eval("("+data+")");
+						if(jsonData.result == 0){
+							path2 = jsonData.path;
+						}else{
+
+						}
+					},
+					error:function () {
+						layer.msg('服务器错误，请联系管理员！',{icon:5,time:1000});
+					}
+				});
+			});
+
+			//人脸对比
+			$(".main .operate").click(function () {
+				url1 = $("#url1").val();
+				url2 = $("#url2").val();
+				if(url1 != "" && url2 != ""){
+					$.ajax({
+						url : "${ctx}/admin/youtu/facecompare",
+						type : "post",
+						dataType :"json",
+						data : {"url1":url1, "url2":url2},
+						beforeSend : function () {
+							$(".main .result .similarity").hide();
+							$(".main .result .yy").show();
+						},
+						success : function (data) {
+							if(data.errorcode == 0){
+								//关闭阴影，打开相似度数字
+								$(".main .result .similarity").show();
+								$(".main .result .yy").hide();
+
+								//修改相似度数字
+								$(".main .result .similarity").text(data.similarity + "%");
+							}else{
+								$(".main .result .yy").text(data.errormsg);
+							}
+							//显示返回数据
+							var str = "{url1:'"+url1+"', url2:'"+url2+"'}";
+							var resquestJson = eval("("+str+")");
+							$(".main .request .req-result").JSONView(JSON.stringify(resquestJson));
+							$(".main .response .res-result").JSONView(JSON.stringify(data));
+						},
+						error : function () {
+							layer.msg('服务器错误，请联系管理员！',{icon:5,time:1000});
+						}
+					});
+				}else if(path1 != "" && path2 != ""){
+					$.ajax({
+						url : "${ctx}/admin/youtu/facecompare_path",
+						type : "post",
+						dataType :"json",
+						data : {"path1":path1, "path2":path2},
+						beforeSend : function () {
+							$(".main .result .similarity").hide();
+							$(".main .result .yy").show();
+						},
+						success : function (data) {
+							if(data.errorcode == 0){
+								//关闭阴影，打开相似度数字
+								$(".main .result .similarity").show();
+								$(".main .result .yy").hide();
+
+								//修改相似度数字
+								$(".main .result .similarity").text(data.similarity + "%");
+							}else{
+								$(".main .result .yy").text(data.errormsg);
+							}
+							//显示返回数据
+							var str = "{path1:'upload image 1...', path2:'upload image 2...'}";
+							var resquestJson = eval("("+str+")");
+							$(".main .request .req-result").JSONView(JSON.stringify(resquestJson));
+							$(".main .response .res-result").JSONView(JSON.stringify(data));
+						},
+						error : function () {
+							layer.msg('服务器错误，请联系管理员！',{icon:5,time:1000});
+						}
+					});
+				}else{
+					layer.msg('请遵守对比规则！',{icon:5,time:1000});
+				}
+			});
 		});
 	</script>
 </body>

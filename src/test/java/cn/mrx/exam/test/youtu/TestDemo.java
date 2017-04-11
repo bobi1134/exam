@@ -43,4 +43,13 @@ public class TestDemo {
 //        JSONObject jsonObject = youtu.FaceShapeUrl("http://jiaowu.sicau.edu.cn/photo/20140086.jpg",1);
         System.out.println(jsonObject);
     }
+
+    //人脸对比：FaceShape
+    @Test
+    public void test03() throws Exception{
+        Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY,Youtu.API_YOUTU_END_POINT,USER_ID);
+        JSONObject jsonObject = youtu.FaceCompareUrl("http://jiaowu.sicau.edu.cn/photo/20140151.jpg", "http://jiaowu.sicau.edu.cn/photo/20140151.jpg");
+        System.out.println(jsonObject);
+    }
+
 }

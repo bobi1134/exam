@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 /**
@@ -103,7 +105,7 @@ public class YouTuController extends BaseController {
     }
 
     /**
-     * RL方式五官定位
+     * URL方式五官定位
      * @param url
      * @return
      */
@@ -149,7 +151,64 @@ public class YouTuController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/facecompare", method = RequestMethod.GET)
-    public String facecompare(){
+    public String faceCompare(){
         return "admin/youtu/facecompare";
     }
+
+    /**
+     * URL方式人脸对比
+     * @param url1
+     * @param url2
+     * @return
+     */
+    @RequestMapping(value = "/facecompare", method = RequestMethod.POST)
+    @ResponseBody
+    public Object faceCompare(String url1, String url2){
+        try {
+            Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY,Youtu.API_YOUTU_END_POINT,USER_ID);
+            JSONObject jsonObject = youtu.FaceCompareUrl(url1, url2);
+            return jsonObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 人脸对比-上传图片
+     * @param photo
+     * @param httpServletRequest
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/facecompare/upload", method = RequestMethod.POST)
+    @ResponseBody
+    public Object faceCompareUpload(MultipartFile photo, HttpServletRequest httpServletRequest)throws  Exception{
+        if (photo != null) {
+            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/youtu/facecompare/upload/");
+            String newName = UUID.randomUUID()+photo.getOriginalFilename().substring(photo.getOriginalFilename().indexOf("."));
+            File newFile = new File(realPath, newName);
+            if(!newFile.exists()) newFile.mkdirs();
+            photo.transferTo(newFile);
+            String path = (realPath+newName).replace("\\", "\\\\");
+            return "{result:0, path:'"+ path +"'}";
+        }
+        return "{result:-1}";
+    }
+
+    /**
+     * 图片上传方式人脸对比
+     * @param path1
+     * @param path2
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/facecompare_path", method = RequestMethod.POST)
+    @ResponseBody
+    public Object faceCompareByPath(String path1, String path2)throws  Exception{
+        Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY,Youtu.API_YOUTU_END_POINT,USER_ID);
+        JSONObject jsonObject = youtu.FaceCompare(path1, path2);
+        return jsonObject;
+    }
+
 }
