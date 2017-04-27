@@ -15,8 +15,9 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 权限管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="text-c">
-		<form class="Huiform" method="post" target="_self" id="searchForm">
-			<input type="text" class="input-text" style="width:250px" placeholder="权限名称" id="" name="QUERY-permission_name-s-lk">
+		<form class="Huiform" target="_self" id="searchForm">
+			<input type="text" style="display:none;"/>
+			<input type="text" class="input-text" style="width:250px" placeholder="权限名称" id="" name="QUERY-permission_name-s-lk" onkeypress="if (event.keyCode == 13){ doSearch();}"/>
 			<button type="button" class="btn btn-success" id="searchButton" name=""><i class="Hui-iconfont">&#xe665;</i> 搜权限节点</button>
 		</form>
 	</div>
@@ -61,6 +62,10 @@
 			$.fn.bsgrid.getGridObj("bsGrid").search($('#searchForm').serializeArray());
 		});
 	});
+	
+	function doSearch() {
+		$.fn.bsgrid.getGridObj("bsGrid").search($('#searchForm').serializeArray());
+	}
 
 	/**
 	 * 菜单等级
