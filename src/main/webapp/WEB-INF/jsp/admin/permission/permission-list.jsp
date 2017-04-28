@@ -86,6 +86,9 @@
 			case 2:
 				return "角色权限管理";
 				break;
+			case 3:
+				return "人脸识别技术";
+				break;
 			default:
 				return "######";
 		}

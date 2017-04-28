@@ -39,6 +39,7 @@
 					<select class="select" size="1" name="parentId">
 						<option value="1">会员管理</option>
 						<option value="2">角色权限管理</option>
+						<option value="3">人脸识别技术</option>
 					</select>
 				</span>
 			</div>

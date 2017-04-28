@@ -32,24 +32,24 @@
 					<dt>
 						<label>会员管理</label>
 					</dt>
-						<dd>
-							<dl class="cl permission-list2">
-								<dd>
-									<c:forEach items="${allPermissions}" var="c">
-										<c:if test="${c.parentId==1}">
-											<c:choose>
-												<c:when test="${c.flag==true}">
-													<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
-												</c:when>
-												<c:otherwise>
-													<label class=""><input type="checkbox" value="${c.id}">${c.permissionName}</label>
-												</c:otherwise>
-											</c:choose>
-										</c:if>
-									</c:forEach>
-								</dd>
-							</dl>
-						</dd>
+					<dd>
+						<dl class="cl permission-list2">
+							<dd>
+								<c:forEach items="${allPermissions}" var="c">
+									<c:if test="${c.parentId==1}">
+										<c:choose>
+											<c:when test="${c.flag==true}">
+												<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
+											</c:when>
+											<c:otherwise>
+												<label class=""><input type="checkbox" value="${c.id}">${c.permissionName}</label>
+											</c:otherwise>
+										</c:choose>
+									</c:if>
+								</c:forEach>
+							</dd>
+						</dl>
+					</dd>
 				</dl>
 
 				<%--角色权限管理--%>
@@ -62,6 +62,31 @@
 							<dd>
 								<c:forEach items="${allPermissions}" var="c">
 									<c:if test="${c.parentId==2}">
+										<c:choose>
+											<c:when test="${c.flag==true}">
+												<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
+											</c:when>
+											<c:otherwise>
+												<label class=""><input type="checkbox" value="${c.id}">${c.permissionName}</label>
+											</c:otherwise>
+										</c:choose>
+									</c:if>
+								</c:forEach>
+							</dd>
+						</dl>
+					</dd>
+				</dl>
+
+				<%--人脸识别技术--%>
+				<dl class="permission-list" id="rlsbjs">
+					<dt>
+						<label>人脸识别技术</label>
+					</dt>
+					<dd>
+						<dl class="cl permission-list2">
+							<dd>
+								<c:forEach items="${allPermissions}" var="c">
+									<c:if test="${c.parentId==3}">
 										<c:choose>
 											<c:when test="${c.flag==true}">
 												<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
@@ -116,6 +141,13 @@
 				});
 				//角色权限管理
 				$("#jsqxgl dd .cl dd label").each(function () {
+					var input = $(this).find("input");
+					if (input.is(":checked")) {
+						permissionIds = permissionIds + input.val() + ",";
+					}
+				});
+				//角色权限管理
+				$("#rlsbjs dd .cl dd label").each(function () {
 					var input = $(this).find("input");
 					if (input.is(":checked")) {
 						permissionIds = permissionIds + input.val() + ",";

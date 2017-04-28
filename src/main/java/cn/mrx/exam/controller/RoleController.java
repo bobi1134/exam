@@ -58,8 +58,9 @@ public class RoleController extends BaseController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String editRole(Model model, @PathVariable("id") String id, HttpServletRequest httpServletRequest){
         //所有角色
-        Page<Permission> permissionPage = iPermissionService.selectPage(new Page<>());
-        List<Permission> permissions = permissionPage.getRecords();
+//        Page<Permission> permissionPage = iPermissionService.selectPage(new Page<>());
+//        List<Permission> permissions = permissionPage.getRecords();
+        List<Permission> permissions = iPermissionService.selectList(null);
         //父亲菜单id：1:会员管理,2:角色权限管理,3:文章管理
         List<Integer> parentIds = new ArrayList<>();
         for (Permission permission : permissions) {

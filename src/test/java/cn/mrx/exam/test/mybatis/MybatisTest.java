@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 /**
  * Author: Mr.X
  * Date: 2017/3/17
@@ -28,13 +30,11 @@ public class MybatisTest {
     private IPermissionService iPermissionService;
 
     @Test
-    public void xxxxxxxxxxx(){
-        Permission p = new Permission();
-//        p.setId(10);
-        p.setUri("xxxx");
-        System.out.println("----------------------------");
-        System.out.println(iPermissionService.insert(p));
-        System.out.println("----------------------------");
+    public void xxxxxxxxxxx() {
+        List<Permission> list = iPermissionService.selectList(null);
+        for (Permission p : list) {
+            System.out.println(p);
+        }
 
     }
 

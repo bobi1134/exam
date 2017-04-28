@@ -100,16 +100,22 @@
             </dl>
         </c:if>
 
-        <dl id="menu-yt">
-            <dt><i class="Hui-iconfont">&#xe65a;</i> 人脸识别技术<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a data-href="${ctx}/admin/youtu/detectface" data-title="人脸检测" href="javascript:;">人脸检测</a></li>
-                    <li><a data-href="${ctx}/admin/youtu/faceshape" data-title="五官定位" href="javascript:;">五官定位</a></li>
-                    <li><a data-href="${ctx}/admin/youtu/facecompare" data-title="人脸对比" href="javascript:;">人脸对比</a></li>
-                </ul>
-            </dd>
-        </dl>
+        <c:if test="${fn:contains(parentIds, '3')}">
+            <dl id="menu-yt">
+                <dt><i class="Hui-iconfont">&#xe65a;</i> 人脸识别技术<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dd>
+                    <ul>
+                        <c:forEach items="${permissions}" var="c" >
+                            <c:choose>
+                                <c:when test="${c.parentId==3 and c.nowId==2}">
+                                    <li><a data-href="${ctx}${c.uri}" data-title="${c.permissionName}" href="javascript:;">${c.permissionName}</a></li>
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
+                    </ul>
+                </dd>
+            </dl>
+        </c:if>
 
     </div>
 </aside>

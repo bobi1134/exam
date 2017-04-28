@@ -49,10 +49,17 @@
 							<c:when test="${permission.parentId==1}">
 								<option value="1" selected>会员管理</option>
 								<option value="2">角色权限管理</option>
+								<option value="3">人脸识别技术</option>
 							</c:when>
 							<c:when test="${permission.parentId==2}">
 								<option value="1">会员管理</option>
 								<option value="2" selected>角色权限管理</option>
+								<option value="3">人脸识别技术</option>
+							</c:when>
+							<c:when test="${permission.parentId==3}">
+								<option value="1">会员管理</option>
+								<option value="2">角色权限管理</option>
+								<option value="3" selected>人脸识别技术</option>
 							</c:when>
 						</c:choose>
 					</select>
