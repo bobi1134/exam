@@ -117,6 +117,15 @@
             </dl>
         </c:if>
 
+        <dl id="menu-gcfx">
+            <dt><i class="Hui-iconfont">&#xe620;</i> 过程分析<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li><a data-href="${ctx}/photo/collect" data-title="图片采集" href="javascript:void(0)">图片采集</a></li>
+                </ul>
+            </dd>
+        </dl>
+
     </div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a>

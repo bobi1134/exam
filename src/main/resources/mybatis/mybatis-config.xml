@@ -13,12 +13,13 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		</plugin>
 	</plugins>
 
-	<!-- 映射xml文件 cn/mrx/myPro/mapper/xml/UserMapper.xml-->
+	<!-- 映射xml文件 -->
 	<mappers>
 		<mapper resource="cn/mrx/exam/mapper/xml/UserMapper.xml"/>
 		<mapper resource="cn/mrx/exam/mapper/xml/PermissionMapper.xml"/>
 		<mapper resource="cn/mrx/exam/mapper/xml/RoleMapper.xml"/>
 		<mapper resource="cn/mrx/exam/mapper/xml/SystemWebMapper.xml"/>
+		<mapper resource="cn/mrx/exam/mapper/xml/PhotoMapper.xml"/>
 	</mappers>
 
 </configuration>
