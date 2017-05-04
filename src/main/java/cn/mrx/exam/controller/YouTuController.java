@@ -78,7 +78,7 @@ public class YouTuController extends BaseController {
     @ResponseBody
     public Object detectFace(MultipartFile photo, HttpServletRequest httpServletRequest) throws  Exception{
         if (photo != null) {
-            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/youtu/detectface/upload/");
+            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/youtu/detectface/");
             String newName = UUID.randomUUID()+photo.getOriginalFilename().substring(photo.getOriginalFilename().indexOf("."));
             File newFile = new File(realPath, newName);
             if(!newFile.exists()){
@@ -133,7 +133,7 @@ public class YouTuController extends BaseController {
     @ResponseBody
     public Object faceShape(MultipartFile photo, HttpServletRequest httpServletRequest) throws  Exception{
         if (photo != null) {
-            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/youtu/faceshape/upload/");
+            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/youtu/faceshape/");
             String newName = UUID.randomUUID()+photo.getOriginalFilename().substring(photo.getOriginalFilename().indexOf("."));
             File newFile = new File(realPath, newName);
             if(!newFile.exists()) newFile.mkdirs();
@@ -185,7 +185,7 @@ public class YouTuController extends BaseController {
     @ResponseBody
     public Object faceCompareUpload(MultipartFile photo, HttpServletRequest httpServletRequest)throws  Exception{
         if (photo != null) {
-            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/youtu/facecompare/upload/");
+            String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/youtu/facecompare/");
             String newName = UUID.randomUUID()+photo.getOriginalFilename().substring(photo.getOriginalFilename().indexOf("."));
             File newFile = new File(realPath, newName);
             if(!newFile.exists()) newFile.mkdirs();
