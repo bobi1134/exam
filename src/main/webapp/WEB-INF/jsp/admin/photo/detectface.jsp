@@ -11,8 +11,8 @@
 			}
 
 			.main .photo{
-				width: 700px;
-				height: 350px;
+				width: 740px;
+				height: 320px;
 				margin:100px auto;
 				position: relative;
 			}
@@ -41,20 +41,21 @@
 			}
 
 			#webcam > span{
-				z-index: 2;
 				position: absolute;
 				color: #eee;
 				font-size: 10px;
 				bottom: -20px;
-				left: 134px;
+				left: 50%;
+				margin-left: -20px;
 			}
 
 			#take-photo{
 				width: 110px;
 				height: 30px;
 				position: absolute;
-				left: 136px;
-				bottom: 5px;
+				left: 50%;
+				margin-left: -55px;
+				bottom: -50px;
 				text-align: center;
 				line-height: 30px;
 				background-color: #333333;
@@ -66,16 +67,37 @@
 			.main .photo .result{
 				width: 320px;
 				height: 240px;
-				background: #000;
 				float: right;
-				margin-top: 20px;
-				border-radius: 5px;
-				display: none;
+				border: 20px solid #333;
+				border-radius: 20px;
+				position: relative;
+			}
+
+			.main .photo .result > img{
+				position: absolute;
+				border: 0px none;
+				padding: 0px;
+				bottom: -40px;
+				right: 89px;
+			}
+
+			.main .photo .result > span{
+				position: absolute;
+				color: #eee;
+				font-size: 10px;
+				bottom: -20px;
+				left: 50%;
+				margin-left: -25px;
+			}
+
+			.main .photo .result .bg{
+				width: 100%;
+				height: 100%;
 			}
 		</style>
 	</head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 过程分析 <span class="c-gray en">&gt;</span> 图片采集 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 过程分析 <span class="c-gray en">&gt;</span> 拍摄检测 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="page-container">
 		<div class="main">
 			<div class="photo">
@@ -85,7 +107,9 @@
 				</div>
 				<div id="take-photo">拍照</div>
 				<div class="result">
-
+					<img src="${ctx}/resources/admin/static/photo/antenna.png"/>
+					<span>Result</span>
+					<div class="bg"></div>
 				</div>
 			</div>
 		</div>
@@ -158,7 +182,7 @@
 			 *  点击拍照
 			 */
 			$("#take-photo").click(function () {
-				$(".main .photo .result").hide();
+				$(".main .photo .result .bg").hide();
 				webcam.capture();
 			});
 
@@ -167,7 +191,7 @@
 			 */
 			function afterDo(data) {
 				if(data.flag){
-					$(".main .photo .result").show().addClass("hui-bouncein").css("background", "url(${ctx}/resources/admin/upload/photo/"+data.fileName+")");
+					$(".main .photo .result .bg").show().addClass("hui-bouncein").css("background", "url(${ctx}/resources/admin/upload/photo/"+data.fileName+")");
 				}
 			}
 		});
