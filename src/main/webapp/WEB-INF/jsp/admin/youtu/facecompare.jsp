@@ -24,7 +24,7 @@
 			.main .left .image, .main .right .image{
 				height: 500px;
 				border: #d2d2de 1px solid;
-				background: url('${ctx}/resources/admin/youtu/detectface/css_imgs/test.jpg') center no-repeat;
+				background: url('${ctx}/resources/admin/static/youtu/test.jpg') center no-repeat;
 				background-size: auto 100%;
 			}
 			.main .left .upload .fileUploadBtn, .main .right .upload .fileUploadBtn{

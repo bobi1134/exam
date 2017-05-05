@@ -25,7 +25,7 @@
 				height: 485px;
 				width: 485px;
 				border: #d2d2de 1px solid;
-				background: url('${ctx}/resources/admin/youtu/detectface/css_imgs/test.jpg') center no-repeat;
+				background: url('${ctx}/resources/admin/static/youtu/test.jpg') center no-repeat;
 				background-size: auto 100%;
 				position: relative;
 				margin-left: 20px;

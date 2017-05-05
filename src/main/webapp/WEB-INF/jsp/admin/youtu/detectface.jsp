@@ -25,7 +25,7 @@
 				height: 485px;
 				width: 485px;
 				border: #d2d2de 1px solid;
-				background: url('${ctx}/resources/admin/youtu/detectface/css_imgs/test.jpg') center no-repeat;
+				background: url('${ctx}/resources/admin/static/youtu/test.jpg') center no-repeat;
 				background-size: auto 100%;
 				position: relative;
 				margin-left: 20px;
@@ -90,7 +90,7 @@
 				height: 24px;
 				margin-left: 4px;
 				margin-bottom: 5px;
-				background: url("${ctx}/resources/admin/youtu/detectface/css_imgs/info_bg2.png");
+				background: url("${ctx}/resources/admin/static/youtu/info_bg2.png");
 				position: relative;
 			}
 			.main .left .image .face-label-box div span{
@@ -100,7 +100,7 @@
 			}
 			.main .left .image .face-label-box div:first-child{
 				margin-left: 0px;
-				background: url("${ctx}/resources/admin/youtu/detectface/css_imgs/info_bg.png");
+				background: url("${ctx}/resources/admin/static/youtu/info_bg.png");
 			}
 			.main .left .image .face-label-box div:first-child span{
 				left: -1px;
