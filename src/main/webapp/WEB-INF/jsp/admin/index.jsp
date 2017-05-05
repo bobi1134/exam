@@ -121,7 +121,7 @@
             <dt><i class="Hui-iconfont">&#xe620;</i> 过程分析<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="${ctx}/photo/detectface" data-title="拍摄检测" href="javascript:void(0)">拍摄检测</a></li>
+                    <li><a data-href="${ctx}/admin/photo/take-photo" data-title="拍摄检测" href="javascript:void(0)">拍摄检测</a></li>
                 </ul>
             </dd>
         </dl>

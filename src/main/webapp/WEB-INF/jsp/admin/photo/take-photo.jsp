@@ -94,6 +94,27 @@
 				width: 100%;
 				height: 100%;
 			}
+
+			.main .photo .result .item{
+				position: absolute;
+				width: 3px;
+				height: 3px;
+				border-radius: 50%;
+				background: #5fffcc;
+				opacity: 0.9;
+			}
+
+			.main .photo .result .yy{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: #000;
+				opacity: .2;
+				color: #fff;
+				text-align: center;
+				line-height: 240px;
+				top:0;
+			}
 		</style>
 	</head>
 <body>
@@ -110,6 +131,9 @@
 					<img src="${ctx}/resources/admin/static/photo/antenna.png"/>
 					<span>Result</span>
 					<div class="bg"></div>
+					<!-- items定位 -->
+
+					<div class="yy"></div>
 				</div>
 			</div>
 		</div>
@@ -143,7 +167,7 @@
 					}
 					if (pos >= 4 * width * height) {
 						ctx.putImageData(img, 0, 0);
-						$.post("${ctx}/photo/upload", {type: "data", image: canvas.toDataURL("image/png")}, function (data) {
+						$.post("${ctx}/admin/photo/upload", {type: "data", image: canvas.toDataURL("image/png")}, function (data) {
 							afterDo(data);
 						});
 						pos = 0;
@@ -154,7 +178,7 @@
 					image.push(data);
 					pos+= 4 * width;
 					if (pos >= 4 * width * height) {
-						$.post("${ctx}/photo/upload", {type: "pixel", image: image.join('|')}, function (data) {
+						$.post("${ctx}/admin/photo/upload", {type: "pixel", image: image.join('|')}, function (data) {
 							afterDo(data);
 						});
 						pos = 0;
@@ -193,6 +217,46 @@
 				if(data.flag){
 					$(".main .photo .result .bg").show().addClass("hui-bouncein").css("background", "url(${ctx}/resources/admin/upload/photo/"+data.fileName+")");
 				}
+
+				//异步五官定位
+				$.ajax({
+					url : "${ctx}/admin/photo/detectface",
+					type : "post",
+					dataType :"json",
+					data : {fileName: data.fileName},
+					beforeSend:function(){
+						//删除item节点
+						$(".main .photo .result .item").remove();
+						$(".main .photo .result .yy").text("请稍等...");
+					},
+					success : function(data){
+						if(data.errorcode == 0){
+							$(".main .photo .result .yy").text("").hide();
+							var max_len = Math.max(data.image_width, data.image_height);
+							var canvasWidth = 320.0;
+							var scale = canvasWidth / max_len;
+							var canvasXOffset = (canvasWidth - data.image_width*scale) / 2.0;
+							var canvasYOffset = (canvasWidth - data.image_height*scale) / 2.0;
+							var landmark = new Array();
+							var shape = data.face[0].face_shape;
+							landmark = landmark.concat(shape.face_profile, shape.left_eye, shape.left_eyebrow, shape.mouth, shape.nose, shape.right_eye, shape.right_eyebrow);
+							for (var i = 0; i < landmark.length; ++i) {
+								var x = parseInt(scale*landmark[i].x);
+								var y = parseInt(scale*landmark[i].y);
+								x += canvasXOffset;
+								y += canvasYOffset-40;
+								//追加item内容
+								$(".main .photo .result").prepend("<div class='item hui-wobble' style='top:"+y+"px;left:"+x+"px'></div>");
+							}
+						}else{
+							console.log(data.errormsg);
+							$(".main .photo .result .yy").text(data.errormsg);
+						}
+					},
+					error : function(){
+						layer.msg('服务器错误，请联系管理员！',{icon:5,time:1000});
+					}
+				});
 			}
 		});
 	</script>

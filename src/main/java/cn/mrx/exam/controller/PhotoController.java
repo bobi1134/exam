@@ -1,5 +1,6 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.youtu.Youtu;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.UUID;
 
@@ -26,18 +28,24 @@ import java.util.UUID;
  * @since 2017-05-03
  */
 @Controller
-@RequestMapping("/photo")
+@RequestMapping("/admin/photo")
 public class PhotoController extends BaseController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    /** 腾讯优图配置参数 */
+    public static final String APP_ID = "10078911";
+    public static final String SECRET_ID = "AKIDJWYO3XovpbCbnptIjy2tZ4OWSBi3Jlrl";
+    public static final String SECRET_KEY = "pY8XklfNtDMJ3bx9KbpunuqdFfsulPr7";
+    public static final String USER_ID = "1451965355";
 
     /**
      * 拍摄检测
      * @return
      */
-    @RequestMapping(value = "/detectface", method = RequestMethod.GET)
+    @RequestMapping(value = "/take-photo", method = RequestMethod.GET)
     public String collect(){
-        return "admin/photo/detectface";
+        return "admin/photo/take-photo";
     }
 
     /**
@@ -95,5 +103,14 @@ public class PhotoController extends BaseController {
             logger.error("生成图片异常：{}", e.getMessage());
             return false;
         }
+    }
+
+    @RequestMapping(value = "/detectface", method = RequestMethod.POST)
+    @ResponseBody
+    public Object detectface(String fileName, HttpServletRequest httpServletRequest) throws Exception{
+        String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
+        Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
+        JSONObject jsonObject = youtu.DetectFace(realPath + fileName, 1);
+        return jsonObject;
     }
 }
