@@ -145,7 +145,6 @@
 	<!-- 自定义js -->
 	<script type="text/javascript">
 		$(function() {
-			var type, string;
 			var width = 320, height = 240;
 			var pos = 0, ctx = null, saveCB, image = [];
 			var canvas = document.createElement("canvas");
@@ -196,8 +195,6 @@
 					webcam.save();
 				},
 				debug: function (type, string) {
-					type = type;
-					string = string;
 					console.log(type + ": " + string);
 				}
 			});
@@ -227,7 +224,7 @@
 					beforeSend:function(){
 						//删除item节点
 						$(".main .photo .result .item").remove();
-						$(".main .photo .result .yy").text("请稍等...");
+						$(".main .photo .result .yy").text("请稍等...").show();
 					},
 					success : function(data){
 						if(data.errorcode == 0){
