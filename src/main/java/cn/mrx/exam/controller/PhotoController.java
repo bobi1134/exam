@@ -44,7 +44,7 @@ public class PhotoController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/take-photo", method = RequestMethod.GET)
-    public String collect(){
+    public String takePhoto(){
         return "admin/photo/take-photo";
     }
 
@@ -105,6 +105,13 @@ public class PhotoController extends BaseController {
         }
     }
 
+    /**
+     * 五官定位
+     * @param fileName
+     * @param httpServletRequest
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/detectface", method = RequestMethod.POST)
     @ResponseBody
     public Object detectface(String fileName, HttpServletRequest httpServletRequest) throws Exception{
@@ -112,5 +119,14 @@ public class PhotoController extends BaseController {
         Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
         JSONObject jsonObject = youtu.DetectFace(realPath + fileName, 1);
         return jsonObject;
+    }
+
+    /**
+     * 拍摄检测
+     * @return
+     */
+    @RequestMapping(value = "/collect", method = RequestMethod.GET)
+    public String collect(){
+        return "admin/photo/collect";
     }
 }
