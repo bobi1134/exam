@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author Mr.X
- * @since 2017-05-03
+ * @since 2017-05-06
  */
 @TableName("t_photo")
 public class Photo extends Model<Photo> {
@@ -29,6 +30,15 @@ public class Photo extends Model<Photo> {
 	 */
 	@TableField(value="result_json")
 	private String resultJson;
+	/**
+	 * 照片名
+	 */
+	private String name;
+	/**
+	 * 创建时间
+	 */
+	@TableField(value="create_time")
+	private Date createTime;
 	/**
 	 * 外键用户id
 	 */
@@ -50,6 +60,22 @@ public class Photo extends Model<Photo> {
 
 	public void setResultJson(String resultJson) {
 		this.resultJson = resultJson;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public Integer getUserid() {

@@ -6,6 +6,8 @@
 	<resultMap id="BaseResultMap" type="cn.mrx.exam.pojo.Photo">
 		<id column="id" property="id" />
 		<result column="result_json" property="resultJson" />
+		<result column="name" property="name" />
+		<result column="create_time" property="createTime" />
 		<result column="userId" property="userid" />
 	</resultMap>
 
