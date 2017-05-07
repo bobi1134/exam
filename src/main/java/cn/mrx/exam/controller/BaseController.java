@@ -1,9 +1,6 @@
 package cn.mrx.exam.controller;
 
-import cn.mrx.exam.service.IPermissionService;
-import cn.mrx.exam.service.IRoleService;
-import cn.mrx.exam.service.ISystemWebService;
-import cn.mrx.exam.service.IUserService;
+import cn.mrx.exam.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +28,7 @@ public class BaseController{
 
     @Autowired
     protected IPermissionService iPermissionService;
+
+    @Autowired
+    protected IPhotoService iPhotoService;
 }

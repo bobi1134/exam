@@ -1,8 +1,12 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.pojo.Photo;
+import cn.mrx.exam.pojo.User;
+import cn.mrx.exam.utils.WebConstant;
 import cn.mrx.exam.youtu.Youtu;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,10 +17,12 @@ import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -67,6 +73,14 @@ public class PhotoController extends BaseController {
         String result = "";
         if (flag) {
             result = realPath + newName;
+            //将基本信息存入数据库
+            Photo photo = new Photo();
+            photo.setName(newName);
+            photo.setCreateTime(new Date());
+            HttpSession httpSession = httpServletRequest.getSession();
+            User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
+            photo.setUserid(user.getId());
+            boolean xxxxx = iPhotoService.insert(photo);
         }
 
         JSONObject jsonObject = JSON.parseObject("{'flag':'"+flag+"', 'fileName':'"+newName+"'}");
@@ -118,11 +132,18 @@ public class PhotoController extends BaseController {
         String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
         Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
         JSONObject jsonObject = youtu.DetectFace(realPath + fileName, 1);
+        //将结果更新进数据库
+        EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
+        photoEntityWrapper.eq("name", fileName);
+        Photo photo = new Photo();
+        photo.setResultJson(jsonObject.toString());
+        iPhotoService.update(photo, photoEntityWrapper);
+
         return jsonObject;
     }
 
     /**
-     * 拍摄检测
+     * 图片采集
      * @return
      */
     @RequestMapping(value = "/collect", method = RequestMethod.GET)
