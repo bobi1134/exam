@@ -121,10 +121,9 @@
             <dt><i class="Hui-iconfont">&#xe620;</i> 过程分析<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="${ctx}/admin/photo/take-photo" data-title="拍摄检测" href="javascript:void(0)">拍摄检测</a></li>
-                    <li><a data-href="${ctx}/admin/photo/collect" data-title="图片采集" href="javascript:void(0)">图片采集</a></li>
-                    <li><a data-href="${ctx}/admin/photo/data-analysis" data-title="数据分析" href="javascript:void(0)">数据分析</a></li>
-                    <li><a data-href="${ctx}/admin/photoConfig/collect-config" data-title="采集配置" href="javascript:void(0)">采集配置</a></li>
+                    <li><a data-href="${ctx}/admin/photo/photo-detect" data-title="拍摄检测" href="javascript:void(0)">拍摄检测</a></li>
+                    <li><a data-href="${ctx}/admin/photo/photo-collect" data-title="图片采集" href="javascript:void(0)">图片采集</a></li>
+                    <li><a data-href="${ctx}/admin/photoConfig/" data-title="采集配置" href="javascript:void(0)">采集配置</a></li>
                 </ul>
             </dd>
         </dl>

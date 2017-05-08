@@ -1,6 +1,5 @@
 package cn.mrx.exam.controller;
 
-import cn.mrx.exam.pojo.Permission;
 import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import cn.mrx.exam.controller.BaseController;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -38,9 +36,9 @@ public class PhotoConfigController extends BaseController {
      * 采集配置页面
      * @return
      */
-    @RequestMapping(value = "/collect-config", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String collectConfig(){
-        return "admin/photo/collect-config";
+        return "admin/photo/photoConfig";
     }
 
     /**
@@ -62,7 +60,7 @@ public class PhotoConfigController extends BaseController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(){
-        return "admin/photo/photo-config-add";
+        return "admin/photo/photoConfig-add";
     }
 
     /**

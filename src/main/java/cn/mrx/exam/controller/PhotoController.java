@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.UUID;
@@ -49,9 +48,9 @@ public class PhotoController extends BaseController {
      * 拍摄检测页面
      * @return
      */
-    @RequestMapping(value = "/take-photo", method = RequestMethod.GET)
+    @RequestMapping(value = "/photo-detect", method = RequestMethod.GET)
     public String takePhoto(){
-        return "admin/photo/take-photo";
+        return "admin/photo/photo-detect";
     }
 
     /**
@@ -146,17 +145,17 @@ public class PhotoController extends BaseController {
      * 图片采集页面
      * @return
      */
-    @RequestMapping(value = "/collect", method = RequestMethod.GET)
+    @RequestMapping(value = "/photo-collect", method = RequestMethod.GET)
     public String collect(){
-        return "admin/photo/collect";
+        return "admin/photo/photo-collect";
     }
 
     /**
      * 数据分析页面
      * @return
      */
-    @RequestMapping(value = "/data-analysis", method = RequestMethod.GET)
+    @RequestMapping(value = "/photo-analysis", method = RequestMethod.GET)
     public String dataAnalysis(){
-        return "admin/photo/data-analysis";
+        return "admin/photo/photo-analysis";
     }
 }
