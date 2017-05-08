@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="cn/mrx/exam/mapper/xml/RoleMapper.xml"/>
 		<mapper resource="cn/mrx/exam/mapper/xml/SystemWebMapper.xml"/>
 		<mapper resource="cn/mrx/exam/mapper/xml/PhotoMapper.xml"/>
+		<mapper resource="cn/mrx/exam/mapper/xml/PhotoConfigMapper.xml"/>
 	</mappers>
 
 </configuration>

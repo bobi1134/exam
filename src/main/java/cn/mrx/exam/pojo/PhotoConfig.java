@@ -40,15 +40,16 @@ public class PhotoConfig extends Model<PhotoConfig> {
 	 */
 	private String description;
 	/**
-	 * 是否为最新的采集,0表示false,1位true
-	 */
-	@TableField(value="isNew")
-	private Integer isnew;
-	/**
-	 * 
+	 * 发布者
 	 */
 	@TableField(value="userId")
-	private Integer userid;
+	private Integer userId;
+
+	/**
+	 * 状态：未开始、考试中、已结束
+	 */
+	@TableField(exist = false)
+	private String status;
 
 
 	public Integer getId() {
@@ -83,20 +84,20 @@ public class PhotoConfig extends Model<PhotoConfig> {
 		this.description = description;
 	}
 
-	public Integer getIsnew() {
-		return isnew;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setIsnew(Integer isnew) {
-		this.isnew = isnew;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
-	public Integer getUserid() {
-		return userid;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setUserid(Integer userid) {
-		this.userid = userid;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override

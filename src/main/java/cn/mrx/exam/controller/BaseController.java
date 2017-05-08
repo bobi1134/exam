@@ -31,4 +31,7 @@ public class BaseController{
 
     @Autowired
     protected IPhotoService iPhotoService;
+
+    @Autowired
+    protected IPhotoConfigService iPhotoConfigService;
 }

@@ -8,8 +8,7 @@
 		<result column="start_time" property="startTime" />
 		<result column="end_time" property="endTime" />
 		<result column="description" property="description" />
-		<result column="new" property="new" />
-		<result column="userId" property="userid" />
+		<result column="userId" property="userId" />
 	</resultMap>
 
 </mapper>
