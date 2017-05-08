@@ -46,7 +46,7 @@ public class PhotoController extends BaseController {
     public static final String USER_ID = "1451965355";
 
     /**
-     * 拍摄检测
+     * 拍摄检测页面
      * @return
      */
     @RequestMapping(value = "/take-photo", method = RequestMethod.GET)
@@ -143,11 +143,20 @@ public class PhotoController extends BaseController {
     }
 
     /**
-     * 图片采集
+     * 图片采集页面
      * @return
      */
     @RequestMapping(value = "/collect", method = RequestMethod.GET)
     public String collect(){
         return "admin/photo/collect";
+    }
+
+    /**
+     * 数据分析页面
+     * @return
+     */
+    @RequestMapping(value = "/data-analysis", method = RequestMethod.GET)
+    public String dataAnalysis(){
+        return "admin/photo/data-analysis";
     }
 }
