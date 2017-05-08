@@ -31,7 +31,7 @@
 		<tr>
 			<th w_index="id" w_check="true"></th>
 			<th w_index="id">ID</th>
-			<th w_index="uri" w_sort="uri">uri</th>
+			<th w_index="uri" w_sort="uri" w_align="left">uri</th>
 			<th w_index="permissionName" w_sort="permissionName">权限名称</th>
 			<th w_index="nowId" w_render="nowIdFn">菜单等级</th>
 			<th w_index="parentId" w_sort="uri" w_render="parentIdFn">父级菜单</th>
