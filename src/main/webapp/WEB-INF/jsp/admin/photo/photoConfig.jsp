@@ -148,6 +148,8 @@
 			html +=  '<a title="删除" href="javascript:;" onclick="del(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>';
 			if(status == "已结束"){
 				html +=  '<a title="分析" href="javascript:;" onclick="analysis(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>分析</a>';
+			}else{
+				html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 			}
 			return html;
 		}
@@ -161,6 +163,13 @@
          */
 		function add(title, url, w, h) {
 			layer_show(title, url, w, h);
+		}
+
+		/**
+		 * 更改采集规则页面
+		 */
+		function edit(id) {
+			layer_show("更新采集规则", "${ctx}/admin/photoConfig/edit/" + id, 800, 400);
 		}
 	</script>
 </body>

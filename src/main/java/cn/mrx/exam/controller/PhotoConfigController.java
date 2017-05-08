@@ -1,5 +1,6 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.pojo.Permission;
 import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
@@ -9,6 +10,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -75,7 +78,6 @@ public class PhotoConfigController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Object add(String startTime, String endTime, String description, HttpServletRequest httpServletRequest) throws Exception{
-
         PhotoConfig photoConfig = new PhotoConfig();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date _startTime = sdf.parse(startTime);
@@ -87,5 +89,41 @@ public class PhotoConfigController extends BaseController {
         User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
         photoConfig.setUserId(user.getId());//发布者
         return iPhotoConfigService.insert(photoConfig);
+    }
+
+    /**
+     * 更新采集规则页面
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String edit(@PathVariable("id") String id, Model model){
+        PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
+        model.addAttribute("photoConfig", photoConfig);
+        return "admin/photo/photoConfig-edit";
+    }
+
+    /**
+     * 更新采集规则
+     * @param id
+     * @param startTime
+     * @param endTime
+     * @param description
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public Object edit(String id, String startTime, String endTime, String description)throws Exception{
+        PhotoConfig photoConfig = new PhotoConfig();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date _startTime = sdf.parse(startTime);
+        Date _endTime = sdf.parse(endTime);
+        photoConfig.setId(Integer.valueOf(id));//主键id
+        photoConfig.setStartTime(_startTime);//开始时间
+        photoConfig.setEndTime(_endTime);//结束时间
+        photoConfig.setDescription(description);//描述
+        return iPhotoConfigService.updateById(photoConfig);
     }
 }
