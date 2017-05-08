@@ -231,6 +231,19 @@
 			var ids = new Array(id);
 			ajaxDel(ids);
 		}
+
+		/**
+		 * 结果分析页面
+		 * @param id
+         */
+		function analysis(id) {
+			var index = layer.open({
+				type: 2,
+				title: "结果分析",
+				content: "${ctx}/admin/photoConfig/analysis/"+id
+			});
+			layer.full(index);
+		}
 	</script>
 </body>
 </html>

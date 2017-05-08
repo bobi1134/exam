@@ -145,4 +145,15 @@ public class PhotoConfigController extends BaseController {
         }
         return iPhotoConfigService.deleteBatchIds(lists);
     }
+
+    /**
+     * 结果分析页面
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/analysis/{id}", method = RequestMethod.GET)
+    public String analysis(@PathVariable("id") String id){
+        System.out.println("id:"+id);
+        return "admin/photo/photoConfig-analysis";
+    }
 }
