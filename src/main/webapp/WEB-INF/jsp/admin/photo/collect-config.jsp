@@ -36,6 +36,7 @@
 				<th w_index="description">描述</th>
 				<th w_index="userId">发布者</th>
 				<th w_index="status" w_render="statusFn">最新发布</th>
+				<th w_render="toolbar" w_align="center">操作</th>
 			</tr>
 		</table>
 	</div>
@@ -133,6 +134,33 @@
 				}
 			}
 			return fmt;
+		}
+
+		/**
+		 * 操作
+		 */
+		function toolbar(row) {
+			var id = row.id;
+			var status = statusFn();
+			console.log("status:"+status);
+			var html = "";
+			html += '<a title="编辑" href="javascript:;" onclick="edit(\''+id+'\')" ><i class="Hui-iconfont">&#xe6df;</i>编辑</a>'
+			html +=  '<a title="删除" href="javascript:;" onclick="del(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>';
+			if(status == "已结束"){
+				html +=  '<a title="分析" href="javascript:;" onclick="analysis(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>分析</a>';
+			}
+			return html;
+		}
+
+		/**
+		 * 添加采集规则页面
+		 * @param title
+		 * @param url
+         * @param w
+         * @param h
+         */
+		function add(title, url, w, h) {
+			layer_show(title, url, w, h);
 		}
 	</script>
 </body>

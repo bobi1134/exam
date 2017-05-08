@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,5 +26,12 @@ public class Test1 {
         System.out.println(EncryptAndDecryptUtil.base64Encrypt("admin:111111"));
         System.out.println(EncryptAndDecryptUtil.base64Decrypt("YWRtaW46MTExMTEx"));
         System.out.println(EncryptAndDecryptUtil.base64Decrypt("YWRtaW4=MTExMTEx"));
+    }
+
+    @Test
+    public void test2()throws Exception{
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date=sdf.parse("2017-05-02 18:06:55");
+        System.out.println(date);
     }
 }
