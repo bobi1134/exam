@@ -142,7 +142,6 @@
 		function toolbar(row) {
 			var id = row.id;
 			var status = statusFn();
-			console.log("status:"+status);
 			var html = "";
 			html += '<a title="编辑" href="javascript:;" onclick="edit(\''+id+'\')" ><i class="Hui-iconfont">&#xe6df;</i>编辑</a>'
 			html +=  '<a title="删除" href="javascript:;" onclick="del(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>';
@@ -170,6 +169,67 @@
 		 */
 		function edit(id) {
 			layer_show("更新采集规则", "${ctx}/admin/photoConfig/edit/" + id, 800, 400);
+		}
+
+		/**
+		 * 批量删除
+		 */
+		function batchDel() {
+			var ids = gridObj.getCheckedValues('id');
+			//console.log("ids:"+ids);
+			if(ids.length > 0){
+				//是否都为空flag
+				var flag = true;
+				for(var i=0; i<ids.length; i++){
+					if(ids[i] != "") {
+						flag = false;
+						break;
+					}
+					flag = true;
+				}
+				//任意一个不为空
+				if(!flag){
+					ajaxDel(ids);
+				}else{
+					layer.msg('无效数据！',{icon:5,time:2000});
+				}
+			}else{
+				layer.msg('未勾选数据！',{icon:5,time:2000});
+			}
+		}
+
+		/**
+		 * 异步删除
+		 */
+		function ajaxDel(ids) {
+			layer.confirm('确定要删除吗？', {icon: 3, title:'提示'}, function(index){
+				$.ajax({
+					type: 'post',
+					url: '${ctx}/admin/photoConfig/del',
+					dataType: 'json',
+					data : {'ids': ids.toString()},
+					success: function(data){
+						if(data== true){
+							layer.msg('已删除!',{icon:1,time:1000});
+							gridObj.refreshPage();
+						}else{
+							layer.msg('删除失败!',{icon:5,time:1000});
+						}
+					},
+					error:function(data) {
+						layer.msg('服务器错误，请联系管理员!',{icon:5,time:1000});
+					},
+				});
+			});
+		}
+
+		/**
+		 * 单条删除
+		 * @param id
+         */
+		function del(id) {
+			var ids = new Array(id);
+			ajaxDel(ids);
 		}
 	</script>
 </body>

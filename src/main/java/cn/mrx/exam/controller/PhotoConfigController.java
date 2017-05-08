@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -125,5 +127,23 @@ public class PhotoConfigController extends BaseController {
         photoConfig.setEndTime(_endTime);//结束时间
         photoConfig.setDescription(description);//描述
         return iPhotoConfigService.updateById(photoConfig);
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @RequestMapping(value = "/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Object del(String ids){
+        String[]  strs = ids.split(",");
+        List<String> lists = new ArrayList<>();
+        for (String str : strs) {
+            if(!str.equals("")){
+                lists.add(str);
+            }
+        }
+        return iPhotoConfigService.deleteBatchIds(lists);
     }
 }
