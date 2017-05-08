@@ -1,6 +1,5 @@
 package cn.mrx.exam.controller;
 
-import cn.mrx.exam.pojo.Permission;
 import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
@@ -43,7 +42,7 @@ public class PhotoConfigController extends BaseController {
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String collectConfig(){
-        return "admin/photo/photoConfig";
+        return "admin/photo/photoConfig-list";
     }
 
     /**
