@@ -8,7 +8,7 @@
 		<result column="result_json" property="resultJson" />
 		<result column="name" property="name" />
 		<result column="create_time" property="createTime" />
-		<result column="userId" property="userid" />
+		<result column="user_id" property="userId" />
 	</resultMap>
 
 </mapper>

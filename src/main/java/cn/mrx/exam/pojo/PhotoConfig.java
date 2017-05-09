@@ -44,7 +44,7 @@ public class PhotoConfig extends Model<PhotoConfig> {
 	/**
 	 * 发布者
 	 */
-	@TableField(value="userId")
+	@TableField(value="user_id")
 	private Integer userId;
 
 	/**

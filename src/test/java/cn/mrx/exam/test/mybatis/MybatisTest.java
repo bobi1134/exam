@@ -40,7 +40,7 @@ public class MybatisTest {
         photo.setResultJson("abcdefghijk");
         photo.setName("aaa.png");
         photo.setCreateTime(new Date());
-        photo.setUserid(1);
+        photo.setUserId(1);
         boolean result = iPhotoService.insert(photo);
         System.out.println(result);
     }

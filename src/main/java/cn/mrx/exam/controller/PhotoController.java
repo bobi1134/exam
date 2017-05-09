@@ -78,7 +78,7 @@ public class PhotoController extends BaseController {
             photo.setCreateTime(new Date());
             HttpSession httpSession = httpServletRequest.getSession();
             User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
-            photo.setUserid(user.getId());
+            photo.setUserId(user.getId());
             boolean xxxxx = iPhotoService.insert(photo);
         }
 

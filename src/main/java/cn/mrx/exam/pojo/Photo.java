@@ -44,8 +44,8 @@ public class Photo extends Model<Photo> {
 	/**
 	 * 外键用户id
 	 */
-	@TableField(value="userId")
-	private Integer userid;
+	@TableField(value="user_id")
+	private Integer userId;
 
 
 	public Integer getId() {
@@ -80,12 +80,8 @@ public class Photo extends Model<Photo> {
 		this.createTime = createTime;
 	}
 
-	public Integer getUserid() {
-		return userid;
-	}
-
-	public void setUserid(Integer userid) {
-		this.userid = userid;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	@Override
@@ -93,14 +89,4 @@ public class Photo extends Model<Photo> {
 		return this.id;
 	}
 
-	@Override
-	public String toString() {
-		return "Photo{" +
-				"id=" + id +
-				", resultJson='" + resultJson + '\'' +
-				", name='" + name + '\'' +
-				", createTime=" + createTime +
-				", userid=" + userid +
-				'}';
-	}
 }
