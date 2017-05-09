@@ -93,4 +93,14 @@ public class Photo extends Model<Photo> {
 		return this.id;
 	}
 
+	@Override
+	public String toString() {
+		return "Photo{" +
+				"id=" + id +
+				", resultJson='" + resultJson + '\'' +
+				", name='" + name + '\'' +
+				", createTime=" + createTime +
+				", userid=" + userid +
+				'}';
+	}
 }

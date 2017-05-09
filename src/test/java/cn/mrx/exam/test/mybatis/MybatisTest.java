@@ -57,4 +57,15 @@ public class MybatisTest {
         iPhotoService.update(photo, photoEntityWrapper);
     }
 
+    @Test
+    public void testSelect() {
+        EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
+        photoEntityWrapper.gt("create_time", "2017-05-02 15:56:22");
+        photoEntityWrapper.lt("create_time", "2017-05-08 16:56:22");
+        List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
+        System.out.println("-----------------------");
+        System.out.println(photos.toString());
+        System.out.println("-----------------------");
+    }
+
 }

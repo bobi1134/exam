@@ -1,10 +1,12 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.pojo.Photo;
 import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
 import cn.mrx.exam.utils.QueryFilter;
 import cn.mrx.exam.utils.WebConstant;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,6 +120,7 @@ public class PhotoConfigController extends BaseController {
     @ResponseBody
     public Object edit(String id, String startTime, String endTime, String description)throws Exception{
         PhotoConfig photoConfig = new PhotoConfig();
+        //将字符串转换为Date类型
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date _startTime = sdf.parse(startTime);
         Date _endTime = sdf.parse(endTime);
@@ -144,6 +147,27 @@ public class PhotoConfigController extends BaseController {
             }
         }
         return iPhotoConfigService.deleteBatchIds(lists);
+    }
+
+    /**
+     * 图片库页面
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/photo-gallery/{id}", method = RequestMethod.GET)
+    public String photoGallery(@PathVariable("id") String id, Model model){
+        PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
+        //将Date转换为字符串
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String startTime = sdf.format(photoConfig.getStartTime());
+        String endTime = sdf.format(photoConfig.getEndTime());
+        //加入条件
+        EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
+        photoEntityWrapper.gt("create_time", startTime);
+        photoEntityWrapper.lt("create_time", endTime);
+        List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
+        model.addAttribute("photos", photos);
+        return "admin/photo/photoConfig-photoGallery";
     }
 
     /**
