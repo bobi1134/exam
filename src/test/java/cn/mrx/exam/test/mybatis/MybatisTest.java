@@ -3,9 +3,11 @@ package cn.mrx.exam.test.mybatis;
 import cn.mrx.exam.interceptor.PermissionCheck;
 import cn.mrx.exam.pojo.Permission;
 import cn.mrx.exam.pojo.Photo;
+import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.service.*;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class MybatisTest {
     private IPermissionService iPermissionService;
     @Autowired
     private IPhotoService iPhotoService;
+    @Autowired
+    private IPhotoConfigService iPhotoConfigService;
 
 
     @Test
@@ -59,13 +63,13 @@ public class MybatisTest {
 
     @Test
     public void testSelect() {
-        EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
-        photoEntityWrapper.gt("create_time", "2017-05-02 15:56:22");
-        photoEntityWrapper.lt("create_time", "2017-05-08 16:56:22");
-        List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
-        System.out.println("-----------------------");
-        System.out.println(photos.toString());
-        System.out.println("-----------------------");
+        EntityWrapper<PhotoConfig> photoConfigEntityWrapper = new EntityWrapper<>();
+        photoConfigEntityWrapper.eq("user_id", 2);
+
+        Page<PhotoConfig> photoConfigPage = iPhotoConfigService.selectPhotoConfigPage(new Page<>(0, 5), new EntityWrapper<>());
+        System.out.println("------------------------------");
+        System.out.println(photoConfigPage.getRecords());
+        System.out.println("------------------------------");
     }
 
 }

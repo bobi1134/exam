@@ -56,7 +56,9 @@ public class PhotoConfigController extends BaseController {
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(BSGridPage<PhotoConfig> bsGridPage, HttpServletRequest httpServletRequest){
-        Page<PhotoConfig> photoConfigPage = iPhotoConfigService.selectPage(bsGridPage.getPage(), QueryFilter.getInstance(httpServletRequest).buildEntityWrapper());
+        //Page<PhotoConfig> photoConfigPage = iPhotoConfigService.selectPage(bsGridPage.getPage(), QueryFilter.getInstance(httpServletRequest).buildEntityWrapper());
+        //自定义带条件多表分页查询
+        Page<PhotoConfig> photoConfigPage = iPhotoConfigService.selectPhotoConfigPage(bsGridPage.getPage(), QueryFilter.getInstance(httpServletRequest).buildEntityWrapper());
         return bsGridPage.parsePage(photoConfigPage);
     }
 

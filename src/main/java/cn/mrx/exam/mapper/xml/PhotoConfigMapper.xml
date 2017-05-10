@@ -9,6 +9,18 @@
 		<result column="end_time" property="endTime" />
 		<result column="description" property="description" />
 		<result column="user_id" property="userId" />
+
+		<!--关联查询-->
+		<association property="user" javaType="cn.mrx.exam.pojo.User">
+			<result property="username" column="username"/>
+		</association>
 	</resultMap>
+
+	<!--自定义带条件多表分页查询-->
+	<select id="selectPhotoConfigPage" resultMap="BaseResultMap">
+		select a.*, b.username from
+		t_photo_config a left join t_user b
+		on a.user_id = b.id ${ew.sqlSegment}
+	</select>
 
 </mapper>

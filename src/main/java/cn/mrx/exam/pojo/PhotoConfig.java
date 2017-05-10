@@ -53,6 +53,8 @@ public class PhotoConfig extends Model<PhotoConfig> {
 	@TableField(exist = false)
 	private String status;
 
+	@TableField(exist = false)
+	private User user;
 
 	public Integer getId() {
 		return id;
@@ -100,6 +102,14 @@ public class PhotoConfig extends Model<PhotoConfig> {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
