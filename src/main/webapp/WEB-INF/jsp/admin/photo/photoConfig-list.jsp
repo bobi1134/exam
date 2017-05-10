@@ -34,7 +34,7 @@
 				<th w_index="startTime" w_render="fmtStartTime" w_sort="start_time">开始时间</th>
 				<th w_index="endTime" w_render="fmtEndTime" w_sort="end_time">结束时间</th>
 				<th w_index="description">描述</th>
-				<th w_index="user" w_render="userNameFn">发布者</th>
+				<th w_index="user" w_render="userNameFn" w_sort="user_id">发布者</th>
 				<th w_index="status" w_render="statusFn">最新发布</th>
 				<th w_render="toolbar" w_align="center">操作</th>
 			</tr>
@@ -141,8 +141,6 @@
 		 */
 		function userNameFn(row) {
 			var user = row.user;
-			console.log(user);
-			console.log(user.username);
 			return user.username;
 		}
 
