@@ -6,7 +6,7 @@
 		<%@ include file="../jspf/head.jspf" %>
 	</head>
 <body>
-	<%--菜单--%>
+	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
 			<a href="javascript:;" onclick="xxx()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 饼状图</a>
@@ -16,7 +16,7 @@
 			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
 		</span>
 	</div>
-	<%--主体--%>
+	<!-- 主体 -->
 	<div class="page-container">
 		<div id="container" style="min-width:700px;height:400px"></div>
 	</div>
@@ -36,7 +36,7 @@
 					plotShadow: false
 				},
 				title: {
-					text: 'Browser market shares at a specific website, 2010'
+					text: '技术支持分布图'
 				},
 				tooltip: {
 					pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -55,19 +55,18 @@
 				},
 				series: [{
 					type: 'pie',
-					name: 'Browser share',
+					name: '占有比例',
 					data: [
-						['Firefox',   45.0],
-						['IE',       26.8],
+						['人脸检测',   45.0],
+						['人脸分析',       26.8],
 						{
-							name: 'Chrome',
+							name: '人脸对比',
 							y: 12.8,
 							sliced: true,
 							selected: true
 						},
-						['Safari',    8.5],
-						['Opera',     6.2],
-						['Others',   0.7]
+						['人脸搜索',    8.5],
+
 					]
 				}]
 			});

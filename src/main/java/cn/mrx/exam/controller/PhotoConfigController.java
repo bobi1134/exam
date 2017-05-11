@@ -6,6 +6,9 @@ import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
 import cn.mrx.exam.utils.QueryFilter;
 import cn.mrx.exam.utils.WebConstant;
+import cn.mrx.exam.utils.YoutuUtil;
+import cn.mrx.exam.youtu.Youtu;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.slf4j.Logger;
@@ -178,14 +181,9 @@ public class PhotoConfigController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/analysis/{id}", method = RequestMethod.GET)
-    public String analysis(@PathVariable("id") String id){
+    public String analysis(@PathVariable("id") String id, Model model){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
-        boolean isAnalysis = photoConfig.getIsAnalysis() == 0 ? false : true;
-        if(isAnalysis){
-            //查数据库
-        }else{
-            //人脸识别、人脸对比、五官定位
-        }
+        model.addAttribute("photoConfig", photoConfig);
         return "admin/photo/photoConfig-analysis";
     }
 }
