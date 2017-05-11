@@ -179,7 +179,13 @@ public class PhotoConfigController extends BaseController {
      */
     @RequestMapping(value = "/analysis/{id}", method = RequestMethod.GET)
     public String analysis(@PathVariable("id") String id){
-        System.out.println("id:"+id);
+        PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
+        boolean isAnalysis = photoConfig.getIsAnalysis() == 0 ? false : true;
+        if(isAnalysis){
+            //查数据库
+        }else{
+            //人脸识别、人脸对比、五官定位
+        }
         return "admin/photo/photoConfig-analysis";
     }
 }

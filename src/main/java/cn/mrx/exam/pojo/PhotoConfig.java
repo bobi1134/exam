@@ -44,7 +44,7 @@ public class PhotoConfig extends Model<PhotoConfig> {
 	/**
 	 * 是否已经解析,0:为解析,1:已解析
 	 */
-	private String isAnalysis;
+	private Integer isAnalysis;
 	/**
 	 * 发布者
 	 */
@@ -116,11 +116,11 @@ public class PhotoConfig extends Model<PhotoConfig> {
 		this.user = user;
 	}
 
-	public String getIsAnalysis() {
+	public Integer getIsAnalysis() {
 		return isAnalysis;
 	}
 
-	public void setIsAnalysis(String isAnalysis) {
+	public void setIsAnalysis(Integer isAnalysis) {
 		this.isAnalysis = isAnalysis;
 	}
 
