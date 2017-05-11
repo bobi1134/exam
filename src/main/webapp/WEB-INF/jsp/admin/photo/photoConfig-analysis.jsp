@@ -9,7 +9,7 @@
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
-			<a href="javascript:;" onclick="xxx()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 饼状图</a>
+			<a href="javascript:;" onclick="processAnalysis()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe710;</i> 过程分析</a>
 			<a href="javascript:;" onclick="xxx()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 折线图</a>
 		</span>
 		<span class="r">
@@ -71,6 +71,14 @@
 				}]
 			});
 		});
+
+		/**
+		 * 过程分析
+		 */
+		function processAnalysis() {
+			//重新打开url
+			location.replace("http://www.baidu.com");
+		}
 	</script>
 </body>
 </html>
