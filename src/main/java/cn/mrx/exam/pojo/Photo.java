@@ -28,10 +28,20 @@ public class Photo extends Model<Photo> {
 	@TableId(type = IdType.AUTO)
 	private Integer id;
 	/**
-	 * 返回结果
+	 * 返回人脸检测结果
 	 */
-	@TableField(value="result_json")
-	private String resultJson;
+	@TableField(value="result_detectface")
+	private String resultDetectface;
+	/**
+	 * 返回五官定位结果
+	 */
+	@TableField(value="result_faceshape")
+	private String resultFaceshape;
+	/**
+	 * 返回人脸对比结果
+	 */
+	@TableField(value="result_facecompare")
+	private String resultFacecompare;
 	/**
 	 * 照片名
 	 */
@@ -56,12 +66,28 @@ public class Photo extends Model<Photo> {
 		this.id = id;
 	}
 
-	public String getResultJson() {
-		return resultJson;
+	public String getResultDetectface() {
+		return resultDetectface;
 	}
 
-	public void setResultJson(String resultJson) {
-		this.resultJson = resultJson;
+	public void setResultDetectface(String resultDetectface) {
+		this.resultDetectface = resultDetectface;
+	}
+
+	public String getResultFaceshape() {
+		return resultFaceshape;
+	}
+
+	public void setResultFaceshape(String resultFaceshape) {
+		this.resultFaceshape = resultFaceshape;
+	}
+
+	public String getResultFacecompare() {
+		return resultFacecompare;
+	}
+
+	public void setResultFacecompare(String resultFacecompare) {
+		this.resultFacecompare = resultFacecompare;
 	}
 
 	public String getName() {
@@ -78,6 +104,10 @@ public class Photo extends Model<Photo> {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public Integer getUserId() {
+		return userId;
 	}
 
 	public void setUserId(Integer userId) {

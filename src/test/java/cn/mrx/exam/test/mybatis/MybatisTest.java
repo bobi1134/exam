@@ -41,7 +41,7 @@ public class MybatisTest {
     @Test
     public void testInsert() {
         Photo photo = new Photo();
-        photo.setResultJson("abcdefghijk");
+        photo.setResultFaceshape("abcdefghijk");
         photo.setName("aaa.png");
         photo.setCreateTime(new Date());
         photo.setUserId(1);
@@ -55,7 +55,7 @@ public class MybatisTest {
         photoEntityWrapper.eq("name", "aaa.png");
 
         Photo photo = new Photo();
-        photo.setResultJson("xxx");
+        photo.setResultFaceshape("xxx");
 
 
         iPhotoService.update(photo, photoEntityWrapper);
@@ -70,6 +70,10 @@ public class MybatisTest {
         System.out.println("------------------------------");
         System.out.println(photoConfigPage.getRecords());
         System.out.println("------------------------------");
+    }
+
+    @Test
+    public void testSelectTopOne() {
     }
 
 }
