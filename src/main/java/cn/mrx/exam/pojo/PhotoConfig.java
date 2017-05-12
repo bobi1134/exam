@@ -42,10 +42,6 @@ public class PhotoConfig extends Model<PhotoConfig> {
 	 */
 	private String description;
 	/**
-	 * 是否已经解析,0:为解析,1:已解析
-	 */
-	private Integer isAnalysis;
-	/**
 	 * 发布者
 	 */
 	@TableField(value="user_id")
@@ -114,14 +110,6 @@ public class PhotoConfig extends Model<PhotoConfig> {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public Integer getIsAnalysis() {
-		return isAnalysis;
-	}
-
-	public void setIsAnalysis(Integer isAnalysis) {
-		this.isAnalysis = isAnalysis;
 	}
 
 	@Override

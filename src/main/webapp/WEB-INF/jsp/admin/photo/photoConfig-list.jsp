@@ -36,7 +36,6 @@
 				<th w_index="description">描述</th>
 				<th w_index="user" w_render="userNameFn" w_sort="user_id">发布者</th>
 				<th w_index="status" w_render="statusFn">最新状态</th>
-				<th w_index="isAnalysis" w_render="isAnalysisFn" w_sort="isAnalysis">解析状态</th>
 				<th w_render="toolbar" w_align="center">操作</th>
 			</tr>
 		</table>
@@ -143,13 +142,6 @@
 		function userNameFn(row) {
 			var user = row.user;
 			return user.username;
-		}
-
-		/**
-		 * 解析状态
-		 */
-		function isAnalysisFn(row) {
-			return row.isAnalysis == 0 ? "未解析" : "已解析";
 		}
 
 		/**

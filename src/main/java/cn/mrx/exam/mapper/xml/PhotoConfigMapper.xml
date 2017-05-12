@@ -8,7 +8,6 @@
 		<result column="start_time" property="startTime" />
 		<result column="end_time" property="endTime" />
 		<result column="description" property="description" />
-		<result column="isAnalysis" property="isAnalysis" />
 		<result column="user_id" property="userId" />
 
 		<!--关联查询-->
