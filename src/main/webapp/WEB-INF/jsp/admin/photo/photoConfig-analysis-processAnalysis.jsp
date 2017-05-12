@@ -9,7 +9,8 @@
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
-			<a href="javascript:;" onclick="processAnalysis()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe710;</i> 过程分析</a>
+			<a href="${ctx}/admin/photoConfig/analysis-technicalSupport/${id}" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe621;</i> 技术支持</a>
+			<a href="${ctx}/admin/photoConfig/analysis-processAnalysis/${id}" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe710;</i> 过程分析</a>
 			<a href="javascript:;" onclick="xxx()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 折线图</a>
 		</span>
 		<span class="r">
@@ -54,7 +55,7 @@
 					}
 				},
 				series: [{
-					type: 'pie',
+					type: '',
 					name: '占有比例',
 					data: [
 						['人脸检测',   45.0],
@@ -71,14 +72,6 @@
 				}]
 			});
 		});
-
-		/**
-		 * 过程分析
-		 */
-		function processAnalysis() {
-			//重新打开url
-			location.replace("http://www.baidu.com");
-		}
 	</script>
 </body>
 </html>

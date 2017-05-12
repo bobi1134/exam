@@ -259,14 +259,14 @@
 		}
 
 		/**
-		 * 结果分析页面
+		 * 果分析-技术支持页面（默认打开页面）
 		 * @param id
          */
 		function analysis(id) {
 			var index = layer.open({
 				type: 2,
 				title: "结果分析",
-				content: "${ctx}/admin/photoConfig/analysis/"+id
+				content: "${ctx}/admin/photoConfig/analysis-technicalSupport/"+id
 			});
 			layer.full(index);
 		}

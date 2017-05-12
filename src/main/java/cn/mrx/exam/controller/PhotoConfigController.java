@@ -6,9 +6,6 @@ import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
 import cn.mrx.exam.utils.QueryFilter;
 import cn.mrx.exam.utils.WebConstant;
-import cn.mrx.exam.utils.YoutuUtil;
-import cn.mrx.exam.youtu.Youtu;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.slf4j.Logger;
@@ -176,14 +173,25 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 结果分析页面
+     * 结果分析-技术支持页面（默认打开页面）
      * @param id
      * @return
      */
-    @RequestMapping(value = "/analysis/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/analysis-technicalSupport/{id}", method = RequestMethod.GET)
+    public String analysisPage(@PathVariable("id") String id, Model model){
+        model.addAttribute("id", id);
+        return "admin/photo/photoConfig-analysis-technicalSupport";
+    }
+
+    /**
+     * 结果分析-过程分析页面
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/analysis-processAnalysis/{id}", method = RequestMethod.GET)
     public String analysis(@PathVariable("id") String id, Model model){
-        PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
-        model.addAttribute("photoConfig", photoConfig);
-        return "admin/photo/photoConfig-analysis";
+        model.addAttribute("id", id);
+        return "admin/photo/photoConfig-analysis-processAnalysis";
     }
 }
