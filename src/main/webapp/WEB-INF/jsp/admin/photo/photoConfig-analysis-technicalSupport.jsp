@@ -9,9 +9,7 @@
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
-			<a href="${ctx}/admin/photoConfig/analysis-technicalSupport/${id}" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe621;</i> 技术支持</a>
-			<a href="${ctx}/admin/photoConfig/analysis-processAnalysis/${id}" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe710;</i> 过程分析</a>
-			<a href="javascript:;" onclick="xxx()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 折线图</a>
+			<%@ include file="photoConfig-analysis-menu.jspf" %>
 		</span>
 		<span class="r">
 			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
