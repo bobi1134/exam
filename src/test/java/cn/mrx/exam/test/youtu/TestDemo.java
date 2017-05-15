@@ -60,8 +60,10 @@ public class TestDemo {
     public void test04(){
         try {
             Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY,Youtu.API_YOUTU_END_POINT,USER_ID);
-            JSONObject jsonObject = youtu.DetectFace("D:\\sde\\workspaces\\idea\\exam\\target\\exam\\resources\\admin\\upload\\photo\\99453a40-6191-4424-af77-111f9ad00d888.png", 1);
+            JSONObject jsonObject = youtu.FaceCompare("C:\\Users\\Mr.X\\Desktop\\876da2f7-a301-4275-845b-32997e7e43f9.png", "C:\\Users\\Mr.X\\Desktop\\876da2f7-a301-4275-845b-32997e7e43f9.png");
             System.out.println(jsonObject);
+            System.out.println(jsonObject.get("errorcode"));
+            System.out.println(jsonObject.get("errorcode")==null);
         } catch (Exception e) {
 //            e.printStackTrace();
             System.out.println(e.getMessage());

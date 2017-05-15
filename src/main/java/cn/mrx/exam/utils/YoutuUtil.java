@@ -70,7 +70,7 @@ public class YoutuUtil {
      * @return
      * @throws Exception
      */
-    public static JSONObject faceShape(String fileDir1, String fileDir2) {
+    public static JSONObject faceCompare(String fileDir1, String fileDir2) {
         try {
             Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
             JSONObject jsonObject = youtu.FaceCompare(fileDir1, fileDir2);

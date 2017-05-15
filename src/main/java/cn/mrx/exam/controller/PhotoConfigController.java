@@ -233,24 +233,60 @@ public class PhotoConfigController extends BaseController {
             }
         }
 
+        //单独更新人脸对比数据（在所有采集成功的照片中随意抽一张来进行比较）
+        String photo1_name = "";//人脸对比第一张图片
+        for (Photo photo : photos){
+            String resultDetectface = photo.getResultDetectface();
+            JSONObject jsonObject = JSON.parseObject(resultDetectface);
+            //根据人脸识别情况来作为依据：保证每张图片都是正常检测的
+            if (jsonObject.get("face")!=null && (int)jsonObject.get("errorcode")==0){
+                photo1_name = photo.getName();
+                break;
+            }
+        }
+        for (Photo photo : photos){
+            String resultDetectface = photo.getResultDetectface();
+            JSONObject jsonObject = JSON.parseObject(resultDetectface);
+            //根据人脸识别情况来作为依据：保证每张图片都是正常检测的
+            if (jsonObject.get("face")!=null && (int)jsonObject.get("errorcode")==0){
+                if(photo.getResultFacecompare()==null || photo.getResultFacecompare().trim().equals("")){
+                    JSONObject detectFaceCompare = YoutuUtil.faceCompare(realPath+photo1_name, realPath+photo.getName());
+                    Photo p = new Photo();
+                    p.setResultFacecompare(detectFaceCompare.toString());
+                    EntityWrapper<Photo> entityWrapper = new EntityWrapper<>();
+                    entityWrapper.eq("name", photo.getName());
+                    boolean result = iPhotoService.update(p, entityWrapper);
+                }
+            }
+        }
+
         //2、查数据库，分析数据，默认查看采集成功率（分析人脸检测、五官定位的采集成功率）
         int count = photos.size();
-        int exception_Detectface = 0,  exception_fh = 0;//后台程序出错数量
-        int errorcode_Detectface = 0, errorcode_fh = 0;//未检测成功数量
+        int exception_Detectface = 0,  exception_Faceshape = 0, exception_FaceCompare = 0;//后台程序出错数量
+        int errorcode_Detectface = 0, errorcode_Faceshape = 0, errorcode_FaceCompare = 0;//未检测成功数量
         for (Photo photo : photos){
             //人脸识别情况
             String resultDetectface = photo.getResultDetectface();
             JSONObject jsonObject = JSON.parseObject(resultDetectface);
-            if (jsonObject.get("face")!=null){
-                int errorcode = (int) jsonObject.get("errorcode");
-                if(errorcode != 0){
-                    errorcode_Detectface++;
-                }
-            }else{
-                exception_Detectface++;
-            }
+            if (jsonObject.get("face") != null){
+                if((int) jsonObject.get("errorcode") != 0) errorcode_Detectface++;
+            }else exception_Detectface++;
 
             //五官定位情况
+            String resultFaceshape = photo.getResultFaceshape();
+            JSONObject jsonObject2 = JSON.parseObject(resultFaceshape);
+            if (jsonObject2.get("face_shape") != null){
+                if((int) jsonObject2.get("errorcode") != 0) errorcode_Faceshape++;
+            }else exception_Faceshape++;
+
+            //人脸对比情况
+            String resultFacecompare = photo.getResultFacecompare();
+            if(resultFacecompare != null){
+                JSONObject jsonObject3 = JSON.parseObject(resultFacecompare);
+                if(jsonObject3.get("errorcode") != null){
+                    if((int)jsonObject3.get("errorcode") != 0) errorcode_FaceCompare++;
+                }else exception_FaceCompare++;
+            }
         }
         model.addAttribute("id", id);
 
@@ -259,6 +295,11 @@ public class PhotoConfigController extends BaseController {
         model.addAttribute("exception_Detectface", exception_Detectface);
         model.addAttribute("errorcode_Detectface", errorcode_Detectface);
 
-        return "admin/photo/photoConfig-analysis-successRate";
+        model.addAttribute("exception_Faceshape", exception_Faceshape);
+        model.addAttribute("errorcode_Faceshape", errorcode_Faceshape);
+
+        model.addAttribute("exception_FaceCompare", exception_FaceCompare);
+        model.addAttribute("errorcode_FaceCompare", errorcode_FaceCompare);
+        return "admin/photo/photoConfig-analysis-informationCollect";
     }
 }
