@@ -6,6 +6,8 @@ import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
 import cn.mrx.exam.utils.QueryFilter;
 import cn.mrx.exam.utils.WebConstant;
+import cn.mrx.exam.utils.YoutuUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.slf4j.Logger;
@@ -190,7 +192,49 @@ public class PhotoConfigController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/analysis-processAnalysis/{id}", method = RequestMethod.GET)
-    public String analysis(@PathVariable("id") String id, Model model){
+    public String analysis(@PathVariable("id") String id, Model model, HttpServletRequest httpServletRequest){
+        PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
+        //默认先获取该考试时间段采集成功率
+        //将Date转换为字符串
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String startTime = sdf.format(photoConfig.getStartTime());
+        String endTime = sdf.format(photoConfig.getEndTime());
+        //该时间段内的图片库
+        EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
+        photoEntityWrapper.gt("create_time" , startTime);
+        photoEntityWrapper.lt("create_time" , endTime);
+        List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
+        //先判断该考试时间段内的图片是否已经解析
+        String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
+        for (Photo photo : photos){
+            Photo p = new Photo();
+            boolean flag = false;
+            //人脸检测
+            if(photo.getResultDetectface()==null || photo.getResultDetectface().equals("")){
+                JSONObject detectFaceResult = YoutuUtil.detectFace(realPath + photo.getName());
+                //将人脸检测分析结果装入数据库
+                p.setResultDetectface(detectFaceResult.toString());
+                flag = true;
+            }
+            //五官定位
+            if(photo.getResultFaceshape()==null || photo.getResultFaceshape().equals("")){
+                JSONObject detectFaceResult = YoutuUtil.faceShape(realPath + photo.getName());
+                //将五官定位分析结果装入数据库
+                p.setResultFaceshape(detectFaceResult.toString());
+                flag = true;
+            }
+            //修改数据库
+            System.out.println(flag);
+            if (flag){
+                System.out.println(p);
+                EntityWrapper<Photo> entityWrapper = new EntityWrapper<>();
+                entityWrapper.eq("name", photo.getName());
+                boolean result = iPhotoService.update(p, entityWrapper);
+            }
+        }
+
+        //查数据库，分析数据。。。
+
         model.addAttribute("id", id);
         return "admin/photo/photoConfig-analysis-processAnalysis";
     }

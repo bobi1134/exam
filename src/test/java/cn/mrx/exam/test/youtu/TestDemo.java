@@ -7,6 +7,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * @ClassName: TestDemo
  * @Author: Mr.X
@@ -52,4 +56,16 @@ public class TestDemo {
         System.out.println(jsonObject);
     }
 
+    @Test
+    public void test04(){
+        try {
+            Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY,Youtu.API_YOUTU_END_POINT,USER_ID);
+            JSONObject jsonObject = youtu.DetectFace("D:\\sde\\workspaces\\idea\\exam\\target\\exam\\resources\\admin\\upload\\photo\\99453a40-6191-4424-af77-111f9ad00d888.png", 1);
+            System.out.println(jsonObject);
+        } catch (Exception e) {
+//            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.out.println(e.toString().substring(0, e.toString().indexOf(":")));
+        }
+    }
 }

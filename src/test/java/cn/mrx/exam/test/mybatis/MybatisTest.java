@@ -5,6 +5,10 @@ import cn.mrx.exam.pojo.Permission;
 import cn.mrx.exam.pojo.Photo;
 import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.service.*;
+import cn.mrx.exam.utils.YoutuUtil;
+import cn.mrx.exam.youtu.Youtu;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -73,7 +77,14 @@ public class MybatisTest {
     }
 
     @Test
-    public void testSelectTopOne() {
+    public void testYoutuUtil() {
+    }
+
+    @Test
+    public void testJSON() {
+        String hello = "hello";
+        String json =  "{\"error\":\""+hello+"\"}";
+        System.out.println(JSON.parseObject(json));
     }
 
 }

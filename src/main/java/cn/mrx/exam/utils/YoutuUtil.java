@@ -1,6 +1,7 @@
 package cn.mrx.exam.utils;
 
 import cn.mrx.exam.youtu.Youtu;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,15 +25,6 @@ public class YoutuUtil {
     public static final String SECRET_KEY = "pY8XklfNtDMJ3bx9KbpunuqdFfsulPr7";
     public static final String USER_ID = "1451965355";
 
-    public static Youtu youtu;
-
-    /**
-     * 构造器创建实例
-     */
-    private YoutuUtil(){
-        youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
-    }
-
     /**
      * 人脸检测
      * @param fileDir
@@ -41,11 +33,14 @@ public class YoutuUtil {
      */
     public static JSONObject detectFace(String fileDir){
         try {
+            Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
             JSONObject jsonObject = youtu.DetectFace(fileDir, 1);
             return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            String exceptionStr = e.toString().substring(0, e.toString().indexOf(":"));
+            String json =  "{\"exception\":\""+exceptionStr+"\"}";
+            return JSON.parseObject(json);
         }
     }
 
@@ -57,11 +52,14 @@ public class YoutuUtil {
      */
     public static JSONObject faceShape(String fileDir){
         try {
+            Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
             JSONObject jsonObject = youtu.FaceShape(fileDir, 1);
             return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            String exceptionStr = e.toString().substring(0, e.toString().indexOf(":"));
+            String json =  "{\"exception\":\""+exceptionStr+"\"}";
+            return JSON.parseObject(json);
         }
     }
 
@@ -74,11 +72,14 @@ public class YoutuUtil {
      */
     public static JSONObject faceShape(String fileDir1, String fileDir2) {
         try {
+            Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
             JSONObject jsonObject = youtu.FaceCompare(fileDir1, fileDir2);
             return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            String exceptionStr = e.toString().substring(0, e.toString().indexOf(":"));
+            String json =  "{\"exception\":\""+exceptionStr+"\"}";
+            return JSON.parseObject(json);
         }
     }
 }
