@@ -7,6 +7,7 @@ import cn.mrx.exam.utils.BSGridPage;
 import cn.mrx.exam.utils.QueryFilter;
 import cn.mrx.exam.utils.WebConstant;
 import cn.mrx.exam.utils.YoutuUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -186,15 +187,17 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 结果分析-过程分析页面
+     * 结果分析-信息采集页面
      * @param id
      * @param model
      * @return
      */
-    @RequestMapping(value = "/analysis-processAnalysis/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/analysis-informationCollect/{id}", method = RequestMethod.GET)
     public String analysis(@PathVariable("id") String id, Model model, HttpServletRequest httpServletRequest){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
-        //默认先获取该考试时间段采集成功率
+        //1、先判断该考试时间段内的图片（人脸检测、五官定位）是否已经解析，为解析则调用接口解析
+        //照片存放目录
+        String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
         //将Date转换为字符串
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String startTime = sdf.format(photoConfig.getStartTime());
@@ -204,8 +207,6 @@ public class PhotoConfigController extends BaseController {
         photoEntityWrapper.gt("create_time" , startTime);
         photoEntityWrapper.lt("create_time" , endTime);
         List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
-        //先判断该考试时间段内的图片是否已经解析
-        String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
         for (Photo photo : photos){
             Photo p = new Photo();
             boolean flag = false;
@@ -223,8 +224,7 @@ public class PhotoConfigController extends BaseController {
                 p.setResultFaceshape(detectFaceResult.toString());
                 flag = true;
             }
-            //修改数据库
-            System.out.println(flag);
+            //若有空则修改数据库
             if (flag){
                 System.out.println(p);
                 EntityWrapper<Photo> entityWrapper = new EntityWrapper<>();
@@ -233,9 +233,32 @@ public class PhotoConfigController extends BaseController {
             }
         }
 
-        //查数据库，分析数据。。。
+        //2、查数据库，分析数据，默认查看采集成功率（分析人脸检测、五官定位的采集成功率）
+        int count = photos.size();
+        int exception_Detectface = 0,  exception_fh = 0;//后台程序出错数量
+        int errorcode_Detectface = 0, errorcode_fh = 0;//未检测成功数量
+        for (Photo photo : photos){
+            //人脸识别情况
+            String resultDetectface = photo.getResultDetectface();
+            JSONObject jsonObject = JSON.parseObject(resultDetectface);
+            if (jsonObject.get("face")!=null){
+                int errorcode = (int) jsonObject.get("errorcode");
+                if(errorcode != 0){
+                    errorcode_Detectface++;
+                }
+            }else{
+                exception_Detectface++;
+            }
 
+            //五官定位情况
+        }
         model.addAttribute("id", id);
-        return "admin/photo/photoConfig-analysis-processAnalysis";
+
+        //返回数据
+        model.addAttribute("count", count);
+        model.addAttribute("exception_Detectface", exception_Detectface);
+        model.addAttribute("errorcode_Detectface", errorcode_Detectface);
+
+        return "admin/photo/photoConfig-analysis-successRate";
     }
 }

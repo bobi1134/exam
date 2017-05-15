@@ -17,7 +17,7 @@
 	</div>
 	<!-- 主体 -->
 	<div class="page-container">
-		<div id="container" style="min-width:700px;height:400px"></div>
+		<div id="detectface" style="min-width:700px;height:400px"></div>
 	</div>
 
 	<!-- js -->
@@ -28,14 +28,19 @@
 	<!-- 自定义js -->
 	<script type="text/javascript">
 		$(function () {
-			$('#container').highcharts({
+
+			var count = ${count};
+			var exception_Detectface = ${exception_Detectface};
+			var errorcode_Detectface = ${errorcode_Detectface};
+			//人脸检测采集成功率
+			$('#detectface').highcharts({
 				chart: {
 					plotBackgroundColor: null,
 					plotBorderWidth: null,
 					plotShadow: false
 				},
 				title: {
-					text: '技术支持分布图'
+					text: '人脸检测采集成功率'
 				},
 				tooltip: {
 					pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -53,18 +58,17 @@
 					}
 				},
 				series: [{
-					type: '',
+					type: 'pie',
 					name: '占有比例',
 					data: [
-						['人脸检测',   45.0],
-						['人脸分析',       26.8],
+						['程序异常', exception_Detectface/count],
+						['检测失败', errorcode_Detectface/count],
 						{
-							name: '人脸对比',
-							y: 12.8,
+							name: '检测成功',
+							y: 100,
 							sliced: true,
 							selected: true
 						},
-						['人脸搜索',    8.5],
 
 					]
 				}]
