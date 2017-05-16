@@ -153,11 +153,14 @@
 			var html = "";
 			html += '<a title="编辑" href="javascript:;" onclick="edit(\''+id+'\')" ><i class="Hui-iconfont">&#xe6df;</i>编辑</a>'
 			html +=  '<a title="删除" href="javascript:;" onclick="del(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>';
+
 			if(status == "考试中" || status == "已结束"){
 				html +=  '<a title="图片库" href="javascript:;" onclick="photo(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe613;</i> 图片库</a>';
 			}else{
 				html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 			}
+
+			html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
 
 			if(status == "已结束"){
 				html +=  '<a title="分析" href="javascript:;" onclick="analysis(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>分析</a>';
@@ -259,7 +262,7 @@
 		}
 
 		/**
-		 * 果分析-技术支持页面（默认打开页面）
+		 * 结果分析-技术支持页面（默认打开页面）
 		 * @param id
          */
 		function analysis(id) {
@@ -269,6 +272,31 @@
 				content: "${ctx}/admin/photoConfig/analysis-technicalSupport/"+id
 			});
 			layer.full(index);
+		}
+
+		/**
+		 * 信息分析入库
+		 */
+		function informationCollect(id) {
+			var index;
+			$.ajax({
+				type: 'post',
+				url: '${ctx}/admin/photoConfig/analysis-informationCollect/'+id,
+				dataType: 'json',
+				beforeSend:function () {
+					index = layer.load(0, {shade: false});
+				},
+				success: function(data){
+					if(data){
+						layer.close(index);
+						layer.msg('入库成功！',{icon:1,time:1000});
+					}
+				},
+				error:function(data) {
+					layer.close(index);
+					layer.msg('服务器错误，请联系管理员!',{icon:5,time:1000});
+				},
+			});
 		}
 	</script>
 </body>

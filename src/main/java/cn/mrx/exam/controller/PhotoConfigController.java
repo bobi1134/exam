@@ -187,15 +187,16 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 结果分析-信息采集页面
+     * 结果分析-信息采集入库
      * @param id
-     * @param model
+     * @param httpServletRequest
      * @return
      */
-    @RequestMapping(value = "/analysis-informationCollect/{id}", method = RequestMethod.GET)
-    public String analysis(@PathVariable("id") String id, Model model, HttpServletRequest httpServletRequest){
+    @RequestMapping(value = "/analysis-informationCollect/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public Object analysis(@PathVariable("id") String id, HttpServletRequest httpServletRequest){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
-        //1、先判断该考试时间段内的图片（人脸检测、五官定位）是否已经解析，为解析则调用接口解析
+        //先判断该考试时间段内的图片（人脸检测、五官定位）是否已经解析，为解析则调用接口解析
         //照片存放目录
         String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
         //将Date转换为字符串
@@ -207,60 +208,72 @@ public class PhotoConfigController extends BaseController {
         photoEntityWrapper.gt("create_time" , startTime);
         photoEntityWrapper.lt("create_time" , endTime);
         List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
+        //人脸对比第一张图片
+        String photo1_name = "";
+        boolean photo1_flag = true;
+        boolean result = false;
+
         for (Photo photo : photos){
             Photo p = new Photo();
             boolean flag = false;
+
             //人脸检测
             if(photo.getResultDetectface()==null || photo.getResultDetectface().equals("")){
                 JSONObject detectFaceResult = YoutuUtil.detectFace(realPath + photo.getName());
-                //将人脸检测分析结果装入数据库
                 p.setResultDetectface(detectFaceResult.toString());
                 flag = true;
+
+                //将第一个正确检测的数据保存起来
+                if(photo1_flag && detectFaceResult.get("face")!=null && (int)detectFaceResult.get("errorcode")==0){
+                    photo1_name = photo.getName();
+                    photo1_flag = false;
+                }
             }
             //五官定位
             if(photo.getResultFaceshape()==null || photo.getResultFaceshape().equals("")){
-                JSONObject detectFaceResult = YoutuUtil.faceShape(realPath + photo.getName());
-                //将五官定位分析结果装入数据库
-                p.setResultFaceshape(detectFaceResult.toString());
+                JSONObject faceShapeResult = YoutuUtil.faceShape(realPath + photo.getName());
+                p.setResultFaceshape(faceShapeResult.toString());
                 flag = true;
             }
+
+            //人脸对比
+            if(photo.getResultFacecompare()==null || photo.getResultFacecompare().trim().equals("")){
+                JSONObject faceCompareResult = YoutuUtil.faceCompare(realPath+photo1_name, realPath+photo.getName());
+                p.setResultFacecompare(faceCompareResult.toString());
+                flag = true;
+            }
+
             //若有空则修改数据库
             if (flag){
                 System.out.println(p);
                 EntityWrapper<Photo> entityWrapper = new EntityWrapper<>();
                 entityWrapper.eq("name", photo.getName());
-                boolean result = iPhotoService.update(p, entityWrapper);
-            }
+                result = iPhotoService.update(p, entityWrapper);
+            }else result = true;
         }
+        return result;
+    }
 
-        //单独更新人脸对比数据（在所有采集成功的照片中随意抽一张来进行比较）
-        String photo1_name = "";//人脸对比第一张图片
-        for (Photo photo : photos){
-            String resultDetectface = photo.getResultDetectface();
-            JSONObject jsonObject = JSON.parseObject(resultDetectface);
-            //根据人脸识别情况来作为依据：保证每张图片都是正常检测的
-            if (jsonObject.get("face")!=null && (int)jsonObject.get("errorcode")==0){
-                photo1_name = photo.getName();
-                break;
-            }
-        }
-        for (Photo photo : photos){
-            String resultDetectface = photo.getResultDetectface();
-            JSONObject jsonObject = JSON.parseObject(resultDetectface);
-            //根据人脸识别情况来作为依据：保证每张图片都是正常检测的
-            if (jsonObject.get("face")!=null && (int)jsonObject.get("errorcode")==0){
-                if(photo.getResultFacecompare()==null || photo.getResultFacecompare().trim().equals("")){
-                    JSONObject detectFaceCompare = YoutuUtil.faceCompare(realPath+photo1_name, realPath+photo.getName());
-                    Photo p = new Photo();
-                    p.setResultFacecompare(detectFaceCompare.toString());
-                    EntityWrapper<Photo> entityWrapper = new EntityWrapper<>();
-                    entityWrapper.eq("name", photo.getName());
-                    boolean result = iPhotoService.update(p, entityWrapper);
-                }
-            }
-        }
+    /**
+     * 采集成功率分析
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/analysis-successRate/{id}", method = RequestMethod.GET)
+    public String analysisSuccessRate(@PathVariable("id") String id, Model model){
+        PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
+        //将Date转换为字符串
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String startTime = sdf.format(photoConfig.getStartTime());
+        String endTime = sdf.format(photoConfig.getEndTime());
+        //该时间段内的图片库
+        EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
+        photoEntityWrapper.gt("create_time" , startTime);
+        photoEntityWrapper.lt("create_time" , endTime);
+        List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
 
-        //2、查数据库，分析数据，默认查看采集成功率（分析人脸检测、五官定位的采集成功率）
+        //查数据库，分析数据，默认查看采集成功率（分析人脸检测、五官定位的采集成功率）
         int count = photos.size();
         int exception_Detectface = 0,  exception_Faceshape = 0, exception_FaceCompare = 0;//后台程序出错数量
         int errorcode_Detectface = 0, errorcode_Faceshape = 0, errorcode_FaceCompare = 0;//未检测成功数量
@@ -270,14 +283,18 @@ public class PhotoConfigController extends BaseController {
             JSONObject jsonObject = JSON.parseObject(resultDetectface);
             if (jsonObject.get("face") != null){
                 if((int) jsonObject.get("errorcode") != 0) errorcode_Detectface++;
-            }else exception_Detectface++;
+            }else {
+                exception_Detectface++;
+            }
 
             //五官定位情况
             String resultFaceshape = photo.getResultFaceshape();
             JSONObject jsonObject2 = JSON.parseObject(resultFaceshape);
             if (jsonObject2.get("face_shape") != null){
                 if((int) jsonObject2.get("errorcode") != 0) errorcode_Faceshape++;
-            }else exception_Faceshape++;
+            }else {
+                exception_Faceshape++;
+            }
 
             //人脸对比情况
             String resultFacecompare = photo.getResultFacecompare();
@@ -285,10 +302,11 @@ public class PhotoConfigController extends BaseController {
                 JSONObject jsonObject3 = JSON.parseObject(resultFacecompare);
                 if(jsonObject3.get("errorcode") != null){
                     if((int)jsonObject3.get("errorcode") != 0) errorcode_FaceCompare++;
-                }else exception_FaceCompare++;
+                }else {
+                    exception_FaceCompare++;
+                }
             }
         }
-        model.addAttribute("id", id);
 
         //返回数据
         model.addAttribute("count", count);
@@ -300,6 +318,8 @@ public class PhotoConfigController extends BaseController {
 
         model.addAttribute("exception_FaceCompare", exception_FaceCompare);
         model.addAttribute("errorcode_FaceCompare", errorcode_FaceCompare);
-        return "admin/photo/photoConfig-analysis-informationCollect";
+
+        model.addAttribute("id", id);//必须返回
+        return "admin/photo/photoConfig-analysis-analysisSuccessRate";
     }
 }
