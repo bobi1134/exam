@@ -51,7 +51,7 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 针对BSGrid表格的封装操作
+     * 查询所有PhotoConfig - BSGrid形式返回
      * @param bsGridPage
      * @param httpServletRequest
      * @return
@@ -137,7 +137,7 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 批量删除
+     * 批量删除采集规则
      * @param ids
      * @return
      */
@@ -270,7 +270,7 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 采集成功率分析
+     * 结果分析-采集成功率分析
      * @param id
      * @param model
      * @return
@@ -335,15 +335,28 @@ public class PhotoConfigController extends BaseController {
         model.addAttribute("errorcode_FaceCompare", errorcode_FaceCompare);
 
         model.addAttribute("id", id);//必须返回
-        return "admin/photo/photoConfig-analysis-analysisSuccessRate";
+        return "admin/photo/photoConfig-analysis-collectSuccessRate";
     }
 
+    /**
+     * 结果分析-采集成功率详情页面
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/analysis-successRate-details/{id}", method = RequestMethod.GET)
     public String analysisSuccessRateDetails(@PathVariable("id") String id, Model model){
         model.addAttribute("id", id);
-        return "admin/photo/photoConfig-analysis-analysisSuccessRate-details";
+        return "admin/photo/photoConfig-analysis-collectSuccessRate-details";
     }
 
+    /**
+     * 结果分析-采集成功率详情异步查询
+     * @param id
+     * @param bsGridPage
+     * @param httpServletRequest
+     * @return
+     */
     @RequestMapping(value = "/analysis-successRate-details/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Object analysisSuccessRateDetails(@PathVariable("id") String id, BSGridPage<Photo> bsGridPage, HttpServletRequest httpServletRequest){
@@ -359,5 +372,18 @@ public class PhotoConfigController extends BaseController {
 
         Page<Photo> photoPage = iPhotoService.selectPage(bsGridPage.getPage(), photoEntityWrapper);
         return bsGridPage.parsePage(photoPage);
+    }
+
+
+    /**
+     * 结果分析-过程分析页面
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/analysis-process/{id}", method = RequestMethod.GET)
+    public String analysisProcess(@PathVariable("id") String id, Model model){
+        model.addAttribute("id", id);
+        return "admin/photo/photoConfig-analysis-process";
     }
 }
