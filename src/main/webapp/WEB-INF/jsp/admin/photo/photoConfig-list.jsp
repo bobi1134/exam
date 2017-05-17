@@ -287,9 +287,21 @@
 					index = layer.load(0, {shade: false});
 				},
 				success: function(data){
-					if(data){
+					console.log(data);
+					console.log(data.status);
+					console.log( data.isCollect);
+					if(data.status == "gt0" && data.isCollect == "false"){
 						layer.close(index);
-						layer.msg('入库成功！',{icon:1,time:1000});
+						var result = "入库状态！成功"+data.successNum+"张，失败"+data.errorNum+"张！";
+						layer.msg(result, {icon:1,time:2000});
+					}
+					if(data.status == "gt0" && data.isCollect == "true"){
+						layer.close(index);
+						layer.msg("已是最新入库状态！", {icon:1,time:2000});
+					}
+					if(data.status == "lt0"){
+						layer.close(index);
+						layer.msg("没有检查到图片库，请检查！", {icon:5,time:2000});
 					}
 				},
 				error:function(data) {

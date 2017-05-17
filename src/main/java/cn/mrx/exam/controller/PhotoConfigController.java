@@ -211,47 +211,62 @@ public class PhotoConfigController extends BaseController {
         //人脸对比第一张图片
         String photo1_name = "";
         boolean photo1_flag = true;
-        boolean result = false;
+        //分会结果
+        String josnStr = "";
 
-        for (Photo photo : photos){
-            Photo p = new Photo();
-            boolean flag = false;
+        if(photos.size()>0){
+            int successNum = 0, errorNum = 0;
+            for (Photo photo : photos){
+                Photo p = new Photo();
+                boolean flag = false;
 
-            //人脸检测
-            if(photo.getResultDetectface()==null || photo.getResultDetectface().equals("")){
-                JSONObject detectFaceResult = YoutuUtil.detectFace(realPath + photo.getName());
-                p.setResultDetectface(detectFaceResult.toString());
-                flag = true;
+                //人脸检测
+                if(photo.getResultDetectface()==null || photo.getResultDetectface().equals("")){
+                    JSONObject detectFaceResult = YoutuUtil.detectFace(realPath + photo.getName());
+                    p.setResultDetectface(detectFaceResult.toString());
+                    flag = true;
 
-                //将第一个正确检测的数据保存起来
-                if(photo1_flag && detectFaceResult.get("face")!=null && (int)detectFaceResult.get("errorcode")==0){
-                    photo1_name = photo.getName();
-                    photo1_flag = false;
+                    //将第一个正确检测的数据保存起来
+                    if(photo1_flag && detectFaceResult.get("face")!=null && (int)detectFaceResult.get("errorcode")==0){
+                        photo1_name = photo.getName();
+                        photo1_flag = false;
+                    }
+                }
+                //五官定位
+                if(photo.getResultFaceshape()==null || photo.getResultFaceshape().equals("")){
+                    JSONObject faceShapeResult = YoutuUtil.faceShape(realPath + photo.getName());
+                    p.setResultFaceshape(faceShapeResult.toString());
+                    flag = true;
+                }
+
+                //人脸对比
+                if(photo.getResultFacecompare()==null || photo.getResultFacecompare().trim().equals("")){
+                    JSONObject faceCompareResult = YoutuUtil.faceCompare(realPath+photo1_name, realPath+photo.getName());
+                    p.setResultFacecompare(faceCompareResult.toString());
+                    flag = true;
+                }
+
+                //若有空则修改数据库
+                if (flag){
+                    System.out.println(p);
+                    EntityWrapper<Photo> entityWrapper = new EntityWrapper<>();
+                    entityWrapper.eq("name", photo.getName());
+                    boolean result = iPhotoService.update(p, entityWrapper);
+                    if(result) successNum++;
+                    else errorNum++;
                 }
             }
-            //五官定位
-            if(photo.getResultFaceshape()==null || photo.getResultFaceshape().equals("")){
-                JSONObject faceShapeResult = YoutuUtil.faceShape(realPath + photo.getName());
-                p.setResultFaceshape(faceShapeResult.toString());
-                flag = true;
-            }
 
-            //人脸对比
-            if(photo.getResultFacecompare()==null || photo.getResultFacecompare().trim().equals("")){
-                JSONObject faceCompareResult = YoutuUtil.faceCompare(realPath+photo1_name, realPath+photo.getName());
-                p.setResultFacecompare(faceCompareResult.toString());
-                flag = true;
+            if(successNum>0 || errorNum>0){
+                josnStr = "{\"status\":\"gt0\", \"isCollect\":\"false\", \"successNum\":\""+successNum+"\", \"errorNum\":\""+errorNum+"\"}";
+            }else{
+                josnStr = "{\"status\":\"gt0\", \"isCollect\":\"true\"}";
             }
-
-            //若有空则修改数据库
-            if (flag){
-                System.out.println(p);
-                EntityWrapper<Photo> entityWrapper = new EntityWrapper<>();
-                entityWrapper.eq("name", photo.getName());
-                result = iPhotoService.update(p, entityWrapper);
-            }else result = true;
+            return JSON.parseObject(josnStr);
+        }else{
+            josnStr = "{\"status\":\"lt0\"}";
+            return JSON.parseObject(josnStr);
         }
-        return result;
     }
 
     /**
