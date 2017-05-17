@@ -337,4 +337,27 @@ public class PhotoConfigController extends BaseController {
         model.addAttribute("id", id);//必须返回
         return "admin/photo/photoConfig-analysis-analysisSuccessRate";
     }
+
+    @RequestMapping(value = "/analysis-successRate-details/{id}", method = RequestMethod.GET)
+    public String analysisSuccessRateDetails(@PathVariable("id") String id, Model model){
+        model.addAttribute("id", id);
+        return "admin/photo/photoConfig-analysis-analysisSuccessRate-details";
+    }
+
+    @RequestMapping(value = "/analysis-successRate-details/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public Object analysisSuccessRateDetails(@PathVariable("id") String id, BSGridPage<Photo> bsGridPage, HttpServletRequest httpServletRequest){
+        PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
+        //将Date转换为字符串
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String startTime = sdf.format(photoConfig.getStartTime());
+        String endTime = sdf.format(photoConfig.getEndTime());
+        //查询在该区间段的所有照片
+        EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
+        photoEntityWrapper.gt("create_time", startTime);
+        photoEntityWrapper.lt("create_time", endTime);
+
+        Page<Photo> photoPage = iPhotoService.selectPage(bsGridPage.getPage(), photoEntityWrapper);
+        return bsGridPage.parsePage(photoPage);
+    }
 }

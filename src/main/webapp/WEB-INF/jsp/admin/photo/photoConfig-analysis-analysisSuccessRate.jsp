@@ -5,12 +5,8 @@
 	<head>
 		<%@ include file="../jspf/head.jspf" %>
 		<style type="text/css">
-			.page-container{
-				padding-top: 20px;
-				padding-right: 5px;
-			}
 			.page-container .pie{
-				margin-top: 20px;
+				margin-top: 31px;
 			}
 			.page-container .pie div{
 				float: left;
@@ -27,14 +23,12 @@
 			<%@ include file="photoConfig-analysis-menu.jspf" %>
 		</span>
 		<span class="r">
-			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px;margin-right: 14px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
 		</span>
 	</div>
 	<!-- 主体 -->
 	<div class="page-container">
-		<span class="r">
-			<a href="${ctx}/admin/photoConfig/analysis-successRate-details/${id}" class="btn btn-primary radius">查看详情</a>
-		</span>
+		<a href="${ctx}/admin/photoConfig/analysis-successRate-details/${id}" class="btn btn-primary radius r">查看详情</a>
 		<div class="pie">
 			<div id="detectface"></div>
 			<div id="faceshape"></div>
