@@ -196,7 +196,7 @@ public class PhotoConfigController extends BaseController {
     @ResponseBody
     public Object analysis(@PathVariable("id") String id, HttpServletRequest httpServletRequest){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
-        //先判断该考试时间段内的图片（人脸检测、五官定位）是否已经解析，为解析则调用接口解析
+        //先判断该考试时间段内的图片（人脸分析、五官定位）是否已经解析，为解析则调用接口解析
         //照片存放目录
         String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
         //将Date转换为字符串
@@ -220,7 +220,7 @@ public class PhotoConfigController extends BaseController {
                 Photo p = new Photo();
                 boolean flag = false;
 
-                //人脸检测
+                //人脸分析
                 if(photo.getResultDetectface()==null || photo.getResultDetectface().equals("")){
                     JSONObject detectFaceResult = YoutuUtil.detectFace(realPath + photo.getName());
                     p.setResultDetectface(detectFaceResult.toString());
@@ -288,7 +288,7 @@ public class PhotoConfigController extends BaseController {
         photoEntityWrapper.lt("create_time" , endTime);
         List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
 
-        //查数据库，分析数据，默认查看采集成功率（分析人脸检测、五官定位的采集成功率）
+        //查数据库，分析数据，默认查看采集成功率（人脸分析、五官定位的采集成功率）
         int count = photos.size();
         int exception_Detectface = 0,  exception_Faceshape = 0, exception_FaceCompare = 0;//后台程序出错数量
         int errorcode_Detectface = 0, errorcode_Faceshape = 0, errorcode_FaceCompare = 0;//未检测成功数量

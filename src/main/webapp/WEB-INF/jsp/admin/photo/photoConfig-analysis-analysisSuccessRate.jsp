@@ -4,8 +4,23 @@
 <html>
 	<head>
 		<%@ include file="../jspf/head.jspf" %>
+		<style type="text/css">
+			.page-container{
+				padding-top: 20px;
+				padding-right: 5px;
+			}
+			.page-container .pie{
+				margin-top: 20px;
+			}
+			.page-container .pie div{
+				float: left;
+				min-width:33%;
+				height:350px;
+				margin-top: 10px;
+			}
+		</style>
 	</head>
-<body>
+	<body>
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
@@ -17,9 +32,14 @@
 	</div>
 	<!-- 主体 -->
 	<div class="page-container">
-		<div id="detectface" style="min-width:700px;height:400px"></div>
-		<div id="faceshape" style="min-width:700px;height:400px"></div>
-		<div id="faceCompare" style="min-width:700px;height:400px"></div>
+		<span class="r">
+			<a href="${ctx}/admin/photoConfig/analysis-successRate-details/${id}" class="btn btn-primary radius">查看详情</a>
+		</span>
+		<div class="pie">
+			<div id="detectface"></div>
+			<div id="faceshape"></div>
+			<div id="faceCompare"></div>
+		</div>
 	</div>
 
 	<!-- js -->
@@ -31,7 +51,7 @@
 	<script type="text/javascript">
 		$(function () {
 
-			//人脸检测采集成功率
+			//人脸分析采集成功率
 			var count = ${count};
 			var exception_Detectface = ${exception_Detectface};
 			var errorcode_Detectface = ${errorcode_Detectface};
@@ -42,7 +62,7 @@
 					plotShadow: false
 				},
 				title: {
-					text: '人脸检测采集成功率'
+					text: '人脸分析采集成功率'
 				},
 				tooltip: {
 					pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
