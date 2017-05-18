@@ -1,9 +1,9 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../jspf/taglib.jspf"%>
+<%@ include file="../../jspf/taglib.jspf"%>
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<%@ include file="../jspf/head.jspf" %>
+		<%@ include file="../../jspf/head.jspf" %>
 		<link rel="stylesheet" href="${ctx}/resources/admin/plug-in/bsgrid/builds/merged/bsgrid.all.min.css"/>
 		<style type="text/css">
 			table.bsgrid{
@@ -21,7 +21,7 @@
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
-			<%@ include file="photoConfig-analysis-menu.jspf" %>
+			<%@ include file="menu.jspf" %>
 		</span>
 		<span class="r">
 			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px;margin-right: 14px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
@@ -29,7 +29,7 @@
 	</div>
 	<!-- 主体 -->
 	<div class="page-container">
-		<a href="${ctx}/admin/photoConfig/analysis-successRate/${id}" class="btn btn-primary radius r">返回</a>
+		<a href="${ctx}/admin/photoConfigAnalysis/successRate/${id}" class="btn btn-primary radius r">返回</a>
 		<table id="bsGrid" class="bsgrid">
 			<tr>
 				<th w_index="id">ID</th>
@@ -44,7 +44,7 @@
 	</div>
 
 	<!-- js -->
-	<%@ include file="../jspf/footer.jspf" %>
+	<%@ include file="../../jspf/footer.jspf" %>
 	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/hcharts/Highcharts/5.0.6/js/highcharts.js"></script>
 	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/hcharts/Highcharts/5.0.6/js/modules/exporting.js"></script>
 	<script type="text/javascript" src="${ctx}/resources/admin/plug-in/bsgrid/builds/js/lang/grid.zh-CN.min.js"></script>
@@ -56,7 +56,7 @@
 		$(function(){
 			/** 初始化表格 */
 			gridObj = $.fn.bsgrid.init('bsGrid', {
-				url: '/admin/photoConfig/analysis-successRate-details/'+${id},
+				url: '/admin/photoConfigAnalysis/successRateDetails/'+${id},
 				pageSizeSelect: true,
 				pageSize: 20
 			});

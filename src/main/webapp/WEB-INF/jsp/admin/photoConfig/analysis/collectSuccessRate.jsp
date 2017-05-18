@@ -1,9 +1,9 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../jspf/taglib.jspf"%>
+<%@ include file="../../jspf/taglib.jspf"%>
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<%@ include file="../jspf/head.jspf" %>
+		<%@ include file="../../jspf/head.jspf" %>
 		<style type="text/css">
 			.page-container .pie{
 				margin-top: 31px;
@@ -20,7 +20,7 @@
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
-			<%@ include file="photoConfig-analysis-menu.jspf" %>
+			<%@ include file="menu.jspf" %>
 		</span>
 		<span class="r">
 			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px;margin-right: 14px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
@@ -28,7 +28,7 @@
 	</div>
 	<!-- 主体 -->
 	<div class="page-container">
-		<a href="${ctx}/admin/photoConfig/analysis-successRate-details/${id}" class="btn btn-primary radius r">查看详情</a>
+		<a href="${ctx}/admin/photoConfigAnalysis/successRateDetails/${id}" class="btn btn-primary radius r">查看详情</a>
 		<div class="pie">
 			<div id="detectface"></div>
 			<div id="faceshape"></div>
@@ -37,7 +37,7 @@
 	</div>
 
 	<!-- js -->
-	<%@ include file="../jspf/footer.jspf" %>
+	<%@ include file="../../jspf/footer.jspf" %>
 	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/hcharts/Highcharts/5.0.6/js/highcharts.js"></script>
 	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/hcharts/Highcharts/5.0.6/js/modules/exporting.js"></script>
 

@@ -269,7 +269,7 @@
 			var index = layer.open({
 				type: 2,
 				title: "结果分析",
-				content: "${ctx}/admin/photoConfig/analysis-technicalSupport/"+id
+				content: "${ctx}/admin/photoConfigAnalysis/technicalSupport/"+id
 			});
 			layer.full(index);
 		}
@@ -281,7 +281,7 @@
 			var index;
 			$.ajax({
 				type: 'post',
-				url: '${ctx}/admin/photoConfig/analysis-informationCollect/'+id,
+				url: '${ctx}/admin/photoConfigAnalysis/informationCollect/'+id,
 				dataType: 'json',
 				beforeSend:function () {
 					index = layer.load(0, {shade: false});
