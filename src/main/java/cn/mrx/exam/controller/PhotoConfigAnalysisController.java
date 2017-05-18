@@ -5,6 +5,7 @@ import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.utils.BSGridPage;
 import cn.mrx.exam.utils.YoutuUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -247,11 +249,18 @@ public class PhotoConfigAnalysisController extends BaseController{
      */
     @RequestMapping(value = "/processFace/{id}", method = RequestMethod.GET)
     public String analysisProcess(@PathVariable("id") String id, Model model){
-        model.addAttribute("id", id);
+        List<Integer> expression = new ArrayList<>();
         List<Photo> photos = selectPhotos(id);
         for (Photo photo : photos){
-            System.out.println(photo.getResultDetectface());
+            JSONObject jsonObject = JSON.parseObject(photo.getResultDetectface());
+            if(jsonObject.get("face")!=null){
+                JSONArray jsonArray = JSON.parseArray(jsonObject.get("face").toString());
+                JSONObject jsonObject2 = (JSONObject)jsonArray.get(0);
+                expression.add((int)jsonObject2.get("expression"));
+            }
         }
+        model.addAttribute("expression", expression);
+        model.addAttribute("id", id);
         return "admin/photoConfigAnalysis/processFace";
     }
 }
