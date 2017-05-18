@@ -38,7 +38,7 @@ public class PhotoConfigAnalysisController extends BaseController{
     @RequestMapping(value = "/technicalSupport/{id}", method = RequestMethod.GET)
     public String analysisPage(@PathVariable("id") String id, Model model){
         model.addAttribute("id", id);
-        return "admin/photoConfig/analysis/technicalSupport";
+        return "admin/photoConfigAnalysis/technicalSupport";
     }
 
     /**
@@ -190,7 +190,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("errorcode_FaceCompare", errorcode_FaceCompare);
 
         model.addAttribute("id", id);//必须返回
-        return "admin/photoConfig/analysis/collectSuccessRate";
+        return "admin/photoConfigAnalysis/collectSuccessRate";
     }
 
     /**
@@ -202,7 +202,7 @@ public class PhotoConfigAnalysisController extends BaseController{
     @RequestMapping(value = "/successRateDetails/{id}", method = RequestMethod.GET)
     public String analysisSuccessRateDetails(@PathVariable("id") String id, Model model){
         model.addAttribute("id", id);
-        return "admin/photoConfig/analysis/collectSuccessRateDetails";
+        return "admin/photoConfigAnalysis/collectSuccessRateDetails";
     }
 
     /**
@@ -239,6 +239,6 @@ public class PhotoConfigAnalysisController extends BaseController{
     @RequestMapping(value = "/process/{id}", method = RequestMethod.GET)
     public String analysisProcess(@PathVariable("id") String id, Model model){
         model.addAttribute("id", id);
-        return "admin/photoConfig/analysis/process";
+        return "admin/photoConfigAnalysis/process";
     }
 }

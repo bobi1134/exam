@@ -1,9 +1,9 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../../jspf/taglib.jspf"%>
+<%@ include file="../jspf/taglib.jspf"%>
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<%@ include file="../../jspf/head.jspf" %>
+		<%@ include file="../jspf/head.jspf" %>
 	</head>
 <body>
 	<!-- 菜单 -->
@@ -21,7 +21,7 @@
 	</div>
 
 	<!-- js -->
-	<%@ include file="../../jspf/footer.jspf" %>
+	<%@ include file="../jspf/footer.jspf" %>
 
 	<!-- 自定义js -->
 	<script type="text/javascript">

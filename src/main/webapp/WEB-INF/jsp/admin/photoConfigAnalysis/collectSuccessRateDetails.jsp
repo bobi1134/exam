@@ -1,9 +1,9 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../../jspf/taglib.jspf"%>
+<%@ include file="../jspf/taglib.jspf"%>
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<%@ include file="../../jspf/head.jspf" %>
+		<%@ include file="../jspf/head.jspf" %>
 		<link rel="stylesheet" href="${ctx}/resources/admin/plug-in/bsgrid/builds/merged/bsgrid.all.min.css"/>
 		<style type="text/css">
 			table.bsgrid{
@@ -44,7 +44,7 @@
 	</div>
 
 	<!-- js -->
-	<%@ include file="../../jspf/footer.jspf" %>
+	<%@ include file="../jspf/footer.jspf" %>
 	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/hcharts/Highcharts/5.0.6/js/highcharts.js"></script>
 	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/hcharts/Highcharts/5.0.6/js/modules/exporting.js"></script>
 	<script type="text/javascript" src="${ctx}/resources/admin/plug-in/bsgrid/builds/js/lang/grid.zh-CN.min.js"></script>
