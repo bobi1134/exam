@@ -125,13 +125,11 @@ public class PhotoConfigAnalysisController extends BaseController{
     }
 
     /**
-     * 采集成功率分析
+     * PhotoConfig - 查询在该采集规则时间段内的图片
      * @param id
-     * @param model
      * @return
      */
-    @RequestMapping(value = "/successRate/{id}", method = RequestMethod.GET)
-    public String analysisSuccessRate(@PathVariable("id") String id, Model model){
+    public List<Photo> selectPhotos(String id){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
         //将Date转换为字符串
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -142,6 +140,18 @@ public class PhotoConfigAnalysisController extends BaseController{
         photoEntityWrapper.gt("create_time" , startTime);
         photoEntityWrapper.lt("create_time" , endTime);
         List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
+        return photos;
+    }
+
+    /**
+     * 采集成功率分析
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/successRate/{id}", method = RequestMethod.GET)
+    public String analysisSuccessRate(@PathVariable("id") String id, Model model){
+        List<Photo> photos = selectPhotos(id);
 
         //查数据库，分析数据，默认查看采集成功率（人脸分析、五官定位的采集成功率）
         int count = photos.size();
@@ -206,7 +216,7 @@ public class PhotoConfigAnalysisController extends BaseController{
     }
 
     /**
-     * 采集成功率详情异步查询
+     * 采集成功率详情分页异步查询
      * @param id
      * @param bsGridPage
      * @param httpServletRequest
@@ -238,6 +248,10 @@ public class PhotoConfigAnalysisController extends BaseController{
     @RequestMapping(value = "/processFace/{id}", method = RequestMethod.GET)
     public String analysisProcess(@PathVariable("id") String id, Model model){
         model.addAttribute("id", id);
+        List<Photo> photos = selectPhotos(id);
+        for (Photo photo : photos){
+            System.out.println(photo.getResultDetectface());
+        }
         return "admin/photoConfigAnalysis/processFace";
     }
 }
