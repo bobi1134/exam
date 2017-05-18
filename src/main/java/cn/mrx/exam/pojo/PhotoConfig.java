@@ -44,8 +44,8 @@ public class PhotoConfig extends Model<PhotoConfig> {
 	/**
 	 * 发布者
 	 */
-	@TableField(value="user_id")
-	private Integer userId;
+	@TableField(value="publish_id")
+	private Integer publishId;
 
 	/**
 	 * 状态：未开始、考试中、已结束
@@ -88,12 +88,12 @@ public class PhotoConfig extends Model<PhotoConfig> {
 		this.description = description;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public Integer getPublishId() {
+		return publishId;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setPublishId(Integer publishId) {
+		this.publishId = publishId;
 	}
 
 	public String getStatus() {

@@ -8,7 +8,7 @@
 		<result column="start_time" property="startTime" />
 		<result column="end_time" property="endTime" />
 		<result column="description" property="description" />
-		<result column="user_id" property="userId" />
+		<result column="publish_id" property="publishId" />
 
 		<!--关联查询-->
 		<association property="user" javaType="cn.mrx.exam.pojo.User">
@@ -20,7 +20,7 @@
 	<select id="selectPhotoConfigPage" resultMap="BaseResultMap">
 		select a.*, b.username from
 		t_photo_config a left join t_user b
-		on a.user_id = b.id ${ew.sqlSegment}
+		on a.publish_id = b.id ${ew.sqlSegment}
 	</select>
 
 </mapper>

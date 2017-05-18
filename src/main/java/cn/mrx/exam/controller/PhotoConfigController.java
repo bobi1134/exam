@@ -90,12 +90,13 @@ public class PhotoConfigController extends BaseController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date _startTime = sdf.parse(startTime);
         Date _endTime = sdf.parse(endTime);
+
         photoConfig.setStartTime(_startTime);//开始时间
         photoConfig.setEndTime(_endTime);//结束时间
         photoConfig.setDescription(description);//描述
         HttpSession httpSession = httpServletRequest.getSession();
         User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
-        photoConfig.setUserId(user.getId());//发布者
+        photoConfig.setPublishId(user.getId());//发布者
         return iPhotoConfigService.insert(photoConfig);
     }
 
@@ -129,6 +130,7 @@ public class PhotoConfigController extends BaseController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date _startTime = sdf.parse(startTime);
         Date _endTime = sdf.parse(endTime);
+
         photoConfig.setId(Integer.valueOf(id));//主键id
         photoConfig.setStartTime(_startTime);//开始时间
         photoConfig.setEndTime(_endTime);//结束时间
