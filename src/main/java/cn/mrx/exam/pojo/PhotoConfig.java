@@ -42,7 +42,12 @@ public class PhotoConfig extends Model<PhotoConfig> {
 	 */
 	private String description;
 	/**
-	 * 发布者
+	 *
+	 */
+	@TableField(value = "user_ids")
+	private String userIds;
+	/**
+	 * 发布者id,t_user表数据
 	 */
 	@TableField(value="publish_id")
 	private Integer publishId;
@@ -102,6 +107,14 @@ public class PhotoConfig extends Model<PhotoConfig> {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getUserIds() {
+		return userIds;
+	}
+
+	public void setUserIds(String userIds) {
+		this.userIds = userIds;
 	}
 
 	public User getUser() {

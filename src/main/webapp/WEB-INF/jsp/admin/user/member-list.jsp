@@ -125,7 +125,7 @@ $(function(){
 				return "admin";
 				break;
 			case 2:
-				return "admin";
+				return "web_manager";
 				break;
 			case 3:
 				return "web_user";

@@ -34,7 +34,9 @@
 				<th w_index="startTime" w_render="fmtStartTime" w_sort="start_time">开始时间</th>
 				<th w_index="endTime" w_render="fmtEndTime" w_sort="end_time">结束时间</th>
 				<th w_index="description">描述</th>
-				<th w_index="user" w_render="userNameFn" w_sort="publish_id">发布者</th>
+				<th w_index="userIds" w_sort="user_ids">应考人</th>
+				<th w_index="publishId" w_sort="publish_id">发布者ID</th>
+				<th w_index="user" w_render="userNameFn" w_sort="publish_id">发布者姓名</th>
 				<th w_index="status" w_render="statusFn">最新状态</th>
 				<th w_render="toolbar" w_align="center">操作</th>
 			</tr>
@@ -151,21 +153,42 @@
 			var id = row.id;
 			var status = statusFn();
 			var html = "";
-			html += '<a title="编辑" href="javascript:;" onclick="edit(\''+id+'\')" ><i class="Hui-iconfont">&#xe6df;</i>编辑</a>'
-			html +=  '<a title="删除" href="javascript:;" onclick="del(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>';
 
-			if(status == "考试中" || status == "已结束"){
-				html +=  '<a title="图片库" href="javascript:;" onclick="photo(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe613;</i> 图片库</a>';
-			}else{
-				html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-			}
+			//若是admin,则显示所有的操作
+			if("${session_user.username}"=="admin"){
+				html += '<a title="编辑" href="javascript:;" onclick="edit(\''+id+'\')" ><i class="Hui-iconfont">&#xe6df;</i>编辑</a>'
+				html +=  '<a title="删除" href="javascript:;" onclick="del(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>';
 
-			html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
+				if(status == "考试中" || status == "已结束"){
+					html +=  '<a title="图片库" href="javascript:;" onclick="photo(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe613;</i> 图片库</a>';
+				}else{
+					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+				}
 
-			if(status == "已结束"){
-				html +=  '<a title="分析" href="javascript:;" onclick="analysis(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>分析</a>';
-			}else{
-				html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+				html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
+
+				if(status == "已结束"){
+					html +=  '<a title="分析" href="javascript:;" onclick="analysis(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>分析</a>';
+				}else{
+					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+				}
+			}else if("${session_user.id}"==row.publishId){//如不是admin登录，则只显示属于自己的操作
+				html += '<a title="编辑" href="javascript:;" onclick="edit(\''+id+'\')" ><i class="Hui-iconfont">&#xe6df;</i>编辑</a>'
+				html +=  '<a title="删除" href="javascript:;" onclick="del(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>';
+
+				if(status == "考试中" || status == "已结束"){
+					html +=  '<a title="图片库" href="javascript:;" onclick="photo(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe613;</i> 图片库</a>';
+				}else{
+					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+				}
+
+				html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
+
+				if(status == "已结束"){
+					html +=  '<a title="分析" href="javascript:;" onclick="analysis(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>分析</a>';
+				}else{
+					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+				}
 			}
 			return html;
 		}
