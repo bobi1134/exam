@@ -5,14 +5,20 @@
 	<head>
 		<%@ include file="../jspf/head.jspf" %>
 	</head>
+	<style type="text/css">
+		.page-container{
+			/*border: 1px solid red;*/
+			/*padding: 0;*/
+		}
+	</style>
 <body>
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
-		<%@ include file="menu.jspf" %>
+		<%@ include file="analysis-header-menu.jspf" %>
 	</div>
 	<!-- 主体 -->
 	<div class="page-container">
-		，，，，，，
+		<%@ include file="process-menu.jspf" %>
 	</div>
 
 	<!-- js -->

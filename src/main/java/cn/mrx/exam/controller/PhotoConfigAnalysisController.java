@@ -229,16 +229,15 @@ public class PhotoConfigAnalysisController extends BaseController{
         return bsGridPage.parsePage(photoPage);
     }
 
-
     /**
-     * 过程分析页面
+     * 过程分析页面（默认打开面部表情分析页面）
      * @param id
      * @param model
      * @return
      */
-    @RequestMapping(value = "/process/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/processFace/{id}", method = RequestMethod.GET)
     public String analysisProcess(@PathVariable("id") String id, Model model){
         model.addAttribute("id", id);
-        return "admin/photoConfigAnalysis/process";
+        return "admin/photoConfigAnalysis/processFace";
     }
 }
