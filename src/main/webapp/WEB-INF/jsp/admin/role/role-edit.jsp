@@ -101,6 +101,31 @@
 						</dl>
 					</dd>
 				</dl>
+
+				<%--过程分析--%>
+				<dl class="permission-list" id="gcfx">
+					<dt>
+						<label>过程分析</label>
+					</dt>
+					<dd>
+						<dl class="cl permission-list2">
+							<dd>
+								<c:forEach items="${allPermissions}" var="c">
+									<c:if test="${c.parentId==4}">
+										<c:choose>
+											<c:when test="${c.flag==true}">
+												<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
+											</c:when>
+											<c:otherwise>
+												<label class=""><input type="checkbox" value="${c.id}">${c.permissionName}</label>
+											</c:otherwise>
+										</c:choose>
+									</c:if>
+								</c:forEach>
+							</dd>
+						</dl>
+					</dd>
+				</dl>
 			</div>
 		</div>
 		<div class="row cl">
@@ -148,6 +173,13 @@
 				});
 				//角色权限管理
 				$("#rlsbjs dd .cl dd label").each(function () {
+					var input = $(this).find("input");
+					if (input.is(":checked")) {
+						permissionIds = permissionIds + input.val() + ",";
+					}
+				});
+				//过程分析
+				$("#gcfx dd .cl dd label").each(function () {
 					var input = $(this).find("input");
 					if (input.is(":checked")) {
 						permissionIds = permissionIds + input.val() + ",";

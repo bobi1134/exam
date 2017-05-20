@@ -121,16 +121,25 @@
             </dl>
         </c:if>
 
-        <dl id="menu-gcfx">
-            <dt><i class="Hui-iconfont">&#xe620;</i> 过程分析<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a data-href="${ctx}/admin/photo/photo-detect" data-title="拍摄检测" href="javascript:void(0)">拍摄检测</a></li>
-                    <li><a data-href="${ctx}/admin/photo/photo-collect" data-title="图片采集" href="javascript:void(0)">图片采集</a></li>
-                    <li><a data-href="${ctx}/admin/photoConfig/" data-title="采集配置" href="javascript:void(0)">采集配置</a></li>
-                </ul>
-            </dd>
-        </dl>
+        <c:if test="${fn:contains(parentIds, '4')}">
+            <dl id="menu-gcfx">
+                <dt><i class="Hui-iconfont">&#xe620;</i> 过程分析<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dd>
+                    <ul>
+                        <c:forEach items="${permissions}" var="c" >
+                            <c:choose>
+                                <c:when test="${c.parentId==4 and c.nowId==2}">
+                                    <li><a data-href="${ctx}${c.uri}" data-title="${c.permissionName}" href="javascript:;">${c.permissionName}</a></li>
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
+                            <%--<li><a data-href="${ctx}/admin/photo/photo-detect" data-title="拍摄检测" href="javascript:void(0)">拍摄检测</a></li>--%>
+                            <%--<li><a data-href="${ctx}/admin/photo/photo-collect" data-title="图片采集" href="javascript:void(0)">图片采集</a></li>--%>
+                            <%--<li><a data-href="${ctx}/admin/photoConfig/" data-title="采集配置" href="javascript:void(0)">采集配置</a></li>--%>
+                    </ul>
+                </dd>
+            </dl>
+        </c:if>
 
     </div>
 </aside>

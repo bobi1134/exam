@@ -50,16 +50,25 @@
 								<option value="1" selected>会员管理</option>
 								<option value="2">角色权限管理</option>
 								<option value="3">人脸识别技术</option>
+								<option value="4">过程分析</option>
 							</c:when>
 							<c:when test="${permission.parentId==2}">
 								<option value="1">会员管理</option>
 								<option value="2" selected>角色权限管理</option>
 								<option value="3">人脸识别技术</option>
+								<option value="4">过程分析</option>
 							</c:when>
 							<c:when test="${permission.parentId==3}">
 								<option value="1">会员管理</option>
 								<option value="2">角色权限管理</option>
 								<option value="3" selected>人脸识别技术</option>
+								<option value="4">过程分析</option>
+							</c:when>
+							<c:when test="${permission.parentId==4}">
+								<option value="1">会员管理</option>
+								<option value="2">角色权限管理</option>
+								<option value="3">人脸识别技术</option>
+								<option value="4" selected>过程分析</option>
 							</c:when>
 						</c:choose>
 					</select>

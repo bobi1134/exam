@@ -32,7 +32,7 @@
 			<th w_index="id" w_check="true"></th>
 			<th w_index="id">ID</th>
 			<th w_index="uri" w_sort="uri" w_align="left">uri</th>
-			<th w_index="permissionName" w_sort="permissionName">权限名称</th>
+			<th w_index="permissionName" w_sort="permissionName" w_align="left">权限名称</th>
 			<th w_index="nowId" w_render="nowIdFn">菜单等级</th>
 			<th w_index="parentId" w_sort="uri" w_render="parentIdFn">父级菜单</th>
 			<th w_render="toolbar" w_align="center">操作</th>
@@ -88,6 +88,9 @@
 				break;
 			case 3:
 				return "人脸识别技术";
+				break;
+			case 4:
+				return "过程分析";
 				break;
 			default:
 				return "######";
