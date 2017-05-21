@@ -46,6 +46,8 @@
 
 	<!-- 自定义js -->
 	<script type="text/javascript">
+		//页面加载完修改标题
+		parent.document.getElementsByClassName('layui-layer-title')[0].innerText="应考人";
 	</script>
 </body>
 </html>
