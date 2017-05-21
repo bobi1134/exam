@@ -23,7 +23,7 @@
 	</div>
 	<!-- 主体 -->
 	<div class="page-container">
-		<a href="${ctx}/admin/photoConfigAnalysis/successRateDetails/${photoConfigId}/${userId}" class="btn btn-primary radius r">查看详情</a>
+		<a href="${ctx}/admin/photoConfigAnalysis/successRateDetails/${photoConfigId}/${student.id}" class="btn btn-primary radius r">查看详情</a>
 		<div class="pie">
 			<div id="detectface"></div>
 			<div id="faceshape"></div>

@@ -61,7 +61,7 @@
 					borderWidth: 0
 				},
 				series: [{
-					name: 'admin',
+					name: '${student.reallyName}',
 					data: expression
 				}]
 			});

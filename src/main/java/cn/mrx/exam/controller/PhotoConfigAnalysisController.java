@@ -2,6 +2,7 @@ package cn.mrx.exam.controller;
 
 import cn.mrx.exam.pojo.Photo;
 import cn.mrx.exam.pojo.PhotoConfig;
+import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
 import cn.mrx.exam.utils.YoutuUtil;
 import com.alibaba.fastjson.JSON;
@@ -35,26 +36,28 @@ public class PhotoConfigAnalysisController extends BaseController{
     /**
      * 技术支持页面（默认打开页面）
      * @param photoConfigId
-     * @param userId
+     * @param studentId
      * @param model
      * @return
      */
-    @RequestMapping(value = "/technicalSupport/{photoConfigId}/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/technicalSupport/{photoConfigId}/{studentId}", method = RequestMethod.GET)
     public String analysisPage(@PathVariable("photoConfigId") String photoConfigId,
-                               @PathVariable("userId") String userId,
+                               @PathVariable("studentId") String studentId,
                                Model model){
+        //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
-        model.addAttribute("userId", userId);
+        User student = iUserService.selectById(studentId);
+        model.addAttribute("student", student);
         return "admin/photoConfigAnalysis/technicalSupport";
     }
 
     /**
      * 通通查询封装：PhotoConfig表 - 查询在该采集规则时间段内的图片，返回photos
      * @param photoConfigId
-     * @param userId
+     * @param studentId
      * @return
      */
-    public List<Photo> selectPhotos(String photoConfigId, String userId){
+    public List<Photo> selectPhotos(String photoConfigId, String studentId){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(photoConfigId);
         //将Date转换为字符串
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -64,7 +67,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
         photoEntityWrapper.gt("create_time" , startTime);
         photoEntityWrapper.lt("create_time" , endTime);
-        photoEntityWrapper.eq("user_id", userId);
+        photoEntityWrapper.eq("user_id", studentId);
         List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
         return photos;
     }
@@ -72,15 +75,15 @@ public class PhotoConfigAnalysisController extends BaseController{
     /**
      * 采集成功率分析
      * @param photoConfigId
-     * @param userId
+     * @param studentId
      * @param model
      * @return
      */
-    @RequestMapping(value = "/successRate/{photoConfigId}/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/successRate/{photoConfigId}/{studentId}", method = RequestMethod.GET)
     public String analysisSuccessRate(@PathVariable("photoConfigId") String photoConfigId,
-                                      @PathVariable("userId") String userId,
+                                      @PathVariable("studentId") String studentId,
                                       Model model){
-        List<Photo> photos = selectPhotos(photoConfigId, userId);
+        List<Photo> photos = selectPhotos(photoConfigId, studentId);
 
         //查数据库，分析数据，默认查看采集成功率（人脸分析、五官定位的采集成功率）
         int count = photos.size();
@@ -128,8 +131,10 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("exception_FaceCompare", exception_FaceCompare);
         model.addAttribute("errorcode_FaceCompare", errorcode_FaceCompare);
 
+        //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
-        model.addAttribute("userId", userId);
+        User student = iUserService.selectById(studentId);
+        model.addAttribute("student", student);
         return "admin/photoConfigAnalysis/collectSuccessRate";
     }
 
@@ -138,12 +143,14 @@ public class PhotoConfigAnalysisController extends BaseController{
      * @param model
      * @return
      */
-    @RequestMapping(value = "/successRateDetails/{photoConfigId}/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/successRateDetails/{photoConfigId}/{studentId}", method = RequestMethod.GET)
     public String analysisSuccessRateDetails(@PathVariable("photoConfigId") String photoConfigId,
-                                             @PathVariable("userId") String userId,
+                                             @PathVariable("studentId") String studentId,
                                              Model model){
+        //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
-        model.addAttribute("userId", userId);
+        User student = iUserService.selectById(studentId);
+        model.addAttribute("student", student);
         return "admin/photoConfigAnalysis/collectSuccessRateDetails";
     }
 
@@ -153,10 +160,10 @@ public class PhotoConfigAnalysisController extends BaseController{
      * @param httpServletRequest
      * @return
      */
-    @RequestMapping(value = "/successRateDetails/{photoConfigId}/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/successRateDetails/{photoConfigId}/{studentId}", method = RequestMethod.POST)
     @ResponseBody
     public Object analysisSuccessRateDetails(@PathVariable("photoConfigId") String photoConfigId,
-                                             @PathVariable("userId") String userId,
+                                             @PathVariable("studentId") String studentId,
                                              BSGridPage<Photo> bsGridPage,
                                              HttpServletRequest httpServletRequest){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(photoConfigId);
@@ -168,7 +175,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
         photoEntityWrapper.gt("create_time", startTime);
         photoEntityWrapper.lt("create_time", endTime);
-        photoEntityWrapper.eq("user_id", userId);
+        photoEntityWrapper.eq("user_id", studentId);
 
         Page<Photo> photoPage = iPhotoService.selectPage(bsGridPage.getPage(), photoEntityWrapper);
         return bsGridPage.parsePage(photoPage);
@@ -179,12 +186,12 @@ public class PhotoConfigAnalysisController extends BaseController{
      * @param model
      * @return
      */
-    @RequestMapping(value = "/processFace/{photoConfigId}/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/processFace/{photoConfigId}/{studentId}", method = RequestMethod.GET)
     public String analysisProcess(@PathVariable("photoConfigId") String photoConfigId,
-                                  @PathVariable("userId") String userId,
+                                  @PathVariable("studentId") String studentId,
                                   Model model){
         List<Integer> expression = new ArrayList<>();
-        List<Photo> photos = selectPhotos(photoConfigId, userId);
+        List<Photo> photos = selectPhotos(photoConfigId, studentId);
         for (Photo photo : photos){
             JSONObject jsonObject = JSON.parseObject(photo.getResultDetectface());
             if(jsonObject.get("face")!=null){
@@ -194,8 +201,11 @@ public class PhotoConfigAnalysisController extends BaseController{
             }
         }
         model.addAttribute("expression", expression);
+
+        //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
-        model.addAttribute("userId", userId);
+        User student = iUserService.selectById(studentId);
+        model.addAttribute("student", student);
         return "admin/photoConfigAnalysis/processFace";
     }
 }
