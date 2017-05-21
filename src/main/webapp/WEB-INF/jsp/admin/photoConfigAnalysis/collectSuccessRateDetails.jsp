@@ -24,7 +24,7 @@
 	</div>
 	<!-- 主体 -->
 	<div class="page-container">
-		<a href="${ctx}/admin/photoConfigAnalysis/successRate/${id}" class="btn btn-primary radius r">返回</a>
+		<a href="${ctx}/admin/photoConfigAnalysis/successRate/${photoConfigId}/${userId}" class="btn btn-primary radius r">返回</a>
 		<table id="bsGrid" class="bsgrid">
 			<tr>
 				<th w_index="id">ID</th>
@@ -51,7 +51,7 @@
 		$(function(){
 			/** 初始化表格 */
 			gridObj = $.fn.bsgrid.init('bsGrid', {
-				url: '/admin/photoConfigAnalysis/successRateDetails/'+${id},
+				url: '/admin/photoConfigAnalysis/successRateDetails/${photoConfigId}/${userId}',
 				pageSizeSelect: true,
 				pageSize: 20
 			});

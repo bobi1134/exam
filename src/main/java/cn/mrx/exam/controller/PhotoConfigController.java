@@ -208,4 +208,108 @@ public class PhotoConfigController extends BaseController {
         model.addAttribute("photos", photos);
         return "admin/photoConfig/photoConfig-photoGallery";
     }
+
+    /**
+     * 查看所有学生信息页面
+     * @param photoConfigId
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/studentInfo/{photoConfigId}", method = RequestMethod.GET)
+    public String studentInfo(@PathVariable("photoConfigId") String photoConfigId, Model model){
+        model.addAttribute("photoId", photoConfigId);
+        PhotoConfig photoConfig = iPhotoConfigService.selectById(photoConfigId);
+        String str = photoConfig.getUserIds();
+        List<User> users = new ArrayList<>();
+        if (str!=null && !str.equals("")){
+            for (String s : str.split(",")){
+                users.add(iUserService.selectById(s));
+            }
+        }
+        model.addAttribute("users", users);
+        return "/admin/photoConfig/photoConfig-studentInfo";
+    }
+
+    /**
+     * 信息采集入库
+     * @param id
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping(value = "/informationCollect/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public Object informationCollect(@PathVariable("id") String id, HttpServletRequest httpServletRequest){
+        PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
+        //先判断该考试时间段内的图片（人脸分析、五官定位）是否已经解析，为解析则调用接口解析
+        //照片存放目录
+        String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
+        //将Date转换为字符串
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String startTime = sdf.format(photoConfig.getStartTime());
+        String endTime = sdf.format(photoConfig.getEndTime());
+        //该时间段内的图片库
+        EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
+        photoEntityWrapper.gt("create_time" , startTime);
+        photoEntityWrapper.lt("create_time" , endTime);
+        List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
+        //人脸对比第一张图片
+        String photo1_name = "";
+        boolean photo1_flag = true;
+        //分会结果
+        String josnStr = "";
+
+        if(photos.size()>0){
+            int successNum = 0, errorNum = 0;
+            for (Photo photo : photos){
+                Photo p = new Photo();
+                boolean flag = false;
+
+                //人脸分析
+                if(photo.getResultDetectface()==null || photo.getResultDetectface().equals("")){
+                    JSONObject detectFaceResult = YoutuUtil.detectFace(realPath + photo.getName());
+                    p.setResultDetectface(detectFaceResult.toString());
+                    flag = true;
+
+                    //将第一个正确检测的数据保存起来
+                    if(photo1_flag && detectFaceResult.get("face")!=null && (int)detectFaceResult.get("errorcode")==0){
+                        photo1_name = photo.getName();
+                        photo1_flag = false;
+                    }
+                }
+                //五官定位
+                if(photo.getResultFaceshape()==null || photo.getResultFaceshape().equals("")){
+                    JSONObject faceShapeResult = YoutuUtil.faceShape(realPath + photo.getName());
+                    p.setResultFaceshape(faceShapeResult.toString());
+                    flag = true;
+                }
+
+                //人脸对比
+                if(photo.getResultFacecompare()==null || photo.getResultFacecompare().trim().equals("")){
+                    JSONObject faceCompareResult = YoutuUtil.faceCompare(realPath+photo1_name, realPath+photo.getName());
+                    p.setResultFacecompare(faceCompareResult.toString());
+                    flag = true;
+                }
+
+                //若有空则修改数据库
+                if (flag){
+                    System.out.println(p);
+                    EntityWrapper<Photo> entityWrapper = new EntityWrapper<>();
+                    entityWrapper.eq("name", photo.getName());
+                    boolean result = iPhotoService.update(p, entityWrapper);
+                    if(result) successNum++;
+                    else errorNum++;
+                }
+            }
+
+            if(successNum>0 || errorNum>0){
+                josnStr = "{\"status\":\"gt0\", \"isCollect\":\"false\", \"successNum\":\""+successNum+"\", \"errorNum\":\""+errorNum+"\"}";
+            }else{
+                josnStr = "{\"status\":\"gt0\", \"isCollect\":\"true\"}";
+            }
+            return JSON.parseObject(josnStr);
+        }else{
+            josnStr = "{\"status\":\"lt0\"}";
+            return JSON.parseObject(josnStr);
+        }
+    }
 }

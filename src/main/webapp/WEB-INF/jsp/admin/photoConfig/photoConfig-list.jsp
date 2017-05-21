@@ -168,7 +168,7 @@
 				html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
 
 				if(status == "已结束"){
-					html +=  '<a title="分析" href="javascript:;" onclick="analysis(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>分析</a>';
+					html +=  '<a title="查看" href="javascript:;" onclick="look(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>查看</a>';
 				}else{
 					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				}
@@ -185,7 +185,7 @@
 				html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
 
 				if(status == "已结束"){
-					html +=  '<a title="分析" href="javascript:;" onclick="analysis(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>分析</a>';
+					html +=  '<a title="查看" href="javascript:;" onclick="look(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe725;</i>查看</a>';
 				}else{
 					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				}
@@ -285,14 +285,13 @@
 		}
 
 		/**
-		 * 结果分析-技术支持页面（默认打开页面）
-		 * @param id
-         */
-		function analysis(id) {
+		 * 查看所有学生信息
+		 */
+		function look(id) {
 			var index = layer.open({
 				type: 2,
-				title: "结果分析",
-				content: "${ctx}/admin/photoConfigAnalysis/technicalSupport/"+id
+				title: "学生信息",
+				content: "${ctx}/admin/photoConfig/studentInfo/"+id
 			});
 			layer.full(index);
 		}
@@ -304,7 +303,7 @@
 			var index;
 			$.ajax({
 				type: 'post',
-				url: '${ctx}/admin/photoConfigAnalysis/informationCollect/'+id,
+				url: '${ctx}/admin/photoConfig/informationCollect/'+id,
 				dataType: 'json',
 				beforeSend:function () {
 					index = layer.load(0, {shade: false});
