@@ -38,7 +38,7 @@
                         <c:if test="${session_user.roleId==3}">网站会员</c:if>
                     </li>
                     <li class="dropDown dropDown_hover">
-                        <a href="#" class="dropDown_A">${session_user.username} <i class="Hui-iconfont">&#xe6d5;</i></a>
+                        <a href="#" class="dropDown_A">${session_user.reallyName} <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
                             <li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
                             <li><a href="#">切换账户</a></li>
@@ -133,9 +133,6 @@
                                 </c:when>
                             </c:choose>
                         </c:forEach>
-                            <%--<li><a data-href="${ctx}/admin/photo/photo-detect" data-title="拍摄检测" href="javascript:void(0)">拍摄检测</a></li>--%>
-                            <%--<li><a data-href="${ctx}/admin/photo/photo-collect" data-title="图片采集" href="javascript:void(0)">图片采集</a></li>--%>
-                            <%--<li><a data-href="${ctx}/admin/photoConfig/" data-title="采集配置" href="javascript:void(0)">采集配置</a></li>--%>
                     </ul>
                 </dd>
             </dl>

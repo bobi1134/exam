@@ -71,6 +71,12 @@ public class User extends Model<User> {
 	@TableField(value="role_id")
 	private Integer roleId;
 
+	/**
+	 * 新增：选中已有的学生，不映射数据库
+	 */
+	@TableField(exist = false)
+	private boolean flag;
+
 
 	public Integer getId() {
 		return id;
@@ -150,6 +156,14 @@ public class User extends Model<User> {
 
 	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 
 	@Override

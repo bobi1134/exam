@@ -26,6 +26,26 @@
 				<input type="text" class="input-text" placeholder="添加描述信息" id="description" name="description">
 			</div>
 		</div>
+		<%--应考人--%>
+		<div class="row cl" id="studentIds">
+			<label class="form-label col-xs-4 col-sm-3">应考人：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<dl class="permission-list">
+					<dt>
+						<label>添加考生</label>
+					</dt>
+					<dd>
+						<dl class="cl permission-list2">
+							<dd>
+								<c:forEach items="${users}" var="c">
+									<label class=""><input type="checkbox" value="${c.id}" name="user-Character-0-0-0" id="user-Character-0-0-0">${c.reallyName}</label>
+								</c:forEach>
+							</dd>
+						</dl>
+					</dd>
+				</dl>
+			</div>
+		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
 				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
@@ -67,10 +87,22 @@ $(function(){
 		focusCleanup:true,
 		success:"valid",
 		submitHandler:function(form){
+
+			//应考人
+			var studentIds = "";
+			$("#studentIds dd .cl dd label").each(function () {
+				var input = $(this).find("input");
+				if (input.is(":checked")) {
+					studentIds = studentIds + input.val() + ",";
+				}
+			});
+			console.log(studentIds);
+
 			$(form).ajaxSubmit({
 				url:"${ctx}/admin/photoConfig/add",
 				type:"post",
 				dataType:"json",
+				data : {"studentIds":studentIds},
 				success:function (json) {
 					if(json == true){
 						layer.msg('添加成功!',{icon:1,time:1000}, function () {

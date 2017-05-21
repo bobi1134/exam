@@ -70,7 +70,12 @@ public class PhotoConfigController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String add(){
+    public String add(Model model){
+        //准备考生信息
+        EntityWrapper<User> userEntityWrapper = new EntityWrapper<>();
+        userEntityWrapper.eq("role_id", 3);
+        List<User> users = iUserService.selectList(userEntityWrapper);
+        model.addAttribute("users", users);
         return "admin/photoConfig/photoConfig-add";
     }
 
@@ -85,12 +90,16 @@ public class PhotoConfigController extends BaseController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public Object add(String startTime, String endTime, String description, HttpServletRequest httpServletRequest) throws Exception{
+    public Object add(String startTime, String endTime, String description, String studentIds, HttpServletRequest httpServletRequest) throws Exception{
         PhotoConfig photoConfig = new PhotoConfig();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date _startTime = sdf.parse(startTime);
         Date _endTime = sdf.parse(endTime);
 
+        //应考人
+        if(studentIds!=null && !studentIds.trim().equals("")){
+            photoConfig.setUserIds(studentIds);
+        }
         photoConfig.setStartTime(_startTime);//开始时间
         photoConfig.setEndTime(_endTime);//结束时间
         photoConfig.setDescription(description);//描述
@@ -109,7 +118,28 @@ public class PhotoConfigController extends BaseController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") String id, Model model){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
+
+        //所有学生
+        EntityWrapper<User> userEntityWrapper = new EntityWrapper<>();
+        userEntityWrapper.eq("role_id", 3);
+        List<User> users = iUserService.selectList(userEntityWrapper);
+        for (User user : users){
+            //PhotoConfig userIds已选择的学生
+            if(photoConfig.getUserIds()!=null && !photoConfig.getUserIds().trim().equals("")){
+                String str = photoConfig.getUserIds();
+                for (String s : str.split(",")){
+                    if (Integer.valueOf(s) == user.getId()){
+                        user.setFlag(true);
+                        break;
+                    }else{
+                        user.setFlag(false);
+                    }
+                }
+            }
+        }
+
         model.addAttribute("photoConfig", photoConfig);
+        model.addAttribute("users", users);
         return "admin/photoConfig/photoConfig-edit";
     }
 
@@ -124,7 +154,7 @@ public class PhotoConfigController extends BaseController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
-    public Object edit(String id, String startTime, String endTime, String description)throws Exception{
+    public Object edit(String id, String startTime, String endTime, String description, String studentIds)throws Exception{
         PhotoConfig photoConfig = new PhotoConfig();
         //将字符串转换为Date类型
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -135,6 +165,8 @@ public class PhotoConfigController extends BaseController {
         photoConfig.setStartTime(_startTime);//开始时间
         photoConfig.setEndTime(_endTime);//结束时间
         photoConfig.setDescription(description);//描述
+        String xxx = studentIds.equals("") ? " " : studentIds;
+        photoConfig.setUserIds(xxx);//应考人
         return iPhotoConfigService.updateById(photoConfig);
     }
 
