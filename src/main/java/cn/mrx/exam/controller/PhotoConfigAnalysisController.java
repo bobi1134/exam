@@ -34,6 +34,9 @@ public class PhotoConfigAnalysisController extends BaseController{
 
     /**
      * 技术支持页面（默认打开页面）
+     * @param photoConfigId
+     * @param userId
+     * @param model
      * @return
      */
     @RequestMapping(value = "/technicalSupport/{photoConfigId}/{userId}", method = RequestMethod.GET)
@@ -47,6 +50,8 @@ public class PhotoConfigAnalysisController extends BaseController{
 
     /**
      * 通通查询封装：PhotoConfig表 - 查询在该采集规则时间段内的图片，返回photos
+     * @param photoConfigId
+     * @param userId
      * @return
      */
     public List<Photo> selectPhotos(String photoConfigId, String userId){
@@ -66,6 +71,8 @@ public class PhotoConfigAnalysisController extends BaseController{
 
     /**
      * 采集成功率分析
+     * @param photoConfigId
+     * @param userId
      * @param model
      * @return
      */

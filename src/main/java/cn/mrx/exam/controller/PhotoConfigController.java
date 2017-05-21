@@ -42,7 +42,7 @@ public class PhotoConfigController extends BaseController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * 图片配置页面
+     * 跳转到photoConfig-list页面
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -51,14 +51,15 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 异步查询所有图片配置
+     * 异步查询所有的photoConfig
      * @param bsGridPage
      * @param httpServletRequest
      * @return
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(BSGridPage<PhotoConfig> bsGridPage, HttpServletRequest httpServletRequest){
+    public Object list(BSGridPage<PhotoConfig> bsGridPage,
+                       HttpServletRequest httpServletRequest){
         //Page<PhotoConfig> photoConfigPage = iPhotoConfigService.selectPage(bsGridPage.getPage(), QueryFilter.getInstance(httpServletRequest).buildEntityWrapper());
         //自定义带条件多表分页查询
         Page<PhotoConfig> photoConfigPage = iPhotoConfigService.selectPhotoConfigPage(bsGridPage.getPage(), QueryFilter.getInstance(httpServletRequest).buildEntityWrapper());
@@ -66,7 +67,7 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 图片配置 - 添加采集规则页面
+     * 跳转到photoConfig-add页面
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -80,7 +81,7 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 图片配置 - 异步添加采集规则
+     * 异步添加photoConfig
      * @param startTime
      * @param endTime
      * @param description
@@ -90,7 +91,11 @@ public class PhotoConfigController extends BaseController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public Object add(String startTime, String endTime, String description, String studentIds, HttpServletRequest httpServletRequest) throws Exception{
+    public Object add(String startTime,
+                      String endTime,
+                      String description,
+                      String studentIds,
+                      HttpServletRequest httpServletRequest) throws Exception{
         PhotoConfig photoConfig = new PhotoConfig();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date _startTime = sdf.parse(startTime);
@@ -110,13 +115,14 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 图片配置 - 更新采集规则页面
+     * 跳转到photoConfig-edit页面
      * @param id
      * @param model
      * @return
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String edit(@PathVariable("id") String id, Model model){
+    public String edit(@PathVariable("id") String id,
+                       Model model){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
 
         //所有学生
@@ -144,7 +150,7 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 图片配置 - 异步更新采集规则
+     * 异步更新photoConfig
      * @param id
      * @param startTime
      * @param endTime
@@ -154,7 +160,11 @@ public class PhotoConfigController extends BaseController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
-    public Object edit(String id, String startTime, String endTime, String description, String studentIds)throws Exception{
+    public Object edit(String id,
+                       String startTime,
+                       String endTime,
+                       String description,
+                       String studentIds)throws Exception{
         PhotoConfig photoConfig = new PhotoConfig();
         //将字符串转换为Date类型
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -171,7 +181,7 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 图片配置 - 异步批量删除采集规则
+     * 异步批量删除photoConfig
      * @param ids
      * @return
      */
@@ -189,12 +199,13 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 图片配置 - 图片库页面
+     * 跳转到图片库页面
      * @param id
      * @return
      */
     @RequestMapping(value = "/photo-gallery/{id}", method = RequestMethod.GET)
-    public String photoGallery(@PathVariable("id") String id, Model model){
+    public String photoGallery(@PathVariable("id") String id,
+                               Model model){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
         //将Date转换为字符串
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -210,13 +221,14 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 查看所有学生信息页面
+     * 跳转到查看该堂考试下的所有学生信息页面
      * @param photoConfigId
      * @param model
      * @return
      */
     @RequestMapping(value = "/studentInfo/{photoConfigId}", method = RequestMethod.GET)
-    public String studentInfo(@PathVariable("photoConfigId") String photoConfigId, Model model){
+    public String studentInfo(@PathVariable("photoConfigId") String photoConfigId,
+                              Model model){
         model.addAttribute("photoId", photoConfigId);
         PhotoConfig photoConfig = iPhotoConfigService.selectById(photoConfigId);
         String str = photoConfig.getUserIds();
@@ -231,14 +243,15 @@ public class PhotoConfigController extends BaseController {
     }
 
     /**
-     * 信息采集入库
+     * PhotoConfig-list页面：信息采集入库
      * @param id
      * @param httpServletRequest
      * @return
      */
     @RequestMapping(value = "/informationCollect/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public Object informationCollect(@PathVariable("id") String id, HttpServletRequest httpServletRequest){
+    public Object informationCollect(@PathVariable("id") String id,
+                                     HttpServletRequest httpServletRequest){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(id);
         //先判断该考试时间段内的图片（人脸分析、五官定位）是否已经解析，为解析则调用接口解析
         //照片存放目录
