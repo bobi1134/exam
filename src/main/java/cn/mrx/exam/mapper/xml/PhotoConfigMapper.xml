@@ -9,6 +9,7 @@
 		<result column="end_time" property="endTime" />
 		<result column="description" property="description" />
 		<result column="user_ids" property="userIds" />
+		<result column="collect_rate" property="collectRate" />
 		<result column="publish_id" property="publishId" />
 
 		<!--关联查询-->

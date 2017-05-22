@@ -96,6 +96,7 @@ public class PhotoConfigController extends BaseController {
                       String endTime,
                       String description,
                       String studentIds,
+                      String collectRate,
                       HttpServletRequest httpServletRequest) throws Exception{
         PhotoConfig photoConfig = new PhotoConfig();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -109,6 +110,7 @@ public class PhotoConfigController extends BaseController {
         photoConfig.setStartTime(_startTime);//开始时间
         photoConfig.setEndTime(_endTime);//结束时间
         photoConfig.setDescription(description);//描述
+        photoConfig.setCollectRate(collectRate);//采集频率
         HttpSession httpSession = httpServletRequest.getSession();
         User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
         photoConfig.setPublishId(user.getId());//发布者
@@ -165,6 +167,7 @@ public class PhotoConfigController extends BaseController {
                        String startTime,
                        String endTime,
                        String description,
+                       String collectRate,
                        String studentIds)throws Exception{
         PhotoConfig photoConfig = new PhotoConfig();
         //将字符串转换为Date类型
@@ -176,6 +179,7 @@ public class PhotoConfigController extends BaseController {
         photoConfig.setStartTime(_startTime);//开始时间
         photoConfig.setEndTime(_endTime);//结束时间
         photoConfig.setDescription(description);//描述
+        photoConfig.setCollectRate(collectRate);//采集频率
         String xxx = studentIds.equals("") ? " " : studentIds;
         photoConfig.setUserIds(xxx);//应考人
         return iPhotoConfigService.updateById(photoConfig);

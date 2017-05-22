@@ -26,6 +26,12 @@
 				<input type="text" class="input-text" placeholder="添加描述信息" id="description" name="description">
 			</div>
 		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采集频率：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="添加采集频率" id="collectRate" name="collectRate">
+			</div>
+		</div>
 		<%--应考人--%>
 		<div class="row cl" id="studentIds">
 			<label class="form-label col-xs-4 col-sm-3">应考人：</label>
@@ -80,6 +86,9 @@ $(function(){
 				required:true,
 			},
 			description:{
+				required:true,
+			},
+			collectRate:{
 				required:true,
 			}
 		},

@@ -42,10 +42,15 @@ public class PhotoConfig extends Model<PhotoConfig> {
 	 */
 	private String description;
 	/**
-	 *
+	 * 应考人
 	 */
 	@TableField(value = "user_ids")
 	private String userIds;
+	/**
+	 * 采集频率
+	 */
+	@TableField(value = "collect_rate")
+	private String collectRate;
 	/**
 	 * 发布者id,t_user表数据
 	 */
@@ -123,6 +128,14 @@ public class PhotoConfig extends Model<PhotoConfig> {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getCollectRate() {
+		return collectRate;
+	}
+
+	public void setCollectRate(String collectRate) {
+		this.collectRate = collectRate;
 	}
 
 	@Override

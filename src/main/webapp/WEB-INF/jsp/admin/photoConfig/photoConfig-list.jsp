@@ -37,6 +37,7 @@
 				<th w_index="userIds" w_sort="user_ids">应考人</th>
 				<th w_index="publishId" w_sort="publish_id">发布者ID</th>
 				<th w_index="user" w_render="userNameFn" w_sort="publish_id">发布者姓名</th>
+				<th w_index="collectRate">采集频率(毫秒/次)</th>
 				<th w_index="status" w_render="statusFn">最新状态</th>
 				<th w_render="toolbar" w_align="center">操作</th>
 			</tr>
