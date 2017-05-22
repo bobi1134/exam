@@ -94,4 +94,50 @@ public class MybatisTest {
         System.out.println(JSON.parseObject(json));
     }
 
+    @Test
+    public void testXY(){
+        System.out.println("------------------------------------");
+        Photo photo = iPhotoService.selectById(13);
+        String resultFaceshape = photo.getResultFaceshape();
+        JSONObject jsonObject1 = JSON.parseObject(resultFaceshape);
+        System.out.println("88888");
+        System.out.println("---->"+(jsonObject1.get("errorcode")!=null));
+        System.out.println("---->"+((int)jsonObject1.get("errorcode")==0));
+        System.out.println("---->"+(jsonObject1.get("errorcode")!=null && jsonObject1.get("errorcode").equals("0")));
+
+//        System.out.println("--->"+jsonObject1.get("face_shape"));
+//        System.out.println("--->"+JSON.parseArray(jsonObject1.get("face_shape").toString()).get(0));
+//        JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face_shape").toString()).get(0).toString());
+//        System.out.println("--->"+jsonObject2.get("nose"));
+//        System.out.println("--->"+JSON.parseArray(jsonObject2.get("nose").toString()).get(0));
+//        JSONObject jsonObject3 = JSON.parseObject(JSON.parseArray(jsonObject2.get("nose").toString()).get(0).toString());
+//        System.out.println("-->"+jsonObject3.get("x"));
+
+    }
+
+    @Test
+    public void test(){
+        System.out.println("******************************************************************************");
+        int x=153, y=163;
+        if(x>0 && x < 120){
+            if(y>0 && y<80){
+                System.out.println("左上...");
+            }
+            if(y>160 && y<240){
+                System.out.println("右下...");
+            }
+        }else if(x>120 && x<200 ){
+            System.out.println("------------------------------------");
+            if(y>80 && y<160){
+                System.out.println("居中...");
+            }
+        }else if(x>200 && x<320){
+            if(y>0 && y<80){
+                System.out.println("右上...");
+            }
+            if(y>160 && y<240){
+                System.out.println("右下...");
+            }
+        }
+    }
 }

@@ -2,7 +2,7 @@
 
 <span class="r">
     <a href="${ctx}/admin/photoConfigAnalysis/processFace/${photoConfigId}/${student.id}" class="btn btn-primary radius">面部表情</a>
-    <a href="${ctx}/admin/photoConfigAnalysis/xxxxx/${id}" class="btn btn-primary radius">转向情况</a>
+    <a href="${ctx}/admin/photoConfigAnalysis/turnAround/${photoConfigId}/${student.id}" class="btn btn-primary radius">转向情况</a>
     <a href="${ctx}/admin/photoConfigAnalysis/xxxxx/${id}" class="btn btn-primary radius">态度分析</a>
     <a href="${ctx}/admin/photoConfigAnalysis/xxxxx/${id}" class="btn btn-primary radius">中途换人</a>
     <a href="${ctx}/admin/photoConfigAnalysis/xxxxx/${id}" class="btn btn-primary radius">分析意见</a>

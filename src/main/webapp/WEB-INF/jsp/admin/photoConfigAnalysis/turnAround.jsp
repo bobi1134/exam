@@ -5,12 +5,6 @@
 	<head>
 		<%@ include file="../jspf/head.jspf" %>
 	</head>
-	<style type="text/css">
-		.page-container{
-			/*border: 1px solid red;*/
-			/*padding: 0;*/
-		}
-	</style>
 <body>
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
@@ -30,39 +24,52 @@
 	<!-- 自定义js -->
 	<script type="text/javascript">
 		$(function () {
-			var expression = ${expression};
+			var result = ${result};
 
-			Highcharts.chart('container', {
+			$('#container').highcharts({
+				chart: {
+					type: 'area'
+				},
 				title: {
-					text: '面部表情走势图',
-					x: -20 //center
+					text: '学生转向问题'
 				},
 				subtitle: {
-					text: 'Source: http://www.xlbweb.com',
-					x: -20
+					text: 'Source: http://www.xlbweb.com'
+				},
+				xAxis: {
+					labels: {
+						formatter: function() {
+							return this.value; // clean, unformatted number for year
+						}
+					}
 				},
 				yAxis: {
 					title: {
-						text: 'Expression'
-					},
-					plotLines: [{
-						value: 0,
-						width: 1,
-						color: '#808080'
-					}]
+						text: 'Turn around (0~100)'
+					}
 				},
 				tooltip: {
-					valueSuffix: '°'
+					pointFormat: '{series.name} 转向角度 <b>{point.y}</b>' +
+					'<br/>左(0~33)、中（34~66）、右（67~100）'
 				},
-				legend: {
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'middle',
-					borderWidth: 0
+				plotOptions: {
+					area: {
+						pointStart: 0,
+						marker: {
+							enabled: false,
+							symbol: 'circle',
+							radius: 2,
+							states: {
+								hover: {
+									enabled: true
+								}
+							}
+						}
+					}
 				},
 				series: [{
 					name: '${student.reallyName}',
-					data: expression
+					data: result
 				}]
 			});
 		});

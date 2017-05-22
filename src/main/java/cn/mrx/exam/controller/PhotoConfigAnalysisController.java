@@ -41,9 +41,9 @@ public class PhotoConfigAnalysisController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/technicalSupport/{photoConfigId}/{studentId}", method = RequestMethod.GET)
-    public String analysisPage(@PathVariable("photoConfigId") String photoConfigId,
-                               @PathVariable("studentId") String studentId,
-                               Model model){
+    public String technicalSupport(@PathVariable("photoConfigId") String photoConfigId,
+                                   @PathVariable("studentId") String studentId,
+                                   Model model){
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
@@ -80,9 +80,9 @@ public class PhotoConfigAnalysisController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/successRate/{photoConfigId}/{studentId}", method = RequestMethod.GET)
-    public String analysisSuccessRate(@PathVariable("photoConfigId") String photoConfigId,
-                                      @PathVariable("studentId") String studentId,
-                                      Model model){
+    public String successRate(@PathVariable("photoConfigId") String photoConfigId,
+                              @PathVariable("studentId") String studentId,
+                              Model model){
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
 
         //查数据库，分析数据，默认查看采集成功率（人脸分析、五官定位的采集成功率）
@@ -144,9 +144,9 @@ public class PhotoConfigAnalysisController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/successRateDetails/{photoConfigId}/{studentId}", method = RequestMethod.GET)
-    public String analysisSuccessRateDetails(@PathVariable("photoConfigId") String photoConfigId,
-                                             @PathVariable("studentId") String studentId,
-                                             Model model){
+    public String successRateDetails(@PathVariable("photoConfigId") String photoConfigId,
+                                     @PathVariable("studentId") String studentId,
+                                     Model model){
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
@@ -162,10 +162,10 @@ public class PhotoConfigAnalysisController extends BaseController{
      */
     @RequestMapping(value = "/successRateDetails/{photoConfigId}/{studentId}", method = RequestMethod.POST)
     @ResponseBody
-    public Object analysisSuccessRateDetails(@PathVariable("photoConfigId") String photoConfigId,
-                                             @PathVariable("studentId") String studentId,
-                                             BSGridPage<Photo> bsGridPage,
-                                             HttpServletRequest httpServletRequest){
+    public Object successRateDetails(@PathVariable("photoConfigId") String photoConfigId,
+                                     @PathVariable("studentId") String studentId,
+                                     BSGridPage<Photo> bsGridPage,
+                                     HttpServletRequest httpServletRequest){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(photoConfigId);
         //将Date转换为字符串
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -187,9 +187,9 @@ public class PhotoConfigAnalysisController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/processFace/{photoConfigId}/{studentId}", method = RequestMethod.GET)
-    public String analysisProcess(@PathVariable("photoConfigId") String photoConfigId,
-                                  @PathVariable("studentId") String studentId,
-                                  Model model){
+    public String processFace(@PathVariable("photoConfigId") String photoConfigId,
+                              @PathVariable("studentId") String studentId,
+                              Model model){
         List<Integer> expression = new ArrayList<>();
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
         for (Photo photo : photos){
@@ -207,5 +207,51 @@ public class PhotoConfigAnalysisController extends BaseController{
         User student = iUserService.selectById(studentId);
         model.addAttribute("student", student);
         return "admin/photoConfigAnalysis/processFace";
+    }
+
+    @RequestMapping(value = "/turnAround/{photoConfigId}/{studentId}", method = RequestMethod.GET)
+    public String turnAround(@PathVariable("photoConfigId") String photoConfigId,
+                             @PathVariable("studentId") String studentId,
+                             Model model){
+        //准备数据...
+        List<Photo> photos = selectPhotos(photoConfigId, studentId);
+        List<Integer> result = new ArrayList<>();
+        for (Photo photo : photos){
+            String resultFaceshape = photo.getResultFaceshape();
+            JSONObject jsonObject1 = JSON.parseObject(resultFaceshape);
+            //解析成功的情况
+            if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0){
+                JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face_shape").toString()).get(0).toString());
+                JSONObject jsonObject3 = JSON.parseObject(JSON.parseArray(jsonObject2.get("nose").toString()).get(0).toString());
+                Integer x = (Integer) jsonObject3.get("x");
+                Integer y = (Integer) jsonObject3.get("y");
+                System.out.println("x:"+x+",y:"+y);
+                //右下左中情况
+                //左(0~33)、中（34~66）、右（67~100）
+                //左
+                if(x>0 && x < 120){
+                    result.add(0+33*(x/120));
+                }
+
+                //中
+                if(x>120 && x<200){
+                    result.add(34+33*(x/120));
+                }
+
+                //右
+                if(x>200 && x < 320){
+                    result.add(67+33*(x/120));
+                }
+            }else{
+                result.add(0);
+            }
+        }
+        model.addAttribute("result", result);
+
+        //返回photoConfigId和根据studentId查询出来的User
+        model.addAttribute("photoConfigId", photoConfigId);
+        User student = iUserService.selectById(studentId);
+        model.addAttribute("student", student);
+        return "admin/photoConfigAnalysis/turnAround";
     }
 }
