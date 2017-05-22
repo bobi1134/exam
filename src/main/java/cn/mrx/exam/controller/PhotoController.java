@@ -60,7 +60,7 @@ public class PhotoController extends BaseController {
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
-    public Object upload(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    public Object upload(HttpServletRequest httpServletRequest){
         String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
         String newName = UUID.randomUUID() + ".png";
         //默认传入的参数带类型等参数：data:image/png;base64,
@@ -69,19 +69,6 @@ public class PhotoController extends BaseController {
             imgStr = imgStr.substring(imgStr.indexOf(",") + 1);
         }
         Boolean flag = generateImage(imgStr, realPath, newName);
-        String result = "";
-        if (flag) {
-            result = realPath + newName;
-            //将基本信息存入数据库
-            Photo photo = new Photo();
-            photo.setName(newName);
-            photo.setCreateTime(new Date());
-            HttpSession httpSession = httpServletRequest.getSession();
-            User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
-            photo.setUserId(user.getId());
-            boolean xxxxx = iPhotoService.insert(photo);
-        }
-
         JSONObject jsonObject = JSON.parseObject("{'flag':'"+flag+"', 'fileName':'"+newName+"'}");
         return jsonObject;
     }
@@ -127,17 +114,17 @@ public class PhotoController extends BaseController {
      */
     @RequestMapping(value = "/detectface", method = RequestMethod.POST)
     @ResponseBody
-    public Object detectface(String fileName, HttpServletRequest httpServletRequest) throws Exception{
+    public Object detectface(String fileName,
+                             HttpServletRequest httpServletRequest) throws Exception{
         String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
         Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
         JSONObject jsonObject = youtu.DetectFace(realPath + fileName, 1);
-        //将人脸检测分析结果更新进数据库
-        EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
-        photoEntityWrapper.eq("name", fileName);
-        Photo photo = new Photo();
-        photo.setResultDetectface(jsonObject.toString());
-        iPhotoService.update(photo, photoEntityWrapper);
-
+        //删除该张图片
+        File file = new File(realPath+fileName);
+        if(file.exists()){
+            file.delete();
+            System.out.println("已删除文件。。。");
+        }
         return jsonObject;
     }
 
