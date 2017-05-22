@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -187,12 +188,34 @@ public class PhotoConfigController extends BaseController {
      */
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     @ResponseBody
-    public Object del(String ids){
-        String[]  strs = ids.split(",");
+    public Object del(String ids,
+                      HttpServletRequest httpServletRequest){
+        String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
+
+        String[] strs = ids.split(",");
         List<String> lists = new ArrayList<>();
         for (String str : strs) {
             if(!str.equals("")){
+                //@1、要删除的ids
                 lists.add(str);
+
+                //@2、删除在该采集配置条件下的所有图片
+                PhotoConfig photoConfig = iPhotoConfigService.selectById(str);
+                //将Date转换为字符串
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String startTime = sdf.format(photoConfig.getStartTime());
+                String endTime = sdf.format(photoConfig.getEndTime());
+                //该时间段内的图片库
+                EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
+                photoEntityWrapper.gt("create_time" , startTime);
+                photoEntityWrapper.lt("create_time" , endTime);
+                List<Photo> photos = iPhotoService.selectList(photoEntityWrapper);
+                for (Photo photo : photos){
+                    File file = new File(realPath+photo.getName());
+                    if (file.exists()){
+                        file.delete();
+                    }
+                }
             }
         }
         return iPhotoConfigService.deleteBatchIds(lists);

@@ -161,16 +161,11 @@
 
 				if(status == "考试中" || status == "已结束"){
 					html +=  '<a title="图片库" href="javascript:;" onclick="photo(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe613;</i> 图片库</a>';
-				}else{
-					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				}
 
-				html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
-
 				if(status == "已结束"){
+					html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
 					html +=  '<a title="查看" href="javascript:;" onclick="look(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe61c;</i>查看</a>';
-				}else{
-					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				}
 			}else if("${session_user.id}"==row.publishId){//如不是admin登录，则只显示属于自己的操作
 				html += '<a title="编辑" href="javascript:;" onclick="edit(\''+id+'\')" ><i class="Hui-iconfont">&#xe6df;</i>编辑</a>'
@@ -178,16 +173,11 @@
 
 				if(status == "考试中" || status == "已结束"){
 					html +=  '<a title="图片库" href="javascript:;" onclick="photo(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe613;</i> 图片库</a>';
-				}else{
-					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				}
 
-				html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
-
 				if(status == "已结束"){
+					html +=  '<a title="入库" href="javascript:;" onclick="informationCollect(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe67a;</i>入库</a>';
 					html +=  '<a title="查看" href="javascript:;" onclick="look(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe725;</i>查看</a>';
-				}else{
-					html +=  '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				}
 			}
 			return html;
