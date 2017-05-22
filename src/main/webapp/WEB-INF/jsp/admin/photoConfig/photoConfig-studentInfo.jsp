@@ -35,6 +35,7 @@
 						<a title="分析" href="${ctx}/admin/photoConfigAnalysis/technicalSupport/${photoConfigId}/${c.id}" style="text-decoration:none">
 							<i class="Hui-iconfont">&#xe61c;</i>
 						</a>
+					</td>
 				</tr>
 			</c:forEach>
 			</tbody>

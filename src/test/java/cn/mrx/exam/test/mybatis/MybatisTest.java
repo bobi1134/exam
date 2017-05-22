@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -139,5 +140,28 @@ public class MybatisTest {
                 System.out.println("右下...");
             }
         }
+    }
+
+    @Test
+    public void dateTest(){
+//        //查询考试中&未开始的考试
+//        EntityWrapper<PhotoConfig> entityWrapper = new EntityWrapper<>();
+//        //将Date转换为字符串
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String now = sdf.format(new Date());
+//
+//        //现在的时间小于结束时间即可
+//        entityWrapper.lt("end_time", now);
+//        entityWrapper.ge();//大于等于
+//        entityWrapper.le();//小于等于
+
+        List<PhotoConfig> photoConfigs = iPhotoConfigService.selectList(null);
+        System.out.println("-----------------------------------");
+        for (PhotoConfig photoConfig : photoConfigs){
+            if (new Date().getTime() < photoConfig.getEndTime().getTime()){
+                System.out.println(photoConfig);
+            }
+        }
+        System.out.println("-----------------------------------");
     }
 }

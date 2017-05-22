@@ -1,6 +1,7 @@
 package cn.mrx.exam.controller;
 
 import cn.mrx.exam.pojo.Photo;
+import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.WebConstant;
 import cn.mrx.exam.youtu.Youtu;
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +23,9 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -56,7 +60,7 @@ public class PhotoController extends BaseController {
     /**
      * 上传图片
      * @param httpServletRequest
-     * @param httpServletResponse
+     * @return
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
@@ -133,7 +137,35 @@ public class PhotoController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/photo-collect", method = RequestMethod.GET)
-    public String collect(){
+    public String collect(HttpServletRequest httpServletRequest,
+                          Model model){
+        //查询自己的考试信息
+        HttpSession httpSession = httpServletRequest.getSession();
+        User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
+
+        //查询所有考试未结束的PhotoConfig
+        List<PhotoConfig> photoConfigs = iPhotoConfigService.selectList(null);
+        List<PhotoConfig> myPhotoConfigs = new ArrayList<>();//属于自己的考试
+        for (PhotoConfig photoConfig : photoConfigs){
+            if (new Date().getTime() < photoConfig.getEndTime().getTime()){
+                String str = photoConfig.getUserIds();//查询该堂考试的应考人
+                if(str!=null && !str.trim().equals("")){
+                    for (String s : str.split(",")){
+                        if(Integer.valueOf(s) == user.getId()){
+                            myPhotoConfigs.add(photoConfig);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("--------------------------------------");
+        for (PhotoConfig p : myPhotoConfigs){
+            System.out.println(myPhotoConfigs);
+        }
+        System.out.println("--------------------------------------");
+
+        model.addAttribute("myPhotoConfigs", myPhotoConfigs);
+        model.addAttribute("mowTime", new Date());
         return "admin/photo/photo-collect";
     }
 }

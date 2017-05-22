@@ -92,22 +92,58 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 过程分析 <span class="c-gray en">&gt;</span> 图片采集 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="page-container">
 		<div class="main">
-			<div class="collect">
-				<div id="webcam">
-					<img src="${ctx}/resources/admin/static/photo/antenna.png"/>
-				</div>
-				<div class="tip">
-					<span><strong style="color: #f00">Tip：</strong>点击START开始既可以进行采集，在这之前你可以调整你的位置！</span>
-					<div>
-						<img src="${ctx}/resources/admin/static/photo/loading.gif" width="30" height="30"/>
-						成功！<strong id="num"></strong>
+			<c:if test="${myPhotoConfigs.size()==0}">
+				xxxxxxxxxxxxxxxx暂时没有你的考试！
+			</c:if>
+			<c:if test="${myPhotoConfigs.size()>0}">
+				<table class="table table-border table-bordered table-hover table-bg">
+					<thead>
+					<tr class="text-c">
+						<th width="40">ID</th>
+						<th width="200">描述</th>
+						<th width="200">开始时间</th>
+						<th width="200">结束时间</th>
+						<th width="200">状态</th>
+					</tr>
+					</thead>
+					<tbody>
+					<c:forEach items="${myPhotoConfigs}" var="c">
+						<tr class="text-c">
+							<td>${c.id}</td>
+							<td>${c.description}</td>
+							<td><fmt:formatDate value="${c.startTime}" type="time" pattern="yyy-MM-dd HH:mm:ss"/></td>
+							<td><fmt:formatDate value="${c.endTime}" type="time" pattern="yyy-MM-dd HH:mm:ss"/></td>
+							<c:choose>
+								<c:when test="${mowTime>c.startTime && mowTime<c.endTime}">
+									<td>正在考试</td>
+								</c:when>
+								<c:otherwise>
+									<td>未开始</td>
+								</c:otherwise>
+							</c:choose>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+
+				<div class="collect">
+					<div id="webcam">
+						<img src="${ctx}/resources/admin/static/photo/antenna.png"/>
+					</div>
+					<div class="tip">
+						<span><strong style="color: #f00">Tip：</strong>点击START开始既可以进行采集，在这之前你可以调整你的位置！</span>
+						<div>
+							<img src="${ctx}/resources/admin/static/photo/loading.gif" width="30" height="30"/>
+							成功！<strong id="num"></strong>
+						</div>
+					</div>
+					<div id="start-box">
+						<div id="start">START</div>
+						<div id="stop">STOP</div>
 					</div>
 				</div>
-				<div id="start-box">
-					<div id="start">START</div>
-					<div id="stop">STOP</div>
-				</div>
-			</div>
+			</c:if>
+
 		</div>
 	</div>
 
