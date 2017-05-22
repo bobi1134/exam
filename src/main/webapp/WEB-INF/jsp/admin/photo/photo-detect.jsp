@@ -215,7 +215,7 @@
 					$(".main .photo .result .bg").show().addClass("hui-bouncein").css("background", "url(${ctx}/resources/admin/upload/photo/"+data.fileName+")");
 				}
 
-				//异步五官定位
+				//异步五官定位(根据人脸检测中的face返回的点来进行定位)
 				$.ajax({
 					url : "${ctx}/admin/photo/detectface",
 					type : "post",

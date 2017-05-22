@@ -131,11 +131,11 @@ public class PhotoController extends BaseController {
         String realPath = httpServletRequest.getSession().getServletContext().getRealPath("/resources/admin/upload/photo/");
         Youtu youtu = new Youtu(APP_ID, SECRET_ID, SECRET_KEY, Youtu.API_YOUTU_END_POINT, USER_ID);
         JSONObject jsonObject = youtu.DetectFace(realPath + fileName, 1);
-        //将五官定位结果更新进数据库
+        //将人脸检测分析结果更新进数据库
         EntityWrapper<Photo> photoEntityWrapper = new EntityWrapper<>();
         photoEntityWrapper.eq("name", fileName);
         Photo photo = new Photo();
-        photo.setResultFaceshape(jsonObject.toString());
+        photo.setResultDetectface(jsonObject.toString());
         iPhotoService.update(photo, photoEntityWrapper);
 
         return jsonObject;
