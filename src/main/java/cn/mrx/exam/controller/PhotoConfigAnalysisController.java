@@ -223,6 +223,13 @@ public class PhotoConfigAnalysisController extends BaseController{
         return "admin/photoConfigAnalysis/processFace";
     }
 
+    /**
+     * 学生转向问题分析
+     * @param photoConfigId
+     * @param studentId
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/turnAround/{photoConfigId}/{studentId}", method = RequestMethod.GET)
     public String turnAround(@PathVariable("photoConfigId") String photoConfigId,
                              @PathVariable("studentId") String studentId,
