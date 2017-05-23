@@ -4,7 +4,6 @@ import cn.mrx.exam.pojo.Photo;
 import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
-import cn.mrx.exam.utils.YoutuUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -48,7 +47,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
         model.addAttribute("student", student);
-        return "admin/photoConfigAnalysis/technicalSupport";
+        return "admin/photoConfigAnalysis/processTechnicalSupport";
     }
 
     /**
@@ -255,7 +254,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
         model.addAttribute("student", student);
-        return "admin/photoConfigAnalysis/attitude";
+        return "admin/photoConfigAnalysis/processAttitude";
     }
 
     /**
@@ -336,7 +335,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
         model.addAttribute("student", student);
-        return "admin/photoConfigAnalysis/turnAround";
+        return "admin/photoConfigAnalysis/processTurnAround";
     }
 
     /**
@@ -375,6 +374,6 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
         model.addAttribute("student", student);
-        return "admin/photoConfigAnalysis/changePeople";
+        return "admin/photoConfigAnalysis/processChangePeople";
     }
 }
