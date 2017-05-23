@@ -1,15 +1,19 @@
 package cn.mrx.exam.test.youtu;
 
+import cn.mrx.exam.pojo.Photo;
+import cn.mrx.exam.service.IPhotoService;
 import cn.mrx.exam.youtu.Youtu;
 import cn.mrx.exam.youtu.pojo.detectface.DetectFace;
 import cn.mrx.exam.youtu.pojo.detectface.Face;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 /**
  * @ClassName: TestDemo
@@ -25,7 +29,6 @@ public class TestDemo {
     public static final String SECRET_ID = "AKIDJWYO3XovpbCbnptIjy2tZ4OWSBi3Jlrl";
     public static final String SECRET_KEY = "pY8XklfNtDMJ3bx9KbpunuqdFfsulPr7";
     public static final String USER_ID = "1451965355";
-
 
     //人脸检测：DetectFace
     @Test
@@ -70,4 +73,5 @@ public class TestDemo {
             System.out.println(e.toString().substring(0, e.toString().indexOf(":")));
         }
     }
+
 }

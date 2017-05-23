@@ -164,4 +164,20 @@ public class MybatisTest {
         }
         System.out.println("-----------------------------------");
     }
+
+    @Test
+    public void test09(){
+        System.out.println("-----------------------------------");
+        Photo photo = iPhotoService.selectById(59);
+        String resultDetectface = photo.getResultDetectface();
+        JSONObject jsonObject1 = JSON.parseObject(resultDetectface);
+        if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0){
+            JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face").toString()).get(0).toString());
+            System.out.println("---->"+jsonObject2);
+            System.out.println("---->"+jsonObject2.get("glass"));
+            System.out.println("---->"+jsonObject2.get("expression"));
+            System.out.println("---->"+jsonObject2.get("beauty"));
+            System.out.println("---->"+jsonObject2.get("age"));
+        }
+    }
 }

@@ -196,7 +196,70 @@ public class PhotoConfigAnalysisController extends BaseController{
     }
 
     /**
-     * 过程分析页面（默认打开面部表情分析页面）
+     * 态度分析（默认打开分析页面）
+     * @param photoConfigId
+     * @param studentId
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/attitude/{photoConfigId}/{studentId}", method = RequestMethod.GET)
+    public String attitude(@PathVariable("photoConfigId") String photoConfigId,
+                           @PathVariable("studentId") String studentId,
+                           Model model){
+        List<Photo> photos = selectPhotos(photoConfigId, studentId);
+        int expressions1=0,expressions2=0,expressions3=0,expressions4=0,expressions5=0,
+                expressions6=0,expressions7=0,expressions8=0,expressions9=0,expressions10=0;
+        for (Photo photo : photos){
+            String resultDetectface = photo.getResultDetectface();
+            JSONObject jsonObject1 = JSON.parseObject(resultDetectface);
+            if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0){
+                JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face").toString()).get(0).toString());
+                int expression =  (int)jsonObject2.get("expression");
+                if(expression>=0 && expression<=10){
+                    expressions1++;
+                }else if(expression>10 && expression<=20){
+                    expressions2++;
+                }else if(expression>20 && expression<=30){
+                    expressions3++;
+                }else if(expression>30 && expression<=40){
+                    expressions4++;
+                }else if(expression>40 && expression<=50){
+                    expressions5++;
+                }else if(expression>50 && expression<=60){
+                    expressions6++;
+                }else if(expression>60 && expression<=70){
+                    expressions7++;
+                }else if(expression>70 && expression<=80){
+                    expressions8++;
+                }else if(expression>80 && expression<=90){
+                    expressions9++;
+                }else if(expression>90 && expression<=100){
+                    expressions10++;
+                }
+            }
+        }
+
+        model.addAttribute("count", photos.size());
+        model.addAttribute("expressions1", expressions1);
+        model.addAttribute("expressions2", expressions2);
+        model.addAttribute("expressions3", expressions3);
+        model.addAttribute("expressions4", expressions4);
+        model.addAttribute("expressions5", expressions5);
+        model.addAttribute("expressions6", expressions6);
+        model.addAttribute("expressions7", expressions7);
+        model.addAttribute("expressions8", expressions8);
+        model.addAttribute("expressions9", expressions9);
+        model.addAttribute("expressions10", expressions10);
+
+        //返回photoConfigId和根据studentId查询出来的User
+        model.addAttribute("photoConfigId", photoConfigId);
+        User student = iUserService.selectById(studentId);
+        model.addAttribute("student", student);
+        return "admin/photoConfigAnalysis/attitude";
+    }
+
+    /**
+     * 面部表情分析
      * @param model
      * @return
      */
