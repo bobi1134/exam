@@ -85,7 +85,6 @@ public class PhotoConfigAnalysisController extends BaseController{
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
 
         //查数据库，分析数据，默认查看采集成功率（人脸分析、五官定位的采集成功率）
-        int count = photos.size();
         int exception_Detectface = 0,  exception_Faceshape = 0, exception_FaceCompare = 0;//后台程序出错
         int errorcode_x_Detectface = 0, errorcode_x_Faceshape = 0, errorcode_x_FaceCompare = 0;//已解析，但是未检测成功
         int errorcode_0_Detectface = 0, errorcode_0_Faceshape = 0, errorcode_0_FaceCompare = 0;//已解析，并且检测成功
@@ -131,7 +130,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         }
 
         //返回数据
-        model.addAttribute("count", count);
+        model.addAttribute("count", photos.size());
         model.addAttribute("exception_Detectface", exception_Detectface);
         model.addAttribute("errorcode_x_Detectface", errorcode_x_Detectface);
         model.addAttribute("errorcode_0_Detectface", errorcode_0_Detectface);
@@ -207,11 +206,13 @@ public class PhotoConfigAnalysisController extends BaseController{
                            Model model){
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
         int expressions1=0,expressions2=0,expressions3=0,expressions4=0,expressions5=0,
-                expressions6=0,expressions7=0,expressions8=0,expressions9=0,expressions10=0;
+            expressions6=0,expressions7=0,expressions8=0,expressions9=0,expressions10=0,
+            count=0;
         for (Photo photo : photos){
             String resultDetectface = photo.getResultDetectface();
             JSONObject jsonObject1 = JSON.parseObject(resultDetectface);
             if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0){
+                count++;
                 JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face").toString()).get(0).toString());
                 int expression =  (int)jsonObject2.get("expression");
                 if(expression>=0 && expression<=10){
@@ -238,7 +239,7 @@ public class PhotoConfigAnalysisController extends BaseController{
             }
         }
 
-        model.addAttribute("count", photos.size());
+        model.addAttribute("count", count);
         model.addAttribute("expressions1", expressions1);
         model.addAttribute("expressions2", expressions2);
         model.addAttribute("expressions3", expressions3);
