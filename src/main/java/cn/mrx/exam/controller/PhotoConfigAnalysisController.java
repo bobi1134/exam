@@ -87,35 +87,46 @@ public class PhotoConfigAnalysisController extends BaseController{
 
         //查数据库，分析数据，默认查看采集成功率（人脸分析、五官定位的采集成功率）
         int count = photos.size();
-        int exception_Detectface = 0,  exception_Faceshape = 0, exception_FaceCompare = 0;//后台程序出错数量
-        int errorcode_Detectface = 0, errorcode_Faceshape = 0, errorcode_FaceCompare = 0;//未检测成功数量
+        int exception_Detectface = 0,  exception_Faceshape = 0, exception_FaceCompare = 0;//后台程序出错
+        int errorcode_x_Detectface = 0, errorcode_x_Faceshape = 0, errorcode_x_FaceCompare = 0;//已解析，但是未检测成功
+        int errorcode_0_Detectface = 0, errorcode_0_Faceshape = 0, errorcode_0_FaceCompare = 0;//已解析，并且检测成功
         for (Photo photo : photos){
-            //人脸识别情况
+            //人脸分析情况
             String resultDetectface = photo.getResultDetectface();
-            JSONObject jsonObject = JSON.parseObject(resultDetectface);
-            if (jsonObject.get("face") != null){
-                if((int) jsonObject.get("errorcode") != 0) errorcode_Detectface++;
-            }else {
-                exception_Detectface++;
+            if(resultDetectface!=null && !resultDetectface.trim().equals("")){
+                JSONObject jsonObject1 = JSON.parseObject(resultDetectface);
+                if (jsonObject1.get("face")==null){
+                    exception_Detectface++;//程序异常，如网络不通，文件没找到等
+                }else if((int) jsonObject1.get("errorcode")!=0) {
+                    errorcode_x_Detectface++;//优图未识别成功
+                }else if((int) jsonObject1.get("errorcode")==0){
+                    errorcode_0_Detectface++;//优图识别成功
+                }
             }
 
             //五官定位情况
             String resultFaceshape = photo.getResultFaceshape();
-            JSONObject jsonObject2 = JSON.parseObject(resultFaceshape);
-            if (jsonObject2.get("face_shape") != null){
-                if((int) jsonObject2.get("errorcode") != 0) errorcode_Faceshape++;
-            }else {
-                exception_Faceshape++;
+            if(resultFaceshape!=null && !resultFaceshape.trim().equals("")){
+                JSONObject jsonObject2 = JSON.parseObject(resultFaceshape);
+                if (jsonObject2.get("face_shape") == null){
+                    exception_Faceshape++;//程序异常，如网络不通，文件没找到等
+                }else if((int) jsonObject2.get("errorcode")!=0){
+                    errorcode_x_Faceshape++;//优图未识别成功
+                }else if((int) jsonObject2.get("errorcode")==0){
+                    errorcode_0_Faceshape++;//优图识别成功
+                }
             }
 
             //人脸对比情况
             String resultFacecompare = photo.getResultFacecompare();
-            if(resultFacecompare != null){
+            if(resultFacecompare!=null && !resultFacecompare.trim().equals("")){
                 JSONObject jsonObject3 = JSON.parseObject(resultFacecompare);
-                if(jsonObject3.get("errorcode") != null){
-                    if((int)jsonObject3.get("errorcode") != 0) errorcode_FaceCompare++;
-                }else {
-                    exception_FaceCompare++;
+                if(jsonObject3.get("errorcode") == null){
+                    exception_FaceCompare++;//程序异常，如网络不通，文件没找到等
+                }else if((int) jsonObject3.get("errorcode")!=0) {
+                    errorcode_x_FaceCompare++;//优图未识别成功
+                }else if((int) jsonObject3.get("errorcode")==0){
+                    errorcode_0_FaceCompare++;////优图识别成功
                 }
             }
         }
@@ -123,13 +134,16 @@ public class PhotoConfigAnalysisController extends BaseController{
         //返回数据
         model.addAttribute("count", count);
         model.addAttribute("exception_Detectface", exception_Detectface);
-        model.addAttribute("errorcode_Detectface", errorcode_Detectface);
+        model.addAttribute("errorcode_x_Detectface", errorcode_x_Detectface);
+        model.addAttribute("errorcode_0_Detectface", errorcode_0_Detectface);
 
         model.addAttribute("exception_Faceshape", exception_Faceshape);
-        model.addAttribute("errorcode_Faceshape", errorcode_Faceshape);
+        model.addAttribute("errorcode_x_Faceshape", errorcode_x_Faceshape);
+        model.addAttribute("errorcode_0_Faceshape", errorcode_0_Faceshape);
 
         model.addAttribute("exception_FaceCompare", exception_FaceCompare);
-        model.addAttribute("errorcode_FaceCompare", errorcode_FaceCompare);
+        model.addAttribute("errorcode_x_FaceCompare", errorcode_x_FaceCompare);
+        model.addAttribute("errorcode_0_FaceCompare", errorcode_0_FaceCompare);
 
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
