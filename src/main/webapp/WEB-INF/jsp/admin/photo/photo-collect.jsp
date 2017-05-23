@@ -59,11 +59,11 @@
 			.main .collect .tip div{
 				text-align: center;
 				font-size: 16px;
-				border: 1px solid #000;
+				/*border: 1px solid #000;*/
 				padding: 2px 5px 2px 5px;
 				min-width: 130px;
 				margin: 50px auto;
-				border-radius: 18px;
+				/*border-radius: 18px;*/
 				display: none;
 			}
 
@@ -92,10 +92,16 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 过程分析 <span class="c-gray en">&gt;</span> 图片采集 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="page-container">
 		<div class="main">
+			<!-- 没有自己的考试 -->
 			<c:if test="${myPhotoConfigs.size()==0}">
-				xxxxxxxxxxxxxxxx暂时没有你的考试！
+				<div style="text-align: center;padding: 200px 0 200px 0">
+					亲爱的，暂时没有你的考试！
+					<img src="${ctx}/resources/admin/static/photo/no_exam.jpg"/>
+				</div>
 			</c:if>
+			<!-- 有自己的考试 -->
 			<c:if test="${myPhotoConfigs.size()>0}">
+				<!-- 迭代出属于自己的考试 -->
 				<table class="table table-border table-bordered table-hover table-bg">
 					<thead>
 					<tr class="text-c">
@@ -103,6 +109,7 @@
 						<th width="200">描述</th>
 						<th width="200">开始时间</th>
 						<th width="200">结束时间</th>
+						<th width="200">采集频率(毫秒/次)</th>
 						<th width="200">状态</th>
 					</tr>
 					</thead>
@@ -113,6 +120,7 @@
 							<td>${c.description}</td>
 							<td><fmt:formatDate value="${c.startTime}" type="time" pattern="yyy-MM-dd HH:mm:ss"/></td>
 							<td><fmt:formatDate value="${c.endTime}" type="time" pattern="yyy-MM-dd HH:mm:ss"/></td>
+							<td>${c.collectRate}</td>
 							<c:choose>
 								<c:when test="${mowTime>c.startTime && mowTime<c.endTime}">
 									<td>正在考试</td>
@@ -126,6 +134,7 @@
 					</tbody>
 				</table>
 
+				<!-- 采集区域 -->
 				<div class="collect">
 					<div id="webcam">
 						<img src="${ctx}/resources/admin/static/photo/antenna.png"/>
@@ -134,16 +143,20 @@
 						<span><strong style="color: #f00">Tip：</strong>点击START开始既可以进行采集，在这之前你可以调整你的位置！</span>
 						<div>
 							<img src="${ctx}/resources/admin/static/photo/loading.gif" width="30" height="30"/>
-							成功！<strong id="num"></strong>
+							采集中...
 						</div>
 					</div>
+
+
 					<div id="start-box">
+						<c:if test="${collrctRate!=0}">
 						<div id="start">START</div>
 						<div id="stop">STOP</div>
+						</c:if>
 					</div>
+
 				</div>
 			</c:if>
-
 		</div>
 	</div>
 
@@ -153,6 +166,7 @@
 	<!-- 自定义js -->
 	<script type="text/javascript">
 		$(function() {
+			//webcam上传图片
 			var width = 320, height = 240;
 			var pos = 0, ctx = null, saveCB, image = [];
 			var canvas = document.createElement("canvas");
@@ -175,7 +189,7 @@
 					if (pos >= 4 * width * height) {
 						ctx.putImageData(img, 0, 0);
 						$.post("${ctx}/admin/photo/upload", {type: "data", image: canvas.toDataURL("image/png")}, function (data) {
-							afterDo(data);
+//							afterDo(data);
 						});
 						pos = 0;
 					}
@@ -186,13 +200,14 @@
 					pos+= 4 * width;
 					if (pos >= 4 * width * height) {
 						$.post("${ctx}/admin/photo/upload", {type: "pixel", image: image.join('|')}, function (data) {
-							afterDo(data);
+//							afterDo(data);
 						});
 						pos = 0;
 					}
 				};
 			}
 
+			//初始化webcam区域
 			$("#webcam").webcam({
 				width: width,
 				height: height,
@@ -208,32 +223,22 @@
 			});
 
 			/**
-			 *  开始
+			 *  点击开始按钮
+			 *  nowPhotoConfig.collectRate代表采集频率
 			 */
 			var timer;
 			$("#start").click(function () {
-				timer = setInterval("webcam.capture()", 1000);
+				timer = setInterval("webcam.capture()", ${collrctRate});
 				$(".main .collect .tip div").removeClass("hui-bounceout").show().addClass("hui-bounce");
 			});
 
 			/**
-			 * 停止
+			 * 点击停止按钮
 			 */
 			$("#stop").click(function () {
 				clearInterval(timer);
-				$(".main .collect .tip div").addClass("hui-bounceout");
+				$(".main .collect .tip div").fadeOut(1000);
 			});
-
-			/**
-			 * 拍摄后操作
-			 * @param data
-             */
-			var num = 0;
-			function afterDo(data) {
-				if(data.flag){
-					$("#num").text(num++);
-				}
-			}
 		});
 	</script>
 </body>

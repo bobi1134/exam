@@ -73,6 +73,17 @@ public class PhotoController extends BaseController {
             imgStr = imgStr.substring(imgStr.indexOf(",") + 1);
         }
         Boolean flag = generateImage(imgStr, realPath, newName);
+        //保存进数据库
+        if(flag){
+            Photo photo = new Photo();
+            photo.setName(newName);//照片名称
+            photo.setCreateTime(new Date());//照片创建日期
+            //照片所属人
+            HttpSession httpSession = httpServletRequest.getSession();
+            User user = (User) httpSession.getAttribute(WebConstant.SESSION_USER);
+            photo.setUserId(user.getId());
+            boolean xxx = iPhotoService.insert(photo);
+        }
         JSONObject jsonObject = JSON.parseObject("{'flag':'"+flag+"', 'fileName':'"+newName+"'}");
         return jsonObject;
     }
@@ -127,13 +138,14 @@ public class PhotoController extends BaseController {
         File file = new File(realPath+fileName);
         if(file.exists()){
             file.delete();
-            System.out.println("已删除文件。。。");
         }
         return jsonObject;
     }
 
     /**
      * 图片采集页面
+     * @param httpServletRequest
+     * @param model
      * @return
      */
     @RequestMapping(value = "/photo-collect", method = RequestMethod.GET)
@@ -145,10 +157,15 @@ public class PhotoController extends BaseController {
 
         //查询所有考试未结束的PhotoConfig
         List<PhotoConfig> photoConfigs = iPhotoConfigService.selectList(null);
-        List<PhotoConfig> myPhotoConfigs = new ArrayList<>();//属于自己的考试
+        //属于自己的考试
+        List<PhotoConfig> myPhotoConfigs = new ArrayList<>();
+        //正在考试的场次信息
+        String collrctRate = "0";
         for (PhotoConfig photoConfig : photoConfigs){
+            //现在时间<结束时间
             if (new Date().getTime() < photoConfig.getEndTime().getTime()){
-                String str = photoConfig.getUserIds();//查询该堂考试的应考人
+                //查询该堂考试的应考人
+                String str = photoConfig.getUserIds();
                 if(str!=null && !str.trim().equals("")){
                     for (String s : str.split(",")){
                         if(Integer.valueOf(s) == user.getId()){
@@ -156,15 +173,15 @@ public class PhotoController extends BaseController {
                         }
                     }
                 }
+                //现在时间>开始时间 && 现在时间<结束时间 即正在考试的场次
+                if(new Date().getTime() > photoConfig.getStartTime().getTime()){
+                    collrctRate = photoConfig.getCollectRate();
+                }
             }
         }
-        System.out.println("--------------------------------------");
-        for (PhotoConfig p : myPhotoConfigs){
-            System.out.println(myPhotoConfigs);
-        }
-        System.out.println("--------------------------------------");
 
         model.addAttribute("myPhotoConfigs", myPhotoConfigs);
+        model.addAttribute("collrctRate", collrctRate);
         model.addAttribute("mowTime", new Date());
         return "admin/photo/photo-collect";
     }
