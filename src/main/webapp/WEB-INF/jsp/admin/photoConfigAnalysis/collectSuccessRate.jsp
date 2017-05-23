@@ -8,7 +8,7 @@
 			.page-container .pie{
 				margin-top: 31px;
 			}
-			.page-container .pie div{
+			#detectface, #faceshape, #faceCompare{
 				float: left;
 				min-width:33%;
 				height:350px;
@@ -28,6 +28,10 @@
 			<div id="detectface"></div>
 			<div id="faceshape"></div>
 			<div id="faceCompare"></div>
+			<span style="font-weight: bold;">提示：</span><br/>
+			<span>~ 程序异常表示后台处理程序错误，如文件找不到，网络不通等。</span><br/>
+			<span>~ 检测失败表示优图为正确识别出照片，errorcode返回值不为0的其他值。</span><br/>
+			<span>~ 检测成功表示优图正确识别出照片，errorcode返回值为0。</span>
 		</div>
 	</div>
 

@@ -208,7 +208,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
         for (Photo photo : photos){
             JSONObject jsonObject = JSON.parseObject(photo.getResultDetectface());
-            if(jsonObject.get("face")!=null){
+            if(jsonObject.get("face")!=null && (int)jsonObject.get("errorcode")==0){
                 JSONArray jsonArray = JSON.parseArray(jsonObject.get("face").toString());
                 JSONObject jsonObject2 = (JSONObject)jsonArray.get(0);
                 expression.add((int)jsonObject2.get("expression"));
