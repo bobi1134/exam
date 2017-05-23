@@ -180,4 +180,21 @@ public class MybatisTest {
             System.out.println("---->"+jsonObject2.get("age"));
         }
     }
+
+    @Test
+    public void test10(){
+        Photo photo = iPhotoService.selectById(59);
+        String resultFacecompare =  photo.getResultFacecompare();
+        JSONObject jsonObject = JSON.parseObject("{\"similarity\":95.5,\"session_id\":\"\",\"errorcode\":0,\"errormsg\":\"OK\"}");
+        //{"similarity":95.0,"session_id":"","errorcode":0,"errormsg":"OK"}
+        System.out.println("------------------------------------------------------");
+        System.out.println(jsonObject);
+        System.out.println(jsonObject.get("similarity"));
+        System.out.println((int)jsonObject.get("errorcode"));
+        System.out.println(jsonObject.get("errormsg"));
+        System.out.println("------------------------------------------------------");
+        Double similarity = Double.parseDouble(jsonObject.get("similarity").toString());
+        System.out.println(similarity);
+
+    }
 }

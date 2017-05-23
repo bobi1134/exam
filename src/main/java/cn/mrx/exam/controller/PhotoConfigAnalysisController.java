@@ -338,4 +338,43 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("student", student);
         return "admin/photoConfigAnalysis/turnAround";
     }
+
+    /**
+     * 分析是否换人
+     * @param photoConfigId
+     * @param studentId
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/changePeople/{photoConfigId}/{studentId}", method = RequestMethod.GET)
+    public String changePeople(@PathVariable("photoConfigId") String photoConfigId,
+                             @PathVariable("studentId") String studentId,
+                             Model model){
+
+        List<Photo> photos = selectPhotos(photoConfigId, studentId);
+        int selfNum = 0, count = 0;
+        List<Double> similaritys = new ArrayList<>();
+        for (Photo photo : photos){
+            JSONObject jsonObject = JSON.parseObject(photo.getResultFacecompare());
+            //保证解析正确
+            if(jsonObject.get("errorcode")!=null && (int)jsonObject.get("errorcode")==0){
+                Double similarity = Double.parseDouble(jsonObject.get("similarity").toString());
+                if(similarity>70){
+                    selfNum++;
+                }
+                similaritys.add(similarity);
+                count++;
+            }
+        }
+
+        model.addAttribute("similaritys", similaritys);
+        model.addAttribute("selfNum", selfNum);
+        model.addAttribute("count", count);
+
+        //返回photoConfigId和根据studentId查询出来的User
+        model.addAttribute("photoConfigId", photoConfigId);
+        User student = iUserService.selectById(studentId);
+        model.addAttribute("student", student);
+        return "admin/photoConfigAnalysis/changePeople";
+    }
 }

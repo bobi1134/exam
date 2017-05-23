@@ -65,7 +65,7 @@
 					borderWidth: 0
 				},
 				series: [{
-					name: '${student.reallyName}',
+					name: '表情：',
 					data: expression
 				}]
 			});
