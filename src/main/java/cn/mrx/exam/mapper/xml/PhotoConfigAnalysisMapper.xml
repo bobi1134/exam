@@ -5,7 +5,6 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="cn.mrx.exam.pojo.PhotoConfigAnalysis">
 		<id column="id" property="id" />
-		<result column="attitude" property="attitude" />
 		<result column="face" property="face" />
 		<result column="turn_around" property="turnAround" />
 		<result column="change_people" property="changePeople" />

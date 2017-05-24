@@ -27,10 +27,6 @@ public class PhotoConfigAnalysis extends Model<PhotoConfigAnalysis> {
 	@TableId(type = IdType.AUTO)
 	private Integer id;
 	/**
-	 * 态度分析
-	 */
-	private String attitude;
-	/**
 	 * 面部表情
 	 */
 	private String face;
@@ -62,14 +58,6 @@ public class PhotoConfigAnalysis extends Model<PhotoConfigAnalysis> {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getAttitude() {
-		return attitude;
-	}
-
-	public void setAttitude(String attitude) {
-		this.attitude = attitude;
 	}
 
 	public String getFace() {

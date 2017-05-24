@@ -211,9 +211,6 @@ public class PhotoConfigAnalysisController extends BaseController{
         PhotoConfigAnalysis photoConfigAnalysis = new PhotoConfigAnalysis();
         if(selectOne!=null) photoConfigAnalysis.setId(selectOne.getId());//主键id
         switch(columnName){
-            case "attitude":
-                photoConfigAnalysis.setAttitude(res);
-                break;
             case "face":
                 photoConfigAnalysis.setFace(res);
                 break;
@@ -230,105 +227,85 @@ public class PhotoConfigAnalysisController extends BaseController{
     }
 
     /**
-     * 态度分析（默认打开分析页面）
-     * @param photoConfigId
-     * @param studentId
+     * 面部表情分析（默认打开分析页面）
      * @param model
      * @return
      */
-    @RequestMapping(value = "/attitude/{photoConfigId}/{studentId}", method = RequestMethod.GET)
-    public String attitude(@PathVariable("photoConfigId") String photoConfigId,
-                           @PathVariable("studentId") String studentId,
-                           Model model){
-        List<Photo> photos = selectPhotos(photoConfigId, studentId);
-        int expressions1=0,expressions2=0,expressions3=0,expressions4=0,expressions5=0,
-            expressions6=0,expressions7=0,expressions8=0,expressions9=0,expressions10=0,
-            count=0;
-        for (Photo photo : photos){
-            String resultDetectface = photo.getResultDetectface();
-            JSONObject jsonObject1 = JSON.parseObject(resultDetectface);
-            if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0){
-                count++;
-                JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face").toString()).get(0).toString());
-                int expression =  (int)jsonObject2.get("expression");
-                if(expression>=0 && expression<=10){
-                    expressions1++;
-                }else if(expression>10 && expression<=20){
-                    expressions2++;
-                }else if(expression>20 && expression<=30){
-                    expressions3++;
-                }else if(expression>30 && expression<=40){
-                    expressions4++;
-                }else if(expression>40 && expression<=50){
-                    expressions5++;
-                }else if(expression>50 && expression<=60){
-                    expressions6++;
-                }else if(expression>60 && expression<=70){
-                    expressions7++;
-                }else if(expression>70 && expression<=80){
-                    expressions8++;
-                }else if(expression>80 && expression<=90){
-                    expressions9++;
-                }else if(expression>90 && expression<=100){
-                    expressions10++;
-                }
-            }
-        }
-
-        //@ 更新进数据库
-        String res = "{\"expressions1\":\""+expressions1+"\",\"expressions2\":\""+expressions2+"\",\"expressions3\":\""+expressions3+"\",\"expressions4\":\""+expressions4+"\",\"expressions5\":\""+expressions5+"\"," +
-                     "\"expressions6\":\""+expressions6+"\",\"expressions7\",\""+expressions7+"\",\"expressions8\":\""+expressions8+"\",\"expressions9\":\""+expressions9+"\",\"expressions10\":\""+expressions10+"\"}";
-        boolean xxx = insertOrUpdatePhotoConfigAnalysis(Integer.valueOf(photoConfigId), Integer.valueOf(studentId), "attitude", res);
-
-        model.addAttribute("count", count);
-        model.addAttribute("expressions1", expressions1);
-        model.addAttribute("expressions2", expressions2);
-        model.addAttribute("expressions3", expressions3);
-        model.addAttribute("expressions4", expressions4);
-        model.addAttribute("expressions5", expressions5);
-        model.addAttribute("expressions6", expressions6);
-        model.addAttribute("expressions7", expressions7);
-        model.addAttribute("expressions8", expressions8);
-        model.addAttribute("expressions9", expressions9);
-        model.addAttribute("expressions10", expressions10);
-        //返回photoConfigId和根据studentId查询出来的User
-        model.addAttribute("photoConfigId", photoConfigId);
-        User student = iUserService.selectById(studentId);
-        model.addAttribute("student", student);
-        return "admin/photoConfigAnalysis/processAttitude";
-    }
-
-    /**
-     * 面部表情分析
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/processFace/{photoConfigId}/{studentId}", method = RequestMethod.GET)
-    public String processFace(@PathVariable("photoConfigId") String photoConfigId,
+    @RequestMapping(value = "/faceExpression/{photoConfigId}/{studentId}", method = RequestMethod.GET)
+    public String faceExpression(@PathVariable("photoConfigId") String photoConfigId,
                               @PathVariable("studentId") String studentId,
                               Model model){
+        //图1、面部表情分布图：所有图片的汇总信息：0~10,10~20...按10分类区分
+        int[] expressionCountArray = selectExpressionCountArray(photoConfigId, studentId);
+
+        //图2、面部表情走势图：所有图片的表情
         List<Integer> expressions = new ArrayList<>();
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
+        int count = 0;//定义成功解析的照片总数
         for (Photo photo : photos){
             JSONObject jsonObject = JSON.parseObject(photo.getResultDetectface());
             if(jsonObject.get("face")!=null && (int)jsonObject.get("errorcode")==0){
                 JSONArray jsonArray = JSON.parseArray(jsonObject.get("face").toString());
                 JSONObject jsonObject2 = (JSONObject)jsonArray.get(0);
                 expressions.add((int)jsonObject2.get("expression"));
+                count++;
             }
         }
 
-        //@ 将面部表情保存到数据库
+        //@ 将面部表情走势图数据保存到数据库
         String res = "";
         for (int i : expressions)  res = res + String.valueOf(i) + ",";
         boolean xxx = insertOrUpdatePhotoConfigAnalysis(Integer.valueOf(photoConfigId), Integer.valueOf(studentId), "face", res);
 
         model.addAttribute("expressions", expressions);
+        model.addAttribute("count", count);
+        model.addAttribute("expressionCountArray", expressionCountArray);
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
         model.addAttribute("student", student);
-        return "admin/photoConfigAnalysis/processFace";
+        return "admin/photoConfigAnalysis/processFaceExpression";
+    }
+
+    /**
+     * 面部表情分布图：查询所有图片的汇总信息：0~10,10~20...按10分类区分
+     * @param photoConfigId
+     * @param studentId
+     * @return
+     */
+    public int[] selectExpressionCountArray(String photoConfigId, String studentId){
+        List<Photo> photos = selectPhotos(photoConfigId, studentId);
+        int[] expressionCountArray = new int[10];
+        for (Photo photo : photos){
+            String resultDetectface = photo.getResultDetectface();
+            JSONObject jsonObject1 = JSON.parseObject(resultDetectface);
+            if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0){
+                JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face").toString()).get(0).toString());
+                int expression =  (int)jsonObject2.get("expression");
+                if(expression>=0 && expression<=10){
+                    expressionCountArray[0]++;
+                }else if(expression>10 && expression<=20){
+                    expressionCountArray[1]++;
+                }else if(expression>20 && expression<=30){
+                    expressionCountArray[2]++;
+                }else if(expression>30 && expression<=40){
+                    expressionCountArray[3]++;
+                }else if(expression>40 && expression<=50){
+                    expressionCountArray[4]++;
+                }else if(expression>50 && expression<=60){
+                    expressionCountArray[5]++;
+                }else if(expression>60 && expression<=70){
+                    expressionCountArray[6]++;
+                }else if(expression>70 && expression<=80){
+                    expressionCountArray[7]++;
+                }else if(expression>80 && expression<=90){
+                    expressionCountArray[8]++;
+                }else if(expression>90 && expression<=100){
+                    expressionCountArray[9]++;
+                }
+            }
+        }
+        return expressionCountArray;
     }
 
     /**
