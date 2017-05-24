@@ -5,6 +5,17 @@
 	<head>
 		<%@ include file="../jspf/head.jspf" %>
 	</head>
+	<style type="text/css">
+		#refreshBtn1{
+			position: absolute;
+			top: 150px;
+			right: 31px;
+			padding: 0px 4px;
+			height: 19px;
+			font-size: 12px;
+			width: 20px;
+		}
+	</style>
 <body>
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
@@ -14,6 +25,7 @@
 	<div class="page-container">
 		<%@ include file="process-menu.jspf" %>
 		<div id="container" style="min-width:700px;height:400px;margin-top:50px;"></div>
+		<div class="btn btn-success radius" id="refreshBtn1" title="重绘图表"><i class="Hui-iconfont">&#xe68f;</i></div>
 		<div style="margin-top: 30px">
 			<span style="font-weight: bold;">提示：</span><br/>
 			<span>~ 转向问题指的是考生在考试过程中在摄像头区域内的位置，分别分为3个区域方向，左中右。</span><br/>
@@ -29,52 +41,64 @@
 	<!-- 自定义js -->
 	<script type="text/javascript">
 		$(function () {
-			var result = ${result};
-
-			$('#container').highcharts({
-				chart: {
-					type: 'area'
-				},
-				title: {
-					text: '学生转向问题'
-				},
-				subtitle: {
-					text: 'Source: http://www.xlbweb.com'
-				},
-				xAxis: {
-					labels: {
-						formatter: function() {
-							return this.value; // clean, unformatted number for year
-						}
-					}
-				},
-				yAxis: {
+			turnAround();
+			/**
+			 * 转向问题函数
+			 */
+			function turnAround() {
+				var result = ${result};
+				$('#container').highcharts({
+					chart: {
+						type: 'area'
+					},
 					title: {
-						text: 'Turn around (0~100)'
-					}
-				},
-				tooltip: {
-					pointFormat: '转向角度 <b>{point.y}</b>'
-				},
-				plotOptions: {
-					area: {
-						pointStart: 0,
-						marker: {
-							enabled: false,
-							symbol: 'circle',
-							radius: 2,
-							states: {
-								hover: {
-									enabled: true
+						text: '学生转向问题'
+					},
+					subtitle: {
+						text: 'Source: http://www.xlbweb.com'
+					},
+					xAxis: {
+						labels: {
+							formatter: function() {
+								return this.value; // clean, unformatted number for year
+							}
+						}
+					},
+					yAxis: {
+						title: {
+							text: 'Turn around (0~100)'
+						}
+					},
+					tooltip: {
+						pointFormat: '转向角度 <b>{point.y}</b>'
+					},
+					plotOptions: {
+						area: {
+							pointStart: 0,
+							marker: {
+								enabled: false,
+								symbol: 'circle',
+								radius: 2,
+								states: {
+									hover: {
+										enabled: true
+									}
 								}
 							}
 						}
-					}
-				},
-				series: [{
-					name: '${student.reallyName}',
-					data: result
-				}]
+					},
+					series: [{
+						name: '${student.reallyName}',
+						data: result
+					}]
+				});
+			}
+
+			/**
+			 * 点击刷新按钮
+			 */
+			$("#refreshBtn1").click(function () {
+				turnAround();
 			});
 		});
 	</script>

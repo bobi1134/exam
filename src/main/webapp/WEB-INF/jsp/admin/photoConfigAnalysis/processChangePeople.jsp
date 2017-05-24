@@ -5,6 +5,20 @@
 	<head>
 		<%@ include file="../jspf/head.jspf" %>
 	</head>
+	<style type="text/css">
+		#refreshBtn1,#refreshBtn2{
+			position: absolute;
+			top: 150px;
+			right: 31px;
+			padding: 0px 4px;
+			height: 19px;
+			font-size: 12px;
+			width: 20px;
+		}
+		#refreshBtn2{
+			top:650px;
+		}
+	</style>
 <body>
 	<!-- 菜单 -->
 	<div class="cl pd-5 bg-1 bk-gray">
@@ -13,8 +27,13 @@
 	<!-- 主体 -->
 	<div class="page-container">
 		<%@ include file="process-menu.jspf" %>
-		<div id="container" style="min-width:700px;height:400px;margin-top:50px;"></div>
-		<div id="similaritys" style="min-width:700px;height:400px;margin-top:100px;"></div>
+		<!-- 中途换人分布图 -->
+		<div id="changePeopleDistribution" style="min-width:700px;height:400px;margin-top:50px;"></div>
+		<div class="btn btn-success radius" id="refreshBtn1" title="重绘图表"><i class="Hui-iconfont">&#xe68f;</i></div>
+
+		<!-- 中途换人走势图 -->
+		<div id="changePeopleTrend" style="min-width:700px;height:400px;margin-top:100px;"></div>
+		<div class="btn btn-success radius" id="refreshBtn2" title="重绘图表"><i class="Hui-iconfont">&#xe68f;</i></div>
 		<div style="margin-top: 30px">
 			<span style="font-weight: bold;">提示：</span><br/>
 			<span>~ 中途换人分析指的是以考生第一张识别成功的照片为基础，后面的一次进行比较，分析是否为同一个人！</span><br/>
@@ -31,80 +50,103 @@
 	<!-- 自定义js -->
 	<script type="text/javascript">
 		$(function () {
-			var count = ${count};//照片总数
-			var selfNum = ${selfNum};//属于自己的数量
-			console.log(count);
-			console.log(selfNum);
-			var similaritys = ${similaritys};//相似度集合
-
-			$('#container').highcharts({
-				chart: {
-					type: 'pie',
-					options3d: {
-						enabled: true,
-						alpha: 45,
-						beta: 0
-					}
-				},
-				title: {
-					text: '中途换人分析'
-				},
-				tooltip: {
-					pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-				},
-				plotOptions: {
-					pie: {
-						allowPointSelect: true,
-						cursor: 'pointer',
-						depth: 35,
-						dataLabels: {
+			changePeopleDistribution();
+			/**
+			 * 中途换人分布图
+			 */
+			function changePeopleDistribution() {
+				var count = ${count};//照片总数
+				var selfNum = ${selfNum};//属于自己的数量
+				$('#changePeopleDistribution').highcharts({
+					chart: {
+						type: 'pie',
+						options3d: {
 							enabled: true,
-							format: '{point.name}'
+							alpha: 45,
+							beta: 0
 						}
-					}
-				},
-				series: [{
-					type: 'pie',
-					name: '分布',
-					data: [
-						['安全，未换人', selfNum/count * 100],
-						['危险，不是一个人', ((count-selfNum)/count) * 100]
-					]
-				}]
+					},
+					title: {
+						text: '中途换人分析'
+					},
+					tooltip: {
+						pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+					},
+					plotOptions: {
+						pie: {
+							allowPointSelect: true,
+							cursor: 'pointer',
+							depth: 35,
+							dataLabels: {
+								enabled: true,
+								format: '{point.name}'
+							}
+						}
+					},
+					series: [{
+						type: 'pie',
+						name: '分布',
+						data: [
+							['安全，未换人', selfNum/count * 100],
+							['危险，不是一个人', ((count-selfNum)/count) * 100]
+						]
+					}]
+				});
+			}
+
+			/**
+			 * 点击刷新
+			 */
+			$("#refreshBtn1").click(function () {
+				changePeopleDistribution()
 			});
 
-			Highcharts.chart('similaritys', {
-				title: {
-					text: '人脸对比走势图',
-					x: -20 //center
-				},
-				subtitle: {
-					text: 'Source: http://www.xlbweb.com',
-					x: -20
-				},
-				yAxis: {
+			changePeopleTrend();
+			/**
+			 * 中途换人走势图
+			 */
+			function changePeopleTrend() {
+				var similaritys = ${similaritys};//相似度集合
+				Highcharts.chart('changePeopleTrend', {
 					title: {
-						text: 'Face contrast'
+						text: '人脸对比走势图',
+						x: -20 //center
 					},
-					plotLines: [{
-						value: 0,
-						width: 1,
-						color: '#808080'
+					subtitle: {
+						text: 'Source: http://www.xlbweb.com',
+						x: -20
+					},
+					yAxis: {
+						title: {
+							text: 'Face contrast'
+						},
+						plotLines: [{
+							value: 0,
+							width: 1,
+							color: '#808080'
+						}]
+					},
+					tooltip: {
+						valueSuffix: '°'
+					},
+					legend: {
+						layout: 'vertical',
+						align: 'right',
+						verticalAlign: 'middle',
+						borderWidth: 0
+					},
+					series: [{
+						name: '相似度：',
+						data: similaritys
 					}]
-				},
-				tooltip: {
-					valueSuffix: '°'
-				},
-				legend: {
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'middle',
-					borderWidth: 0
-				},
-				series: [{
-					name: '相似度：',
-					data: similaritys
-				}]
+				});
+			}
+
+			/**
+			 * 点击刷新
+			 */
+			$("#refreshBtn2").click(function () {
+				changePeopleTrend()
 			});
 		});
 	</script>
