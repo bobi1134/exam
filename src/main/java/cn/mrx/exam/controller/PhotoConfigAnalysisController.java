@@ -2,6 +2,7 @@ package cn.mrx.exam.controller;
 
 import cn.mrx.exam.pojo.Photo;
 import cn.mrx.exam.pojo.PhotoConfig;
+import cn.mrx.exam.pojo.PhotoConfigAnalysis;
 import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
 import com.alibaba.fastjson.JSON;
@@ -193,6 +194,21 @@ public class PhotoConfigAnalysisController extends BaseController{
         return bsGridPage.parsePage(photoPage);
     }
 
+
+    /**
+     * 根据photoConfigId和studentId查询结果
+     * @param photoConfigId
+     * @param studentId
+     * @return
+     */
+    public PhotoConfigAnalysis selectOne(String photoConfigId, String studentId){
+        EntityWrapper<PhotoConfigAnalysis> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("photoConfig_id", photoConfigId);
+        entityWrapper.eq("student_id", studentId);
+        PhotoConfigAnalysis photoConfigAnalysis = iPhotoConfigAnalysisService.selectOne(entityWrapper);
+        return photoConfigAnalysis;
+    }
+
     /**
      * 态度分析（默认打开分析页面）
      * @param photoConfigId
@@ -238,6 +254,19 @@ public class PhotoConfigAnalysisController extends BaseController{
                 }
             }
         }
+
+        //@ 更新进数据库
+        String res = "{\"expressions1\":\""+expressions1+"\",\"expressions2\":\""+expressions2+"\",\"expressions3\":\""+expressions3+"\",\"expressions4\":\""+expressions4+"\",\"expressions5\":\""+expressions5+"\"," +
+                     "\"expressions6\":\""+expressions6+"\",\"expressions7\",\""+expressions7+"\",\"expressions8\":\""+expressions8+"\",\"expressions9\":\""+expressions9+"\",\"expressions10\":\""+expressions10+"\"}";
+
+        PhotoConfigAnalysis photoConfigAnalysis = new PhotoConfigAnalysis();
+        
+        PhotoConfigAnalysis selectOne = selectOne(photoConfigId, studentId);
+        if(selectOne!=null) photoConfigAnalysis.setId(selectOne.getId());//主键id
+        photoConfigAnalysis.setAttitude(res);//态度结果
+        photoConfigAnalysis.setPhotoconfigId(Integer.valueOf(photoConfigId));//属于哪个采集配置
+        photoConfigAnalysis.setStudentId(Integer.valueOf(studentId));//属于哪个学生
+        boolean xxx = iPhotoConfigAnalysisService.insertOrUpdate(photoConfigAnalysis);
 
         model.addAttribute("count", count);
         model.addAttribute("expressions1", expressions1);
