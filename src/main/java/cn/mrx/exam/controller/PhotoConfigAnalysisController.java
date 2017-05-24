@@ -377,4 +377,18 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("student", student);
         return "admin/photoConfigAnalysis/processChangePeople";
     }
+
+
+    @RequestMapping(value = "/advice/{photoConfigId}/{studentId}", method = RequestMethod.GET)
+    public String advice(@PathVariable("photoConfigId") String photoConfigId,
+                               @PathVariable("studentId") String studentId,
+                               Model model){
+
+
+        //返回photoConfigId和根据studentId查询出来的User
+        model.addAttribute("photoConfigId", photoConfigId);
+        User student = iUserService.selectById(studentId);
+        model.addAttribute("student", student);
+        return "admin/photoConfigAnalysis/processAdvice";
+    }
 }
