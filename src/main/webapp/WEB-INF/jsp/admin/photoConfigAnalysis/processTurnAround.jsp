@@ -13,7 +13,7 @@
 	<!-- 主体 -->
 	<div class="page-container">
 		<%@ include file="process-menu.jspf" %>
-		<div id="container" style="min-width:700px;height:400px;margin-top:100px;"></div>
+		<div id="container" style="min-width:700px;height:400px;margin-top:50px;"></div>
 		<div style="margin-top: 30px">
 			<span style="font-weight: bold;">提示：</span><br/>
 			<span>~ 转向问题指的是考生在考试过程中在摄像头区域内的位置，分别分为3个区域方向，左(0~33)、中（34~66）、右（67~100）。</span><br/>

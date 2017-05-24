@@ -47,7 +47,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
         model.addAttribute("student", student);
-        return "admin/photoConfigAnalysis/processTechnicalSupport";
+        return "admin/photoConfigAnalysis/analysisTechnicalSupport";
     }
 
     /**
@@ -147,7 +147,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
         model.addAttribute("student", student);
-        return "admin/photoConfigAnalysis/collectSuccessRate";
+        return "admin/photoConfigAnalysis/analysisCollectSuccessRate";
     }
 
     /**
@@ -163,7 +163,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
         model.addAttribute("student", student);
-        return "admin/photoConfigAnalysis/collectSuccessRateDetails";
+        return "admin/photoConfigAnalysis/analysisCollectSuccessRateDetails";
     }
 
     /**

@@ -12,7 +12,7 @@
 	</div>
 	<!-- 主体 -->
 	<div class="page-container">
-		<div id="container" style="min-width:700px;height:400px;margin-top:100px;"></div>
+		<div id="container" style="min-width:700px;height:400px;"></div>
 	</div>
 
 	<!-- js -->

@@ -13,7 +13,7 @@
 	<!-- 主体 -->
 	<div class="page-container">
 		<%@ include file="process-menu.jspf" %>
-		<div id="container" style="min-width:700px;height:400px;margin-top:100px;"></div>
+		<div id="container" style="min-width:700px;height:400px;margin-top:50px;"></div>
 		<div style="margin-top: 30px">
 			<span style="font-weight: bold;">提示：</span><br/>
 			<span>~ 态度分析指的是考生在考试过程中的面部变化信息，如果高兴、难过等。</span><br/>

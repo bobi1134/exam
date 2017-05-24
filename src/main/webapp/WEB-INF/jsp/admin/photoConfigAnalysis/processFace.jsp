@@ -19,7 +19,7 @@
 	<!-- 主体 -->
 	<div class="page-container">
 		<%@ include file="process-menu.jspf" %>
-		<div id="container" style="min-width:700px;height:400px;margin-top:100px;"></div>
+		<div id="container" style="min-width:700px;height:400px;margin-top:50px;"></div>
 		<div style="margin-top: 30px">
 			<span style="font-weight: bold;">提示：</span><br/>
 			<span>~ 面部表情指的是考生在考试过程中面部表情信息，有0~100的区间，分别为:黯然伤神,半嗔半喜,似笑非笑,笑逐颜开,莞尔一笑,喜上眉梢,眉开眼笑,笑尽妖娆,心花怒放,一笑倾城，分词仅供参考！</span><br/>
