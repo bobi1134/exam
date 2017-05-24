@@ -34,7 +34,7 @@
 	<!-- 自定义js -->
 	<script type="text/javascript">
 		$(function () {
-			var expression = ${expression};
+			var expressions = ${expressions};
 
 			Highcharts.chart('container', {
 				title: {
@@ -66,7 +66,7 @@
 				},
 				series: [{
 					name: '表情：',
-					data: expression
+					data: expressions
 				}]
 			});
 		});

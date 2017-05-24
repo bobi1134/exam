@@ -52,7 +52,7 @@ public class PhotoConfigAnalysisController extends BaseController{
     }
 
     /**
-     * 通通查询封装：PhotoConfig表 - 查询在该采集规则时间段内的图片，返回photos
+     * 通用查询封装：PhotoConfig表 - 查询在该采集规则时间段内的图片，返回photos
      * @param photoConfigId
      * @param studentId
      * @return
@@ -143,7 +143,6 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("exception_FaceCompare", exception_FaceCompare);
         model.addAttribute("errorcode_x_FaceCompare", errorcode_x_FaceCompare);
         model.addAttribute("errorcode_0_FaceCompare", errorcode_0_FaceCompare);
-
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
@@ -194,19 +193,40 @@ public class PhotoConfigAnalysisController extends BaseController{
         return bsGridPage.parsePage(photoPage);
     }
 
-
     /**
-     * 根据photoConfigId和studentId查询结果
+     * 通用插入或修改采集配置分析结果
      * @param photoConfigId
      * @param studentId
+     * @param columnName
+     * @param res
      * @return
      */
-    public PhotoConfigAnalysis selectOne(String photoConfigId, String studentId){
+    public boolean insertOrUpdatePhotoConfigAnalysis(int photoConfigId, int studentId, String columnName, String res){
         EntityWrapper<PhotoConfigAnalysis> entityWrapper = new EntityWrapper<>();
         entityWrapper.eq("photoConfig_id", photoConfigId);
         entityWrapper.eq("student_id", studentId);
-        PhotoConfigAnalysis photoConfigAnalysis = iPhotoConfigAnalysisService.selectOne(entityWrapper);
-        return photoConfigAnalysis;
+        PhotoConfigAnalysis selectOne = iPhotoConfigAnalysisService.selectOne(entityWrapper);
+
+        //写入数据库
+        PhotoConfigAnalysis photoConfigAnalysis = new PhotoConfigAnalysis();
+        if(selectOne!=null) photoConfigAnalysis.setId(selectOne.getId());//主键id
+        switch(columnName){
+            case "attitude":
+                photoConfigAnalysis.setAttitude(res);
+                break;
+            case "face":
+                photoConfigAnalysis.setFace(res);
+                break;
+            case "turn_around":
+                photoConfigAnalysis.setTurnAround(res);
+                break;
+            case "change_people":
+                photoConfigAnalysis.setChangePeople(res);
+                break;
+        }
+        photoConfigAnalysis.setPhotoconfigId(photoConfigId);
+        photoConfigAnalysis.setStudentId(studentId);
+        return iPhotoConfigAnalysisService.insertOrUpdate(photoConfigAnalysis);
     }
 
     /**
@@ -258,15 +278,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         //@ 更新进数据库
         String res = "{\"expressions1\":\""+expressions1+"\",\"expressions2\":\""+expressions2+"\",\"expressions3\":\""+expressions3+"\",\"expressions4\":\""+expressions4+"\",\"expressions5\":\""+expressions5+"\"," +
                      "\"expressions6\":\""+expressions6+"\",\"expressions7\",\""+expressions7+"\",\"expressions8\":\""+expressions8+"\",\"expressions9\":\""+expressions9+"\",\"expressions10\":\""+expressions10+"\"}";
-
-        PhotoConfigAnalysis photoConfigAnalysis = new PhotoConfigAnalysis();
-        
-        PhotoConfigAnalysis selectOne = selectOne(photoConfigId, studentId);
-        if(selectOne!=null) photoConfigAnalysis.setId(selectOne.getId());//主键id
-        photoConfigAnalysis.setAttitude(res);//态度结果
-        photoConfigAnalysis.setPhotoconfigId(Integer.valueOf(photoConfigId));//属于哪个采集配置
-        photoConfigAnalysis.setStudentId(Integer.valueOf(studentId));//属于哪个学生
-        boolean xxx = iPhotoConfigAnalysisService.insertOrUpdate(photoConfigAnalysis);
+        boolean xxx = insertOrUpdatePhotoConfigAnalysis(Integer.valueOf(photoConfigId), Integer.valueOf(studentId), "attitude", res);
 
         model.addAttribute("count", count);
         model.addAttribute("expressions1", expressions1);
@@ -279,7 +291,6 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("expressions8", expressions8);
         model.addAttribute("expressions9", expressions9);
         model.addAttribute("expressions10", expressions10);
-
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
@@ -296,18 +307,23 @@ public class PhotoConfigAnalysisController extends BaseController{
     public String processFace(@PathVariable("photoConfigId") String photoConfigId,
                               @PathVariable("studentId") String studentId,
                               Model model){
-        List<Integer> expression = new ArrayList<>();
+        List<Integer> expressions = new ArrayList<>();
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
         for (Photo photo : photos){
             JSONObject jsonObject = JSON.parseObject(photo.getResultDetectface());
             if(jsonObject.get("face")!=null && (int)jsonObject.get("errorcode")==0){
                 JSONArray jsonArray = JSON.parseArray(jsonObject.get("face").toString());
                 JSONObject jsonObject2 = (JSONObject)jsonArray.get(0);
-                expression.add((int)jsonObject2.get("expression"));
+                expressions.add((int)jsonObject2.get("expression"));
             }
         }
-        model.addAttribute("expression", expression);
 
+        //@ 将面部表情保存到数据库
+        String res = "";
+        for (int i : expressions)  res = res + String.valueOf(i) + ",";
+        boolean xxx = insertOrUpdatePhotoConfigAnalysis(Integer.valueOf(photoConfigId), Integer.valueOf(studentId), "face", res);
+
+        model.addAttribute("expressions", expressions);
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
@@ -359,8 +375,13 @@ public class PhotoConfigAnalysisController extends BaseController{
                 result.add(0);
             }
         }
-        model.addAttribute("result", result);
 
+        //@ 更新进数据库
+        String res = "";
+        for (int i : result)  res = res + String.valueOf(i) + ",";
+        boolean xxx = insertOrUpdatePhotoConfigAnalysis(Integer.valueOf(photoConfigId), Integer.valueOf(studentId), "turn_around", res);
+
+        model.addAttribute("result", result);
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
@@ -379,7 +400,6 @@ public class PhotoConfigAnalysisController extends BaseController{
     public String changePeople(@PathVariable("photoConfigId") String photoConfigId,
                              @PathVariable("studentId") String studentId,
                              Model model){
-
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
         int selfNum = 0, count = 0;
         List<Double> similaritys = new ArrayList<>();
@@ -396,10 +416,14 @@ public class PhotoConfigAnalysisController extends BaseController{
             }
         }
 
+        //@ 更新进数据库
+        String res = "";
+        for (Double i : similaritys)  res = res + String.valueOf(i) + ",";
+        boolean xxx = insertOrUpdatePhotoConfigAnalysis(Integer.valueOf(photoConfigId), Integer.valueOf(studentId), "change_people", res);
+
         model.addAttribute("similaritys", similaritys);
         model.addAttribute("selfNum", selfNum);
         model.addAttribute("count", count);
-
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
         User student = iUserService.selectById(studentId);
