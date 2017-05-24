@@ -8,15 +8,15 @@
 	<style type="text/css">
 		#refreshBtn1,#refreshBtn2{
 			position: absolute;
-			top: 150px;
-			right: 31px;
+			top: 128px;
+			right: 54px;
 			padding: 0px 4px;
 			height: 19px;
 			font-size: 12px;
 			width: 20px;
 		}
 		#refreshBtn2{
-			top:650px;
+			top:653px;
 		}
 	</style>
 <body>
@@ -30,9 +30,13 @@
 		<!-- 中途换人分布图 -->
 		<div id="changePeopleDistribution" style="min-width:700px;height:400px;margin-top:50px;"></div>
 		<div class="btn btn-success radius" id="refreshBtn1" title="重绘图表"><i class="Hui-iconfont">&#xe68f;</i></div>
+		<div style="margin-top: 30px">
+			<span style="font-weight: bold;">提示：</span><br/>
+			<span>~ 相似度大于70则认为是同一人，否则为不是。</span><br/>
+		</div>
 
 		<!-- 中途换人走势图 -->
-		<div id="changePeopleTrend" style="min-width:700px;height:400px;margin-top:100px;"></div>
+		<div id="changePeopleTrend" style="min-width:700px;height:400px;margin-top:50px;"></div>
 		<div class="btn btn-success radius" id="refreshBtn2" title="重绘图表"><i class="Hui-iconfont">&#xe68f;</i></div>
 		<div style="margin-top: 30px">
 			<span style="font-weight: bold;">提示：</span><br/>
@@ -87,7 +91,12 @@
 						type: 'pie',
 						name: '分布',
 						data: [
-							['安全，未换人', selfNum/count * 100],
+							{
+								name: '安全，未换人',
+								y: selfNum/count * 100,
+								sliced: true,
+								selected: true
+							},
 							['危险，不是一个人', ((count-selfNum)/count) * 100]
 						]
 					}]

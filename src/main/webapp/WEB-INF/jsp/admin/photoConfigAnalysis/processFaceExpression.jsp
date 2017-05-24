@@ -8,15 +8,15 @@
 	<style type="text/css">
 		#refreshBtn1,#refreshBtn2{
 			position: absolute;
-			top: 150px;
-			right: 31px;
+			top: 128px;
+			right: 54px;
 			padding: 0px 4px;
 			height: 19px;
 			font-size: 12px;
 			width: 20px;
 		}
 		#refreshBtn2{
-			top: 720px;
+			top: 696px;
 		}
 	</style>
 <body>
