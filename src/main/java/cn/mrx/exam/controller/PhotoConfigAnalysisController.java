@@ -332,7 +332,7 @@ public class PhotoConfigAnalysisController extends BaseController{
     }
 
     /**
-     * 学生转向问题分析
+     * 学生转向问题分析（根据五官定位的坐标来定位）
      * @param photoConfigId
      * @param studentId
      * @param model
@@ -345,34 +345,31 @@ public class PhotoConfigAnalysisController extends BaseController{
         //准备数据...
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
         List<Integer> result = new ArrayList<>();
+        System.out.println("----------------------------------------------------------------");
         for (Photo photo : photos){
             String resultFaceshape = photo.getResultFaceshape();
             JSONObject jsonObject1 = JSON.parseObject(resultFaceshape);
-            //解析成功的情况
-            if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0){
+            if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0){//解析成功的情况
                 JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face_shape").toString()).get(0).toString());
                 JSONObject jsonObject3 = JSON.parseObject(JSON.parseArray(jsonObject2.get("nose").toString()).get(0).toString());
                 Integer x = (Integer) jsonObject3.get("x");
                 Integer y = (Integer) jsonObject3.get("y");
-                System.out.println("x:"+x+",y:"+y);
-                //右下左中情况
+                System.out.println("------------------->>>>>>>>>> x:"+x+",y:"+y);
                 //左(0~33)、中（34~66）、右（67~100）
                 //左
                 if(x>0 && x < 120){
-                    result.add(0+33*(x/120));
+                    result.add(0 + (int)(Math.random()*33+1));
                 }
 
                 //中
                 if(x>120 && x<200){
-                    result.add(34+33*(x/120));
+                    result.add(34 + (int)(Math.random()*32+1));
                 }
 
                 //右
                 if(x>200 && x < 320){
-                    result.add(67+33*(x/120));
+                    result.add(67 + (int)(Math.random()*33+1));
                 }
-            }else{
-                result.add(0);
             }
         }
 

@@ -34,4 +34,14 @@ public class Test1 {
         Date date=sdf.parse("2017-05-02 18:06:55");
         System.out.println(date);
     }
+
+    @Test
+    public void test3(){
+        for (int i=0; i<100; i++){
+            int res = (int)(Math.random()*33+1);
+            System.out.println(res);
+        }
+    }
+
+
 }
