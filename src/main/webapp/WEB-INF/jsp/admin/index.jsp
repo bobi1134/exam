@@ -24,7 +24,7 @@
                                     class="Hui-iconfont">&#xe613;</i> 图片</a></li>
                             <li><a href="javascript:;" onclick="product_add('添加资讯','product-add.html')"><i
                                     class="Hui-iconfont">&#xe620;</i> 产品</a></li>
-                            <li><a href="javascript:;" onclick="member_add('添加用户','member-add.html','','510')"><i
+                            <li><a href="javascript:;" onclick="member_add('添加用户','member-add.jsp','','510')"><i
                                     class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
                         </ul>
                     </li>

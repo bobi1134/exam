@@ -49,4 +49,23 @@ public class UserController extends BaseController {
         return bsGridPage.parsePage(userPage);
     }
 
+    /**
+     * 添加用户页面
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add(){
+        return "admin/user/member-add";
+    }
+
+    /**
+     * 异步添加用户
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseBody
+    public Object add(User user){
+        return iUserService.insert(user);
+    }
 }

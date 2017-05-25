@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
@@ -26,6 +27,7 @@ public class User extends Model<User> {
 	/**
 	 * 主键id
 	 */
+	@TableId(type = IdType.AUTO)
 	private Integer id;
 	/**
 	 * 用户名
