@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -93,6 +96,17 @@ public class UserController extends BaseController {
     @ResponseBody
     public Object edit(User user){
         return iUserService.updateById(user);
+    }
+
+    /**
+     * 异步批量删除用户
+     * @param ids
+     * @return
+     */
+    @RequestMapping(value = "/batchDel", method = RequestMethod.POST)
+    @ResponseBody
+    public Object batchDel(String ids){
+        return iUserService.deleteBatchIds(Arrays.asList(ids.split(",")));
     }
 }
 
