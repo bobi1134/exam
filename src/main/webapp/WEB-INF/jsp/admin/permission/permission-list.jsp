@@ -92,6 +92,9 @@
 			case 4:
 				return "过程分析";
 				break;
+			case 5:
+				return "系统设置";
+				break;
 			default:
 				return "######";
 		}

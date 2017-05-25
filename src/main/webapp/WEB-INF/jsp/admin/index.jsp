@@ -89,7 +89,7 @@
 
         <c:if test="${fn:contains(parentIds, '2')}">
             <dl id="menu-role">
-                <dt><i class="Hui-iconfont">&#xe705;</i> 角色权限管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dt><i class="Hui-iconfont">&#xe705;</i> 角色权限<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
                 <dd>
                     <ul>
                         <c:forEach items="${permissions}" var="c" >
@@ -106,7 +106,7 @@
 
         <c:if test="${fn:contains(parentIds, '3')}">
             <dl id="menu-yt">
-                <dt><i class="Hui-iconfont">&#xe65a;</i> 人脸识别技术<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dt><i class="Hui-iconfont">&#xe65a;</i> 人脸识别<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
                 <dd>
                     <ul>
                         <c:forEach items="${permissions}" var="c" >
@@ -123,12 +123,29 @@
 
         <c:if test="${fn:contains(parentIds, '4')}">
             <dl id="menu-gcfx">
-                <dt><i class="Hui-iconfont">&#xe620;</i> 过程分析<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dt><i class="Hui-iconfont">&#xe61c;</i> 过程分析<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
                 <dd>
                     <ul>
                         <c:forEach items="${permissions}" var="c" >
                             <c:choose>
                                 <c:when test="${c.parentId==4 and c.nowId==2}">
+                                    <li><a data-href="${ctx}${c.uri}" data-title="${c.permissionName}" href="javascript:;">${c.permissionName}</a></li>
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
+                    </ul>
+                </dd>
+            </dl>
+        </c:if>
+
+        <c:if test="${fn:contains(parentIds, '5')}">
+            <dl id="menu-gcfx">
+                <dt><i class="Hui-iconfont">&#xe62e;</i> 系统设置<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dd>
+                    <ul>
+                        <c:forEach items="${permissions}" var="c" >
+                            <c:choose>
+                                <c:when test="${c.parentId==5 and c.nowId==2}">
                                     <li><a data-href="${ctx}${c.uri}" data-title="${c.permissionName}" href="javascript:;">${c.permissionName}</a></li>
                                 </c:when>
                             </c:choose>

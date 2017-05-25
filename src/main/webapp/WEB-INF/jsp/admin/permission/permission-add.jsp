@@ -41,6 +41,7 @@
 						<option value="2">角色权限管理</option>
 						<option value="3">人脸识别技术</option>
 						<option value="4">过程分析</option>
+						<option value="5">系统设置</option>
 					</select>
 				</span>
 			</div>

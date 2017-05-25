@@ -126,6 +126,31 @@
 						</dl>
 					</dd>
 				</dl>
+
+				<%--系统设置--%>
+				<dl class="permission-list" id="xtsz">
+					<dt>
+						<label>系统设置</label>
+					</dt>
+					<dd>
+						<dl class="cl permission-list2">
+							<dd>
+								<c:forEach items="${allPermissions}" var="c">
+									<c:if test="${c.parentId==5}">
+										<c:choose>
+											<c:when test="${c.flag==true}">
+												<label class=""><input type="checkbox" value="${c.id}" checked>${c.permissionName}</label>
+											</c:when>
+											<c:otherwise>
+												<label class=""><input type="checkbox" value="${c.id}">${c.permissionName}</label>
+											</c:otherwise>
+										</c:choose>
+									</c:if>
+								</c:forEach>
+							</dd>
+						</dl>
+					</dd>
+				</dl>
 			</div>
 		</div>
 		<div class="row cl">
@@ -180,6 +205,13 @@
 				});
 				//过程分析
 				$("#gcfx dd .cl dd label").each(function () {
+					var input = $(this).find("input");
+					if (input.is(":checked")) {
+						permissionIds = permissionIds + input.val() + ",";
+					}
+				});
+				//系统设置
+				$("#xtsz dd .cl dd label").each(function () {
 					var input = $(this).find("input");
 					if (input.is(":checked")) {
 						permissionIds = permissionIds + input.val() + ",";
