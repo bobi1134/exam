@@ -37,6 +37,7 @@
 				<th w_index="lastLoginIp">上次登录ip</th>
 				<th w_index="lastLoginTime" w_render="fmtLastLoginTime" w_sort="lastLoginTime">上次登录时间</th>
 				<th w_index="roleId" w_render="roleIdFn">角色</th>
+				<th w_render="toolbar" w_align="center">操作</th>
 			</tr>
 		</table>
 	</div>
@@ -130,16 +131,31 @@
 		}
 	}
 
-	/*用户-添加*/
+	/**
+	 * 操作
+	 */
+	function toolbar(row) {
+		var id = row.id;
+		var html = "";
+		html += '<a title="编辑" href="javascript:;" onclick="member_edit(\''+id+'\')" ><i class="Hui-iconfont">&#xe6df;</i>编辑</a>'
+		html +=  '<a title="删除" href="javascript:;" onclick="member_del(\''+id+'\')" class="ml-15"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>';
+		return html;
+	}
+
+	/**
+	 * 用户-添加
+	 */
 	function member_add(title,url){
 		layer_show(title,url);
 	}
 
-
-	/*用户-编辑*/
-	function member_edit(title,url,id,w,h){
-		layer_show(title,url,w,h);
+	/**
+	 * 用户-修改
+	 */
+	function member_edit(id){
+		layer_show("修改用户", "${ctx}/admin/user/edit/"+id);
 	}
+
 	/*密码-修改*/
 	function change_password(title,url,id,w,h){
 		layer_show(title,url,w,h);

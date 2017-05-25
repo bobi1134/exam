@@ -8,12 +8,13 @@
 	</head>
 <body>
 <article class="page-container">
-	<form action="" method="post" class="form form-horizontal" id="form-member-add">
+	<form action="" method="post" class="form form-horizontal" id="form-member-edit">
+		<input type="hidden" name="id" value="${user.id}"/>
 		<!-- 用户名 -->
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" placeholder="用户名" id="username" name="username">
+				<input type="text" class="input-text" value="${user.username}" placeholder="用户名" id="username" name="username">
 			</div>
 		</div>
 
@@ -21,7 +22,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" placeholder="密码" id="pwd" name="pwd">
+				<input type="text" class="input-text" value="${user.pwd}" placeholder="密码" id="pwd" name="pwd">
 			</div>
 		</div>
 
@@ -29,7 +30,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮件：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" placeholder="邮件" id="email" name="email">
+				<input type="text" class="input-text" value="${user.email}" placeholder="邮件" id="email" name="email">
 			</div>
 		</div>
 
@@ -37,7 +38,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>真实姓名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" placeholder="真实姓名" id="reallyName" name="reallyName">
+				<input type="text" class="input-text" value="${user.reallyName}" placeholder="真实姓名" id="reallyName" name="reallyName">
 			</div>
 		</div>
 
@@ -47,8 +48,14 @@
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
 					<select class="select" size="1" name="roleId">
-						<option value="2">web_manager</option>
-						<option value="3" selected>web_user</option>
+						<c:if test="${user.roleId==2}">
+							<option value="2" selected>web_manager</option>
+							<option value="3">web_user</option>
+						</c:if>
+						<c:if test="${user.roleId==3}">
+							<option value="2">web_manager</option>
+							<option value="3" selected>web_user</option>
+						</c:if>
 					</select>
 				</span>
 			</div>
@@ -73,7 +80,7 @@
 			increaseArea: '20%'
 		});
 
-		$("#form-member-add").validate({
+		$("#form-member-edit").validate({
 			rules:{
 				username:{
 					required:true,
@@ -83,7 +90,6 @@
 				},
 				email:{
 					required:true,
-					email:true,
 				},
 				reallyName:{
 					required:true,
@@ -94,20 +100,20 @@
 			success:"valid",
 			submitHandler:function(form){
 				$(form).ajaxSubmit({
-					url:"${ctx}/admin/user/add",
+					url:"${ctx}/admin/user/edit",
 					type:"post",
 					dataType:"json",
-					data : $("#form-member-add").serialize(),
+					data : $("#form-member-edit").serialize(),
 					success:function (json) {
 						if(json == true){
-							layer.msg('添加成功!',{icon:1,time:1000}, function () {
+							layer.msg('修改成功!',{icon:1,time:1000}, function () {
 								window.parent.location.reload(); //刷新父页面
 								var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 								parent.layer.close(index);  // 关闭layer
 
 							});
 						}else{
-							layer.msg('添加失败！',{icon:5,time:1000});
+							layer.msg('修改失败！',{icon:5,time:1000});
 						}
 
 					},

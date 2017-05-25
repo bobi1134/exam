@@ -5,7 +5,10 @@ import cn.mrx.exam.pojo.User;
 import cn.mrx.exam.utils.BSGridPage;
 import cn.mrx.exam.utils.QueryFilter;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import cn.mrx.exam.controller.BaseController;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,4 +71,28 @@ public class UserController extends BaseController {
     public Object add(User user){
         return iUserService.insert(user);
     }
+
+    /**
+     * 添加修改页面
+     * @return
+     */
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String edit(@PathVariable("id") Integer id,
+                       Model model){
+        User user = iUserService.selectById(id);
+        model.addAttribute("user", user);
+        return "admin/user/member-edit";
+    }
+
+    /**
+     * 异步修改用户
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public Object edit(User user){
+        return iUserService.updateById(user);
+    }
 }
+
