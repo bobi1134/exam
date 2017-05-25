@@ -38,6 +38,14 @@
 					</td>
 				</tr>
 			</c:forEach>
+			<tr class="text-c">
+				<td colspan="4">All</td>
+				<td class="f-14">
+					<a title="汇总分析" href="${ctx}/admin/photoConfigAnalysis/all/${photoConfigId}" style="text-decoration:none">
+						<i class="Hui-iconfont">&#xe61c;</i>
+					</a>
+				</td>
+			</tr>
 			</tbody>
 		</table>
 	</div>

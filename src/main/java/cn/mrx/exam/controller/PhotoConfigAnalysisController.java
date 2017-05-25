@@ -484,4 +484,23 @@ public class PhotoConfigAnalysisController extends BaseController{
         model.addAttribute("student", student);
         return "admin/photoConfigAnalysis/processAdvice";
     }
+
+    @RequestMapping(value = "/all/{photoConfigId}", method = RequestMethod.GET)
+    public String all(@PathVariable("photoConfigId") String photoConfigId,
+                      Model model){
+        PhotoConfig photoConfig = iPhotoConfigService.selectById(photoConfigId);
+        String userIds = photoConfig.getUserIds();//应考人
+        if(userIds!=null && !userIds.trim().equals("")){
+            //表情统计
+//            selectExpressionCountArray()
+            int[] expressionCountArray = new int[10];
+            for(String userId : userIds.split(",")){
+
+
+            }
+        }
+
+        model.addAttribute("photoConfig", photoConfig);
+        return "admin/photoConfigAnalysis/all";
+    }
 }

@@ -98,7 +98,7 @@
 
 					<!-- C -->
 					<span class="t"><i class="Hui-iconfont">&#xe68e;</i>  该生的转向情况变化</span></br>
-					<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位于左边${turnOrder[0]}次，位于中间 ${turnOrder[1]}次，位于右边${turnOrder[2]}次！</span>
+					<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位于左边${turnOrder[0]}次，位于中间 ${turnOrder[1]}次，位于右边${turnOrder[2]}次！</span></br>
 					<c:choose>
 						<c:when test="${turnOrder[0]>(turnOrder[1]+turnOrder[2])}">
 							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该考生有点不正常，头部位置在考试期间大都数位于左边！</span>
@@ -287,10 +287,10 @@
 			var flag = false;
 			$("#resultBtn").click(function(){
 				if(!flag){
-					$(".advice .all").removeClass("hui-bounceout").addClass("hui-bouncein").show();
+					$(".advice .all").removeClass("hui-fadeout").addClass("hui-fadeinT").show();
 					flag = true;
 				}else{
-					$(".advice .all").removeClass("hui-bouncein").addClass("hui-bounceout");
+					$(".advice .all").removeClass("hui-fadeinT").addClass("hui-fadeout");
 					flag = false;
 				}
 			});

@@ -17,7 +17,7 @@
 				<th>ID</th>
 				<th>关键词</th>
 				<th>描述</th>
-				<th>TAB标题</th>
+				<th>后台管理标题</th>
 				<th>版本</th>
 				<th>类别</th>
 				<th>操作</th>
