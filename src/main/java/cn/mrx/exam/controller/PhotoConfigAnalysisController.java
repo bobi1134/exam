@@ -322,7 +322,6 @@ public class PhotoConfigAnalysisController extends BaseController{
         //准备数据...
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
         List<Integer> result = new ArrayList<>();
-        System.out.println("----------------------------------------------------------------");
         for (Photo photo : photos){
             String resultFaceshape = photo.getResultFaceshape();
             JSONObject jsonObject1 = JSON.parseObject(resultFaceshape);
@@ -330,8 +329,6 @@ public class PhotoConfigAnalysisController extends BaseController{
                 JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face_shape").toString()).get(0).toString());
                 JSONObject jsonObject3 = JSON.parseObject(JSON.parseArray(jsonObject2.get("nose").toString()).get(0).toString());
                 Integer x = (Integer) jsonObject3.get("x");
-                Integer y = (Integer) jsonObject3.get("y");
-                System.out.println("------------------->>>>>>>>>> x:"+x+",y:"+y);
                 //左(0~33)、中（34~66）、右（67~100）
                 //左
                 if(x>0 && x < 120){
@@ -382,7 +379,7 @@ public class PhotoConfigAnalysisController extends BaseController{
             //保证解析正确
             if(jsonObject.get("errorcode")!=null && (int)jsonObject.get("errorcode")==0){
                 Double similarity = Double.parseDouble(jsonObject.get("similarity").toString());
-                if(similarity>70){
+                if(similarity>=60){
                     selfNum++;
                 }
                 similaritys.add(similarity);
@@ -405,12 +402,81 @@ public class PhotoConfigAnalysisController extends BaseController{
         return "admin/photoConfigAnalysis/processChangePeople";
     }
 
-
+    /**
+     * 意见分析
+     * @param photoConfigId
+     * @param studentId
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/advice/{photoConfigId}/{studentId}", method = RequestMethod.GET)
     public String advice(@PathVariable("photoConfigId") String photoConfigId,
                                @PathVariable("studentId") String studentId,
                                Model model){
+        //图表信息
+        EntityWrapper<PhotoConfigAnalysis> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("photoConfig_id", photoConfigId);
+        entityWrapper.eq("student_id", studentId);
+        PhotoConfigAnalysis photoConfigAnalysis = iPhotoConfigAnalysisService.selectOne(entityWrapper);
+        model.addAttribute("photoConfigAnalysis", photoConfigAnalysis);
 
+        //文字信息
+        //@、是否戴眼镜
+        List<Photo> photos = selectPhotos(photoConfigId, studentId);
+        JSONObject jsonObject1 = null;
+        for (Photo photo : photos){
+            String resultDetectface = photo.getResultDetectface();//人脸分析
+            jsonObject1 = JSON.parseObject(resultDetectface);
+            if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0) break;
+        }
+        JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face").toString()).get(0).toString());
+        model.addAttribute("glass", jsonObject2.get("glass"));
+
+        //@、表情分布情况
+        int[] expressions = selectExpressionCountArray(photoConfigId, studentId);
+        model.addAttribute("expressions", expressions);
+
+        //@、转向分布情况
+        String turnAroundStr = photoConfigAnalysis.getTurnAround();
+        int[] turnOrder = new int[3];
+        if(turnAroundStr!=null && !turnAroundStr.trim().equals("")){
+            for(String str : turnAroundStr.split(",")){
+                int x = Integer.valueOf(str);
+                if(x>=0 && x < 33) turnOrder[0]++;
+                if(x>33 && x<66) turnOrder[1]++;
+                if(x>66 && x <= 100) turnOrder[2]++;
+            }
+        }
+        model.addAttribute("turnOrder", turnOrder);
+
+        //@、中途换人情况
+        String changePeopleStr = photoConfigAnalysis.getChangePeople();
+        int[] changePeopleOrder = new int[3];
+        if(changePeopleStr!=null && !changePeopleStr.trim().equals("")){
+            String[] array = changePeopleStr.split(",");
+            for(int i=0; i<array.length; i++){
+                double similarity = Double.parseDouble(array[i]);
+                if(similarity>=85) changePeopleOrder[0]++;
+                if(similarity>=60 && similarity<85) changePeopleOrder[1]++;
+                if(similarity<60) changePeopleOrder[2]++;
+            }
+        }
+        model.addAttribute("changePeopleOrder", changePeopleOrder);
+
+        //@、其他情况
+        String[] faceArr = new String[3];
+        for (Photo photo : photos){
+            String resultDetectface = photo.getResultDetectface();//人脸分析
+            jsonObject1 = JSON.parseObject(resultDetectface);
+            if (jsonObject1.get("errorcode")!=null && (int)jsonObject1.get("errorcode")==0){
+                JSONObject xxx = JSON.parseObject(JSON.parseArray(jsonObject1.get("face").toString()).get(0).toString());
+                faceArr[0] = String.valueOf(xxx.get("gender"));
+                faceArr[1] = String.valueOf(xxx.get("age"));
+                faceArr[2] = String.valueOf(xxx.get("beauty"));
+                break;
+            }
+        }
+        model.addAttribute("faceArr", faceArr);
 
         //返回photoConfigId和根据studentId查询出来的User
         model.addAttribute("photoConfigId", photoConfigId);
