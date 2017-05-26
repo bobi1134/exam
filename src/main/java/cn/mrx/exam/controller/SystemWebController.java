@@ -1,5 +1,6 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.interceptor.PermissionCheck;
 import cn.mrx.exam.pojo.SystemWeb;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class SystemWebController extends BaseController {
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
+    @PermissionCheck
 	public String systemWeb(Model model){
         List<SystemWeb> systemWebList = iSystemWebService.selectList(null);
         model.addAttribute("systemWebList", systemWebList);

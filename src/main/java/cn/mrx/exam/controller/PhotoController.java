@@ -1,5 +1,6 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.interceptor.PermissionCheck;
 import cn.mrx.exam.pojo.Photo;
 import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.pojo.User;
@@ -53,6 +54,7 @@ public class PhotoController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/photo-detect", method = RequestMethod.GET)
+    @PermissionCheck
     public String takePhoto(){
         return "admin/photo/photo-detect";
     }
@@ -149,6 +151,7 @@ public class PhotoController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/photo-collect", method = RequestMethod.GET)
+    @PermissionCheck
     public String collect(HttpServletRequest httpServletRequest,
                           Model model){
         //查询自己的考试信息

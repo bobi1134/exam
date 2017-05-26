@@ -1,5 +1,6 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.interceptor.PermissionCheck;
 import cn.mrx.exam.pojo.Photo;
 import cn.mrx.exam.pojo.PhotoConfig;
 import cn.mrx.exam.pojo.User;
@@ -47,6 +48,7 @@ public class PhotoConfigController extends BaseController {
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
+    @PermissionCheck
     public String collectConfig(){
         return "admin/photoConfig/photoConfig-list";
     }

@@ -1,5 +1,6 @@
 package cn.mrx.exam.controller;
 
+import cn.mrx.exam.interceptor.PermissionCheck;
 import cn.mrx.exam.youtu.Youtu;
 import cn.mrx.exam.youtu.pojo.detectface.DetectFace;
 import com.alibaba.fastjson.JSON;
@@ -42,6 +43,7 @@ public class YouTuController extends BaseController {
      * 跳转到detectface.jsp页面
      * @return
      */
+    @PermissionCheck
     @RequestMapping(value = "/detectface", method = RequestMethod.GET)
     public String detectFace(){
         return "admin/youtu/detectface";
@@ -100,6 +102,7 @@ public class YouTuController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/faceshape", method = RequestMethod.GET)
+    @PermissionCheck
     public String faceShape(){
         return "admin/youtu/faceshape";
     }
@@ -151,6 +154,7 @@ public class YouTuController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/facecompare", method = RequestMethod.GET)
+    @PermissionCheck
     public String faceCompare(){
         return "admin/youtu/facecompare";
     }

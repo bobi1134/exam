@@ -47,7 +47,6 @@ public class UserController extends BaseController {
      * @param httpServletRequest
      * @return
      */
-    @PermissionCheck
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(BSGridPage<User> bsGridPage, HttpServletRequest httpServletRequest){

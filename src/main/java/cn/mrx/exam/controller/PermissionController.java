@@ -39,9 +39,10 @@ public class PermissionController extends BaseController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * role-list.jsp页面
+     * permission-list.jsp页面
      * @return
      */
+    @PermissionCheck
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String rolePage(Model model){
         return "admin/permission/permission-list";
