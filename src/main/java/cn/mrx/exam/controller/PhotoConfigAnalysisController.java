@@ -374,6 +374,7 @@ public class PhotoConfigAnalysisController extends BaseController{
         List<Photo> photos = selectPhotos(photoConfigId, studentId);
         int selfNum = 0, count = 0;
         List<Double> similaritys = new ArrayList<>();
+        List<String> lt60Photos = new ArrayList<>();//相似度相遇60的图片
         for (Photo photo : photos){
             JSONObject jsonObject = JSON.parseObject(photo.getResultFacecompare());
             //保证解析正确
@@ -381,6 +382,8 @@ public class PhotoConfigAnalysisController extends BaseController{
                 Double similarity = Double.parseDouble(jsonObject.get("similarity").toString());
                 if(similarity>=60){
                     selfNum++;
+                }else{
+                    lt60Photos.add(photo.getName());
                 }
                 similaritys.add(similarity);
                 count++;
@@ -392,6 +395,11 @@ public class PhotoConfigAnalysisController extends BaseController{
         for (Double i : similaritys)  res = res + String.valueOf(i) + ",";
         boolean xxx = insertOrUpdatePhotoConfigAnalysis(Integer.valueOf(photoConfigId), Integer.valueOf(studentId), "change_people", res);
 
+        for(String s : lt60Photos){
+            System.out.println("------------------------>"+s);
+        }
+
+        model.addAttribute("lt60Photos", lt60Photos);
         model.addAttribute("similaritys", similaritys);
         model.addAttribute("selfNum", selfNum);
         model.addAttribute("count", count);

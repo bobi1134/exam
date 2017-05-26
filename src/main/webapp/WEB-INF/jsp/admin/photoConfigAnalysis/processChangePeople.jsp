@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<%@ include file="../jspf/head.jspf" %>
+		<link rel="stylesheet" type="text/css" href="${ctx}/resources/admin/h-ui/lib/lightbox2/2.8.1/css/lightbox.css"/>
 	</head>
 	<style type="text/css">
 		#refreshBtn1,#refreshBtn2{
@@ -43,6 +44,28 @@
 			<span>~ 中途换人分析指的是以考生第一张识别成功的照片为基础，后面的一次进行比较，分析是否为同一个人！</span><br/>
 			<span>~ 相似度区间为(0-100)。</span><br/>
 		</div>
+
+		<br/>
+		<!-- 相似度小于60的图片 -->
+		<c:if test="${lt60Photos.size()>0}">
+			<span style="font-weight: bold;">相似度小于60的照片：</span><br/>
+			<div class="portfolio-content">
+				<ul class="cl portfolio-area">
+					<c:forEach items="${lt60Photos}" var="c">
+						<li class="item">
+							<div class="portfoliobox">
+								<div class="picbox">
+									<a href="${ctx}/resources/admin/upload/photo/${c}" data-lightbox="gallery" data-title="${c}">
+										<!-- 缩略图 -->
+										<img src="${ctx}/resources/admin/upload/photo/${c}">
+									</a>
+								</div>
+							</div>
+						</li>
+					</c:forEach>
+				</ul>
+			</div>
+		</c:if>
 	</div>
 
 	<!-- js -->
@@ -50,6 +73,7 @@
 	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/hcharts/Highcharts/5.0.6/js/highcharts.js"></script>
 	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/hcharts/Highcharts/5.0.6/js/modules/exporting.js"></script>
 	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/hcharts/Highcharts/5.0.6/js/highcharts-3d.js"></script>
+	<script type="text/javascript" src="${ctx}/resources/admin/h-ui/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
 
 	<!-- 自定义js -->
 	<script type="text/javascript">
@@ -157,6 +181,8 @@
 			$("#refreshBtn2").click(function () {
 				changePeopleTrend()
 			});
+
+			$.Huihover(".portfolio-area li");
 		});
 	</script>
 </body>
