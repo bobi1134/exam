@@ -485,19 +485,45 @@ public class PhotoConfigAnalysisController extends BaseController{
         return "admin/photoConfigAnalysis/processAdvice";
     }
 
+    /**
+     * 汇总分析
+     * @param photoConfigId
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/all/{photoConfigId}", method = RequestMethod.GET)
     public String all(@PathVariable("photoConfigId") String photoConfigId,
                       Model model){
         PhotoConfig photoConfig = iPhotoConfigService.selectById(photoConfigId);
         String userIds = photoConfig.getUserIds();//应考人
         if(userIds!=null && !userIds.trim().equals("")){
-            //表情统计
-//            selectExpressionCountArray()
+            //@1、表情统计
             int[] expressionCountArray = new int[10];
-            for(String userId : userIds.split(",")){
-
-
+            int count = 0;
+            for(String userId : userIds.split(",")){ //循环每一个学生
+                List<Photo> photos = selectPhotos(photoConfigId, userId);
+                for (Photo photo : photos) {
+                    String resultDetectfaceStr = photo.getResultDetectface();
+                    JSONObject jsonObject1 = JSON.parseObject(resultDetectfaceStr);
+                    if (jsonObject1.get("errorcode") != null && (int) jsonObject1.get("errorcode") == 0) {
+                        count++;
+                        JSONObject jsonObject2 = JSON.parseObject(JSON.parseArray(jsonObject1.get("face").toString()).get(0).toString());
+                        int expression =  (int)jsonObject2.get("expression");
+                        if(expression>=0 && expression<=10) expressionCountArray[0]++;
+                        else if(expression>10 && expression<=20) expressionCountArray[1]++;
+                        else if(expression>20 && expression<=30) expressionCountArray[2]++;
+                        else if(expression>30 && expression<=40) expressionCountArray[3]++;
+                        else if(expression>40 && expression<=50) expressionCountArray[4]++;
+                        else if(expression>50 && expression<=60) expressionCountArray[5]++;
+                        else if(expression>60 && expression<=70) expressionCountArray[6]++;
+                        else if(expression>70 && expression<=80) expressionCountArray[7]++;
+                        else if(expression>80 && expression<=90) expressionCountArray[8]++;
+                        else if(expression>90 && expression<=100) expressionCountArray[9]++;
+                    }
+                }
             }
+            model.addAttribute("count", count);
+            model.addAttribute("expressionCountArray", expressionCountArray);
         }
 
         model.addAttribute("photoConfig", photoConfig);

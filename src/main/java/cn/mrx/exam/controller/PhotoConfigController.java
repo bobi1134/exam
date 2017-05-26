@@ -256,7 +256,6 @@ public class PhotoConfigController extends BaseController {
     @RequestMapping(value = "/studentInfo/{photoConfigId}", method = RequestMethod.GET)
     public String studentInfo(@PathVariable("photoConfigId") String photoConfigId,
                               Model model){
-        model.addAttribute("photoId", photoConfigId);
         PhotoConfig photoConfig = iPhotoConfigService.selectById(photoConfigId);
         String str = photoConfig.getUserIds();
         List<User> users = new ArrayList<>();
@@ -265,6 +264,7 @@ public class PhotoConfigController extends BaseController {
                 users.add(iUserService.selectById(s));
             }
         }
+        model.addAttribute("photoConfigId", photoConfigId);
         model.addAttribute("users", users);
         return "/admin/photoConfig/photoConfig-studentInfo";
     }
