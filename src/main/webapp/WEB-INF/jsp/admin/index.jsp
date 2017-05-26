@@ -18,14 +18,12 @@
                     <li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><i
                             class="Hui-iconfont">&#xe600;</i> 新增 <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" onclick="article_add('添加资讯','article-add.html')"><i
-                                    class="Hui-iconfont">&#xe616;</i> 资讯</a></li>
-                            <li><a href="javascript:;" onclick="picture_add('添加资讯','picture-add.html')"><i
-                                    class="Hui-iconfont">&#xe613;</i> 图片</a></li>
-                            <li><a href="javascript:;" onclick="product_add('添加资讯','product-add.html')"><i
-                                    class="Hui-iconfont">&#xe620;</i> 产品</a></li>
-                            <li><a href="javascript:;" onclick="member_add('添加用户','member-add.jsp','','510')"><i
-                                    class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
+                            <li>
+                                <a href="javascript:;" onclick="member_add('添加用户','${ctx}/admin/user/add','','510')"><i class="Hui-iconfont">&#xe60d;</i> 用户</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" onclick="permission_add('添加权限','${ctx}/admin/permission/add','','510')"><i class="Hui-iconfont">&#xe705;</i> 权限</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -40,13 +38,11 @@
                     <li class="dropDown dropDown_hover">
                         <a href="#" class="dropDown_A">${session_user.reallyName} <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
-                            <li><a href="#">切换账户</a></li>
+                            <li><a href="javascript:;" onClick="myselfInfo()">个人信息</a></li>
                             <li><a href="${ctx}/admin/logout">退出</a></li>
                         </ul>
                     </li>
-                    <li id="Hui-msg"><a href="#" title="消息"><span class="badge badge-danger">1</span><i
-                            class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a></li>
+                    
                     <li id="Hui-skin" class="dropDown right dropDown_hover"><a href="javascript:;" class="dropDown_A"
                                                                                title="换肤"><i class="Hui-iconfont"
                                                                                              style="font-size:18px">
@@ -196,49 +192,29 @@
 <script type="text/javascript" src="${ctx}/resources/admin/plug-in/sweetalert/sweetalert.min.js"></script>
 <script type="text/javascript">
 
-    /*个人信息*/
-    function myselfinfo() {
-        layer.open({
-            type: 1,
-            area: ['300px', '200px'],
-            fix: false, //不固定
-            maxmin: true,
-            shade: 0.4,
-            title: '查看信息',
-            content: '<div>管理员信息</div>'
-        });
+    /**
+     * 个人信息-修改
+     */
+    function myselfInfo() {
+        layer_show("修改用户", "${ctx}/admin/user/edit/${session_user.id}");
     }
 
-    /*资讯-添加*/
-    function article_add(title, url) {
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
+    /**
+     * 用户-添加
+     * @param title
+     * @param url
+     */
+    function member_add(title, url) {
+        layer_show(title, url);
     }
-    /*图片-添加*/
-    function picture_add(title, url) {
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
-    /*产品-添加*/
-    function product_add(title, url) {
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
-    /*用户-添加*/
-    function member_add(title, url, w, h) {
-        layer_show(title, url, w, h);
+
+    /**
+     * 权限-添加
+     * @param title
+     * @param url
+     */
+    function permission_add(title, url) {
+        layer_show(title, url);
     }
 
 

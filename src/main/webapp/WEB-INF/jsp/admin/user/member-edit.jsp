@@ -48,11 +48,18 @@
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
 					<select class="select" size="1" name="roleId">
+						<c:if test="${user.roleId==1}">
+							<option value="1" selected>admin</option>
+							<option value="2">web_manager</option>
+							<option value="3">web_user</option>
+						</c:if>
 						<c:if test="${user.roleId==2}">
+							<option value="1">admin</option>
 							<option value="2" selected>web_manager</option>
 							<option value="3">web_user</option>
 						</c:if>
 						<c:if test="${user.roleId==3}">
+							<option value="1">admin</option>
 							<option value="2">web_manager</option>
 							<option value="3" selected>web_user</option>
 						</c:if>
