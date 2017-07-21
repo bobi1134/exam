@@ -1,6 +1,5 @@
 package cn.mrx.exam.utils;
 
-import com.sun.deploy.net.HttpResponse;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

@@ -6,7 +6,6 @@ import cn.mrx.exam.service.IPhotoConfigService;
 import cn.mrx.exam.service.support.BaseServiceImpl;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.sun.xml.internal.bind.v2.runtime.output.SAXOutput;
 import org.springframework.stereotype.Service;
 
 /**
